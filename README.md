@@ -1,5 +1,3 @@
-[![passport banner](http://cdn.auth0.com/img/passport-banner-github.png)](http://passportjs.org)
-
 # Passport
 
 Passport is [Express](http://expressjs.com/)-compatible authentication
@@ -13,22 +11,16 @@ simple: you provide Passport a request to authenticate, and Passport provides
 hooks for controlling what occurs when authentication succeeds or fails.
 
 Status:
-[![Build](https://travis-ci.org/jaredhanson/passport.svg?branch=master)](https://travis-ci.org/jaredhanson/passport)
-[![Coverage](https://coveralls.io/repos/jaredhanson/passport/badge.svg?branch=master)](https://coveralls.io/r/jaredhanson/passport)
-[![Dependencies](https://david-dm.org/jaredhanson/passport.svg)](https://david-dm.org/jaredhanson/passport)
-
-
-## Sponsorship
-
-Passport is open source software.  Ongoing development is made possible by
-generous contributions from [individuals and corporations](https://github.com/jaredhanson/passport/blob/master/SPONSORS.md).
-To learn more about how you can help keep this project financially sustainable,
-please visit Jared Hanson's page on [Patreon](https://www.patreon.com/jaredhanson).
+[![Build Status](https://travis-ci.org/passport-next/passport.svg?branch=master)](https://travis-ci.org/passport-next/passport)
+[![Coverage Status](https://coveralls.io/repos/github/passport-next/passport/badge.svg?branch=master)](https://coveralls.io/github/passport-next/passport?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/deaf381bf0cff6bf26a5/maintainability)](https://codeclimate.com/github/passport-next/passport/maintainability)
+[![Dependencies](https://david-dm.org/passport-next/passport.png)](https://david-dm.org/passport-next/passport)
+<!--[![SAST](https://gitlab.com/passport-next/passport-strategy/badges/master/build.svg)](https://gitlab.com/passport-next/passport-strategy/badges/master/build.svg)-->
 
 ## Install
 
 ```
-$ npm install passport
+$ npm install @passport-next/passport
 ```
 
 ## Usage
@@ -149,34 +141,9 @@ that uses [passport-local](https://github.com/jaredhanson/passport-local).
     - Express v3x - [Tutorial](http://mherman.org/blog/2013/11/10/social-authentication-with-passport-dot-js/) / [working example](https://github.com/mjhea0/passport-examples)
     - Express v4x - [Tutorial](http://mherman.org/blog/2015/09/26/social-authentication-in-node-dot-js-with-passport) / [working example](https://github.com/mjhea0/passport-social-auth)
 
-## Related Modules
-
-- [Locomotive](https://github.com/jaredhanson/locomotive) — Powerful MVC web framework
-- [OAuthorize](https://github.com/jaredhanson/oauthorize) — OAuth service provider toolkit
-- [OAuth2orize](https://github.com/jaredhanson/oauth2orize) — OAuth 2.0 authorization server toolkit
-- [connect-ensure-login](https://github.com/jaredhanson/connect-ensure-login)  — middleware to ensure login sessions
-
-The [modules](https://github.com/jaredhanson/passport/wiki/Modules) page on the
-[wiki](https://github.com/jaredhanson/passport/wiki) lists other useful modules
-that build upon or integrate with Passport.
-
 ## Tests
 
 ```
 $ npm install
 $ make test
 ```
-
-## Credits
-
-  - [Jared Hanson](http://github.com/jaredhanson)
-
-## Supporters
-
-This project is supported by ![](http://passportjs.org/images/supported_logo.svg) [Auth0](https://auth0.com) 
-
-## License
-
-[The MIT License](http://opensource.org/licenses/MIT)
-
-Copyright (c) 2011-2015 Jared Hanson <[http://jaredhanson.net/](http://jaredhanson.net/)>
