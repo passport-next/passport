@@ -11,6 +11,7 @@ simple: you provide Passport a request to authenticate, and Passport provides
 hooks for controlling what occurs when authentication succeeds or fails.
 
 Status:
+[![NPM version](https://img.shields.io/npm/v/@passport-next/passport.svg)](https://www.npmjs.com/package/@passport-next/passport)
 [![Build Status](https://travis-ci.org/passport-next/passport.svg?branch=master)](https://travis-ci.org/passport-next/passport)
 [![Coverage Status](https://coveralls.io/repos/github/passport-next/passport/badge.svg?branch=master)](https://coveralls.io/github/passport-next/passport?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/deaf381bf0cff6bf26a5/maintainability)](https://codeclimate.com/github/passport-next/passport/maintainability)
