@@ -1,6 +1,6 @@
 {
   "name": "@passport-next/passport",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple, unobtrusive authentication for Node.js.",
   "keywords": [
     "express",

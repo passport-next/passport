@@ -1,5 +1,9 @@
 This changelog follows Semantic Versioning https://semver.org/
 
+# 1.0.1 (2018-08-11)
+
+* Fixed premature redirect when using express sessions @zypA13510 @idurotola
+
 # 1.0.0 (2018-09-06)
 
 ### Major
