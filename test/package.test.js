@@ -1,22 +1,20 @@
 /* global describe, it, expect */
 
-var passport = require('..');
+const passport = require('..');
 
-describe('passport', function() {
-  
-  it('should expose singleton authenticator', function() {
+describe('passport', () => {
+  it('should expose singleton authenticator', () => {
     expect(passport).to.be.an('object');
     expect(passport).to.be.an.instanceOf(passport.Authenticator);
   });
-  
-  it('should export constructors', function() {
+
+  it('should export constructors', () => {
     expect(passport.Authenticator).to.equal(passport.Passport);
     expect(passport.Authenticator).to.be.a('function');
     expect(passport.Strategy).to.be.a('function');
   });
-  
-  it('should export strategies', function() {
+
+  it('should export strategies', () => {
     expect(passport.strategies.SessionStrategy).to.be.a('function');
   });
-  
 });

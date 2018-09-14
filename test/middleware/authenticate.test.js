@@ -1,51 +1,54 @@
 /* global describe, it, expect, before */
 /* jshint expr: true */
 
-var chai = require('chai')
-  , authenticate = require('../../lib/middleware/authenticate')
-  , Passport = require('../..').Passport;
+/* eslint-disable camelcase, no-proto, no-shadow */
+
+const chai = require('chai');
+const authenticate = require('../../lib/middleware/authenticate');
+const Passport = require('../..').Passport;
 
 
-describe('middleware/authenticate', function() {
-  
-  it('should be named authenticate', function() {
+describe('middleware/authenticate', () => {
+  it('should be named authenticate', () => {
     expect(authenticate().name).to.equal('authenticate');
   });
-  
-  describe('with unknown strategy', function() {
-    var passport = new Passport();
-    
-    var request, error;
 
-    before(function(done) {
+  describe('with unknown strategy', () => {
+    const passport = new Passport();
+
+    let request;
+    let error;
+
+    before((done) => {
       chai.connect.use(authenticate(passport, 'foo'))
-        .req(function(req) {
+        .req((req) => {
           request = req;
-          
-          req.logIn = function(user, options, done) {
+
+          req.logIn = function logIn(user, options, done) {
             this.user = user;
             done();
           };
         })
-        .next(function(err) {
+        .next((err) => {
           error = err;
           done();
         })
         .dispatch();
     });
-    
-    it('should error', function() {
+
+    it('should error', () => {
       expect(error).to.be.an.instanceOf(Error);
       expect(error.message).to.equal('Unknown authentication strategy "foo"');
     });
-    
-    it('should not set user', function() {
+
+    it('should not set user', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
-    
-    it('should not set authInfo', function() {
+
+    it('should not set authInfo', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.authInfo).to.be.undefined;
     });
   });
-  
 });

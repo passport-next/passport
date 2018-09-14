@@ -1,263 +1,270 @@
 /* global describe, it, expect, before */
 /* jshint expr: true */
+/* eslint-disable no-underscore-dangle, camelcase, no-proto, no-shadow */
 
-var chai = require('chai')
-  , Authenticator = require('../lib/authenticator');
+const chai = require('chai');
+const Authenticator = require('../lib/authenticator');
 
 
-describe('Authenticator', function() {
-  
-  describe('#initialize', function() {
-    
-    it('should have correct arity', function() {
-      var passport = new Authenticator();
+describe('Authenticator', () => {
+  describe('#initialize', () => {
+    it('should have correct arity', () => {
+      const passport = new Authenticator();
       expect(passport.initialize).to.have.length(1);
     });
-    
-    describe('handling a request', function() {
-      var passport = new Authenticator();
-      var request, error;
 
-      before(function(done) {
+    describe('handling a request', () => {
+      const passport = new Authenticator();
+      let request;
+      let error;
+
+      before((done) => {
         chai.connect.use(passport.initialize())
-          .req(function(req) {
+          .req((req) => {
             request = req;
             req.session = {};
           })
-          .next(function(err) {
+          .next((err) => {
             error = err;
             done();
           })
           .dispatch();
       });
-    
-      it('should not error', function() {
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
-      
-      it('should set user property on authenticator', function() {
+
+      it('should set user property on authenticator', () => {
         expect(passport._userProperty).to.equal('user');
       });
-    
-      it('should not initialize namespace within session', function() {
+
+      it('should not initialize namespace within session', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(request.session.passport).to.be.undefined;
       });
-    
-      it('should expose authenticator on internal request property', function() {
+
+      it('should expose authenticator on internal request property', () => {
         expect(request._passport).to.be.an('object');
         expect(request._passport.instance).to.be.an.instanceOf(Authenticator);
         expect(request._passport.instance).to.equal(passport);
       });
-    
-      it('should not expose session storage on internal request property', function() {
+
+      it('should not expose session storage on internal request property', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(request._passport.session).to.be.undefined;
       });
     });
-    
-    describe('handling a request with custom user property', function() {
-      var passport = new Authenticator();
-      var request, error;
 
-      before(function(done) {
+    describe('handling a request with custom user property', () => {
+      const passport = new Authenticator();
+      let request;
+      let error;
+
+      before((done) => {
         chai.connect.use(passport.initialize({ userProperty: 'currentUser' }))
-          .req(function(req) {
+          .req((req) => {
             request = req;
             req.session = {};
           })
-          .next(function(err) {
+          .next((err) => {
             error = err;
             done();
           })
           .dispatch();
       });
-    
-      it('should not error', function() {
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
-      
-      it('should set user property on authenticator', function() {
+
+      it('should set user property on authenticator', () => {
         expect(passport._userProperty).to.equal('currentUser');
       });
-    
-      it('should not initialize namespace within session', function() {
+
+      it('should not initialize namespace within session', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(request.session.passport).to.be.undefined;
       });
-    
-      it('should expose authenticator on internal request property', function() {
+
+      it('should expose authenticator on internal request property', () => {
         expect(request._passport).to.be.an('object');
         expect(request._passport.instance).to.be.an.instanceOf(Authenticator);
         expect(request._passport.instance).to.equal(passport);
       });
-    
-      it('should not expose session storage on internal request property', function() {
+
+      it('should not expose session storage on internal request property', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(request._passport.session).to.be.undefined;
       });
     });
-    
   });
-  
-  
-  describe('#authenticate', function() {
-    
-    it('should have correct arity', function() {
-      var passport = new Authenticator();
+
+
+  describe('#authenticate', () => {
+    it('should have correct arity', () => {
+      const passport = new Authenticator();
       expect(passport.authenticate).to.have.length(3);
     });
-    
-    describe('handling a request', function() {
+
+    describe('handling a request', () => {
       function Strategy() {
       }
-      Strategy.prototype.authenticate = function(req) {
-        var user = { id: '1', username: 'jaredhanson' };
+      Strategy.prototype.authenticate = function authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
         this.success(user);
       };
-    
-      var passport = new Authenticator();
-      passport.use('success', new Strategy());
-    
-      var request, error;
 
-      before(function(done) {
+      const passport = new Authenticator();
+      passport.use('success', new Strategy());
+
+      let request;
+      let error;
+
+      before((done) => {
         chai.connect.use(passport.authenticate('success'))
-          .req(function(req) {
+          .req((req) => {
             request = req;
-          
-            req.logIn = function(user, options, done) {
+
+            req.logIn = function logIn(user, options, done) {
               this.user = user;
               done();
             };
           })
-          .next(function(err) {
+          .next((err) => {
             error = err;
             done();
           })
           .dispatch();
       });
-    
-      it('should not error', function() {
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
-    
-      it('should set user', function() {
+
+      it('should set user', () => {
         expect(request.user).to.be.an('object');
         expect(request.user.id).to.equal('1');
         expect(request.user.username).to.equal('jaredhanson');
       });
-    
-      it('should set authInfo', function() {
+
+      it('should set authInfo', () => {
         expect(request.authInfo).to.be.an('object');
         expect(Object.keys(request.authInfo)).to.have.length(0);
       });
     });
-    
   });
-  
-  
-  describe('#authorize', function() {
-    
-    it('should have correct arity', function() {
-      var passport = new Authenticator();
+
+
+  describe('#authorize', () => {
+    it('should have correct arity', () => {
+      const passport = new Authenticator();
       expect(passport.authorize).to.have.length(3);
     });
-    
-    describe('handling a request', function() {
+
+    describe('handling a request', () => {
       function Strategy() {
       }
-      Strategy.prototype.authenticate = function(req) {
-        var user = { id: '1', username: 'jaredhanson' };
+      Strategy.prototype.authenticate = function authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
         this.success(user);
       };
-    
-      var passport = new Authenticator();
-      passport.use('success', new Strategy());
-    
-      var request, error;
 
-      before(function(done) {
+      const passport = new Authenticator();
+      passport.use('success', new Strategy());
+
+      let request;
+      let error;
+
+      before((done) => {
         chai.connect.use(passport.authorize('success'))
-          .req(function(req) {
+          .req((req) => {
             request = req;
-          
-            req.logIn = function(user, options, done) {
+
+            req.logIn = function logIn(user, options, done) {
               this.user = user;
               done();
             };
           })
-          .next(function(err) {
+          .next((err) => {
             error = err;
             done();
           })
           .dispatch();
       });
-    
-      it('should not error', function() {
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
-    
-      it('should not set user', function() {
+
+      it('should not set user', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(request.user).to.be.undefined;
       });
-    
-      it('should set account', function() {
+
+      it('should set account', () => {
         expect(request.account).to.be.an('object');
         expect(request.account.id).to.equal('1');
         expect(request.account.username).to.equal('jaredhanson');
       });
-    
-      it('should not set authInfo', function() {
+
+      it('should not set authInfo', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(request.authInfo).to.be.undefined;
       });
     });
-    
   });
-  
-  describe('#session', function() {
-    
-    it('should have correct arity', function() {
-      var passport = new Authenticator();
+
+  describe('#session', () => {
+    it('should have correct arity', () => {
+      const passport = new Authenticator();
       expect(passport.session).to.have.length(1);
     });
-    
-    describe('handling a request', function() {
-      var passport = new Authenticator();
-      passport.deserializeUser(function(user, done) {
+
+    describe('handling a request', () => {
+      const passport = new Authenticator();
+      passport.deserializeUser((user, done) => {
         done(null, { id: user });
       });
-    
-      var request, error;
 
-      before(function(done) {
+      let request;
+      let error;
+
+      before((done) => {
         chai.connect.use(passport.session())
-          .req(function(req) {
+          .req((req) => {
             request = req;
-            
+
             req._passport = {};
             req._passport.instance = {};
             req._passport.session = {};
             req._passport.session.user = '123456';
           })
-          .next(function(err) {
+          .next((err) => {
             error = err;
             done();
           })
           .dispatch();
       });
-    
-      it('should not error', function() {
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
-    
-      it('should set user', function() {
+
+      it('should set user', () => {
         expect(request.user).to.be.an('object');
         expect(request.user.id).to.equal('123456');
       });
-      
-      it('should maintain session', function() {
+
+      it('should maintain session', () => {
         expect(request._passport.session).to.be.an('object');
         expect(request._passport.session.user).to.equal('123456');
       });
     });
-    
   });
-  
 });
