@@ -1,6 +1,14 @@
 This changelog follows Semantic Versioning https://semver.org/
 
+# 2.0.0 (2018-08-18)
+
+### Major
+
+* Added eslint configuration, and fixed a pletora of lint errors @idurotola
+
 # 1.0.1 (2018-08-11)
+
+### Patch
 
 * Fixed premature redirect when using express sessions @zypA13510 @idurotola
 
