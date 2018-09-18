@@ -6,7 +6,7 @@
 const http = require('http');
 const Passport = require('../..').Passport;
 
-require('../../lib/framework/connect').__monkeypatchNode();
+require('../../lib/framework/connect')();
 
 
 describe('http.ServerRequest', () => {
