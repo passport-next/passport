@@ -1,65 +1,73 @@
 /* global describe, it, expect, before */
 /* jshint expr: true */
 
-var chai = require('chai')
-  , authenticate = require('../../lib/middleware/authenticate')
-  , Passport = require('../..').Passport;
+/* eslint-disable camelcase, no-proto, no-shadow */
 
+const chai = require('chai');
+const authenticate = require('../../lib/middleware/authenticate');
+const Passport = require('../..').Passport;
 
-describe('middleware/authenticate', function() {
-  
-  describe('fail with callback', function() {
+describe('middleware/authenticate', () => {
+  describe('fail with callback', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.fail();
     };
-    
-    var passport = new Passport();
-    passport.use('fail', new Strategy());
-    
-    var request, error, user;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('fail', new Strategy());
+
+    let request;
+    let error;
+    let user;
+
+    before((done) => {
       function callback(e, u) {
         error = e;
         user = u;
         done();
       }
-      
+
       chai.connect.use(authenticate(passport, 'fail', callback))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
-    
-    it('should pass false to callback', function() {
+
+    it('should pass false to callback', () => {
       expect(user).to.equal(false);
     });
-    
-    it('should not set user on request', function() {
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
-  
-  describe('fail with callback, passing info', function() {
+
+  describe('fail with callback, passing info', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.fail({ message: 'Invalid password' });
     };
-    
-    var passport = new Passport();
-    passport.use('fail', new Strategy());
-    
-    var request, error, user, info, status;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('fail', new Strategy());
+
+    let request;
+    let error;
+    let user;
+    let info;
+    let status;
+
+    before((done) => {
       function callback(e, u, i, s) {
         error = e;
         user = u;
@@ -67,49 +75,56 @@ describe('middleware/authenticate', function() {
         status = s;
         done();
       }
-      
+
       chai.connect.use(authenticate(passport, 'fail', callback))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
-    
-    it('should pass false to callback', function() {
+
+    it('should pass false to callback', () => {
       expect(user).to.equal(false);
     });
-    
-    it('should pass info to callback', function() {
+
+    it('should pass info to callback', () => {
       expect(info).to.be.an('object');
       expect(info.message).to.equal('Invalid password');
     });
-    
-    it('should pass status to callback', function() {
+
+    it('should pass status to callback', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(status).to.be.undefined;
     });
-    
-    it('should not set user on request', function() {
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
-  
-  describe('fail with callback, passing info and status', function() {
+
+  describe('fail with callback, passing info and status', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.fail({ message: 'Invalid password' }, 403);
     };
-    
-    var passport = new Passport();
-    passport.use('fail', new Strategy());
-    
-    var request, error, user, info, status;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('fail', new Strategy());
+
+    let request;
+    let error;
+    let user;
+    let info;
+    let status;
+
+    before((done) => {
       function callback(e, u, i, s) {
         error = e;
         user = u;
@@ -117,49 +132,55 @@ describe('middleware/authenticate', function() {
         status = s;
         done();
       }
-      
+
       chai.connect.use(authenticate(passport, 'fail', callback))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
-    
-    it('should pass false to callback', function() {
+
+    it('should pass false to callback', () => {
       expect(user).to.equal(false);
     });
-    
-    it('should pass info to callback', function() {
+
+    it('should pass info to callback', () => {
       expect(info).to.be.an('object');
       expect(info.message).to.equal('Invalid password');
     });
-    
-    it('should pass status to callback', function() {
+
+    it('should pass status to callback', () => {
       expect(status).to.equal(403);
     });
-    
-    it('should not set user on request', function() {
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
-  
-  describe('fail with callback, passing challenge', function() {
+
+  describe('fail with callback, passing challenge', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.fail('Bearer challenge');
     };
-    
-    var passport = new Passport();
-    passport.use('fail', new Strategy());
-    
-    var request, error, user, challenge, status;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('fail', new Strategy());
+
+    let request;
+    let error;
+    let user;
+    let challenge;
+    let status;
+
+    before((done) => {
       function callback(e, u, c, s) {
         error = e;
         user = u;
@@ -167,48 +188,55 @@ describe('middleware/authenticate', function() {
         status = s;
         done();
       }
-      
+
       chai.connect.use(authenticate(passport, 'fail', callback))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
-    
-    it('should pass false to callback', function() {
+
+    it('should pass false to callback', () => {
       expect(user).to.equal(false);
     });
-    
-    it('should pass challenge to callback', function() {
+
+    it('should pass challenge to callback', () => {
       expect(challenge).to.equal('Bearer challenge');
     });
-    
-    it('should pass status to callback', function() {
+
+    it('should pass status to callback', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(status).to.be.undefined;
     });
-    
-    it('should not set user on request', function() {
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
-  
-  describe('fail with callback, passing challenge and status', function() {
+
+  describe('fail with callback, passing challenge and status', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.fail('Bearer challenge', 403);
     };
-    
-    var passport = new Passport();
-    passport.use('fail', new Strategy());
-    
-    var request, error, user, challenge, status;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('fail', new Strategy());
+
+    let request;
+    let error;
+    let user;
+    let challenge;
+    let status;
+
+    before((done) => {
       function callback(e, u, c, s) {
         error = e;
         user = u;
@@ -216,48 +244,54 @@ describe('middleware/authenticate', function() {
         status = s;
         done();
       }
-      
+
       chai.connect.use(authenticate(passport, 'fail', callback))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
-    
-    it('should pass false to callback', function() {
+
+    it('should pass false to callback', () => {
       expect(user).to.equal(false);
     });
-    
-    it('should pass challenge to callback', function() {
+
+    it('should pass challenge to callback', () => {
       expect(challenge).to.equal('Bearer challenge');
     });
-    
-    it('should pass status to callback', function() {
+
+    it('should pass status to callback', () => {
       expect(status).to.equal(403);
     });
-    
-    it('should not set user on request', function() {
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
-  
-  describe('fail with callback, passing status', function() {
+
+  describe('fail with callback, passing status', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.fail(402);
     };
-    
-    var passport = new Passport();
-    passport.use('fail', new Strategy());
-    
-    var request, error, user, challenge, status;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('fail', new Strategy());
+
+    let request;
+    let error;
+    let user;
+    let challenge;
+    let status;
+
+    before((done) => {
       function callback(e, u, c, s) {
         error = e;
         user = u;
@@ -265,72 +299,78 @@ describe('middleware/authenticate', function() {
         status = s;
         done();
       }
-      
+
       chai.connect.use(authenticate(passport, 'fail', callback))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
-    
-    it('should pass false to callback', function() {
+
+    it('should pass false to callback', () => {
       expect(user).to.equal(false);
     });
-    
-    it('should pass challenge to callback', function() {
+
+    it('should pass challenge to callback', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(challenge).to.be.undefined;
     });
-    
-    it('should pass status to callback', function() {
+
+    it('should pass status to callback', () => {
       expect(status).to.equal(402);
     });
-    
-    it('should not set user on request', function() {
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
-  
-  describe('fail with callback and options passed to middleware', function() {
+
+  describe('fail with callback and options passed to middleware', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.fail();
     };
-    
-    var passport = new Passport();
-    passport.use('fail', new Strategy());
-    
-    var request, error, user;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('fail', new Strategy());
+
+    let request;
+    let error;
+    let user;
+
+    before((done) => {
       function callback(e, u) {
         error = e;
         user = u;
         done();
       }
-      
+
       chai.connect.use(authenticate(passport, 'fail', { foo: 'bar' }, callback))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
-    
-    it('should pass false to callback', function() {
+
+    it('should pass false to callback', () => {
       expect(user).to.equal(false);
     });
-    
-    it('should not set user on request', function() {
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
-  
 });

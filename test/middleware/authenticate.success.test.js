@@ -1,346 +1,363 @@
 /* global describe, it, expect, before */
 /* jshint expr: true */
 
-var chai = require('chai')
-  , authenticate = require('../../lib/middleware/authenticate')
-  , Passport = require('../..').Passport;
+/* eslint-disable camelcase, no-proto, no-shadow */
 
 
-describe('middleware/authenticate', function() {
-  
-  describe('success', function() {
+const chai = require('chai');
+const authenticate = require('../../lib/middleware/authenticate');
+const Passport = require('../..').Passport;
+
+
+describe('middleware/authenticate', () => {
+  describe('success', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
-      var user = { id: '1', username: 'jaredhanson' };
+    Strategy.prototype.authenticate = function authenticate() {
+      const user = { id: '1', username: 'jaredhanson' };
       this.success(user);
     };
-    
-    var passport = new Passport();
-    passport.use('success', new Strategy());
-    
-    var request, error;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('success', new Strategy());
+
+    let request;
+    let error;
+
+    before((done) => {
       chai.connect.use(authenticate(passport, 'success'))
-        .req(function(req) {
+        .req((req) => {
           request = req;
-          
-          req.logIn = function(user, options, done) {
+
+          req.logIn = function logIn(user, options, done) {
             this.user = user;
             done();
           };
         })
-        .next(function(err) {
+        .next((err) => {
           error = err;
           done();
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
-    
-    it('should set user', function() {
+
+    it('should set user', () => {
       expect(request.user).to.be.an('object');
       expect(request.user.id).to.equal('1');
       expect(request.user.username).to.equal('jaredhanson');
     });
-    
-    it('should set authInfo', function() {
+
+    it('should set authInfo', () => {
       expect(request.authInfo).to.be.an('object');
       expect(Object.keys(request.authInfo)).to.have.length(0);
     });
   });
-  
-  describe('success that assigns a specific property', function() {
+
+  describe('success that assigns a specific property', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
-      var user = { id: '1', username: 'jaredhanson' };
+    Strategy.prototype.authenticate = function authenticate() {
+      const user = { id: '1', username: 'jaredhanson' };
       this.success(user);
     };
-    
-    var passport = new Passport();
-    passport.use('success', new Strategy());
-    
-    var request, error;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('success', new Strategy());
+
+    let request;
+    let error;
+
+    before((done) => {
       chai.connect.use(authenticate(passport, 'success', { assignProperty: 'account' }))
-        .req(function(req) {
+        .req((req) => {
           request = req;
-          
-          req.logIn = function(user, options, done) {
+
+          req.logIn = function logIn(user, options, done) {
             this.user = user;
             done();
           };
         })
-        .next(function(err) {
+        .next((err) => {
           error = err;
           done();
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
-    
-    it('should not set user', function() {
+
+    it('should not set user', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
-    
-    it('should set account', function() {
+
+    it('should set account', () => {
       expect(request.account).to.be.an('object');
       expect(request.account.id).to.equal('1');
       expect(request.account.username).to.equal('jaredhanson');
     });
-    
-    it('should not set authInfo', function() {
+
+    it('should not set authInfo', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.authInfo).to.be.undefined;
     });
   });
-  
-  describe('success with strategy-specific options', function() {
+
+  describe('success with strategy-specific options', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req, options) {
-      var user = { id: '1', username: 'jaredhanson' };
-      if (options.scope == 'email') {
+    Strategy.prototype.authenticate = function authenticate(req, options) {
+      const user = { id: '1', username: 'jaredhanson' };
+      if (options.scope === 'email') {
         user.email = 'jaredhanson@example.com';
       }
       this.success(user);
     };
-    
-    var passport = new Passport();
-    passport.use('success', new Strategy());
-    
-    var request, error;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('success', new Strategy());
+
+    let request;
+    let error;
+
+    before((done) => {
       chai.connect.use(authenticate(passport, 'success', { scope: 'email' }))
-        .req(function(req) {
+        .req((req) => {
           request = req;
-          
-          req.logIn = function(user, options, done) {
-            if (options.scope != 'email') { return done(new Error('invalid options')); }
+
+          // eslint-disable-next-line consistent-return
+          req.logIn = function logIn(user, options, done) {
+            if (options.scope !== 'email') { return done(new Error('invalid options')); }
             this.user = user;
             done();
           };
         })
-        .next(function(err) {
+        .next((err) => {
           error = err;
           done();
         })
         .dispatch();
     });
-    
-    it('should not error', function() {
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
-    
-    it('should set user', function() {
+
+    it('should set user', () => {
       expect(request.user).to.be.an('object');
       expect(request.user.id).to.equal('1');
       expect(request.user.username).to.equal('jaredhanson');
       expect(request.user.email).to.equal('jaredhanson@example.com');
     });
-    
-    it('should set authInfo', function() {
+
+    it('should set authInfo', () => {
       expect(request.authInfo).to.be.an('object');
       expect(Object.keys(request.authInfo)).to.have.length(0);
     });
   });
-  
-  describe('success with redirect', function() {
+
+  describe('success with redirect', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req, options) {
-      var user = { id: '1', username: 'jaredhanson' };
+    Strategy.prototype.authenticate = function authenticate() {
+      const user = { id: '1', username: 'jaredhanson' };
       this.success(user);
     };
-    
-    var passport = new Passport();
-    passport.use('success', new Strategy());
-    
-    var request, response;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('success', new Strategy());
+
+    let request;
+    let response;
+
+    before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', { successRedirect: 'http://www.example.com/account' }))
-        .req(function(req) {
+        .req((req) => {
           request = req;
-          
-          req.logIn = function(user, options, done) {
+
+          req.logIn = function logIn(user, options, done) {
             this.user = user;
             done();
           };
         })
-        .end(function(res) {
+        .end((res) => {
           response = res;
           done();
         })
         .dispatch();
     });
-    
-    it('should set user', function() {
+
+    it('should set user', () => {
       expect(request.user).to.be.an('object');
       expect(request.user.id).to.equal('1');
       expect(request.user.username).to.equal('jaredhanson');
     });
-    
-    it('should set authInfo', function() {
+
+    it('should set authInfo', () => {
       expect(request.authInfo).to.be.an('object');
       expect(Object.keys(request.authInfo)).to.have.length(0);
     });
-    
-    it('should redirect', function() {
+
+    it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
       expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
     });
   });
-  
-  describe('success with return to previous location', function() {
+
+  describe('success with return to previous location', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req, options) {
-      var user = { id: '1', username: 'jaredhanson' };
+    Strategy.prototype.authenticate = function authenticate() {
+      const user = { id: '1', username: 'jaredhanson' };
       this.success(user);
     };
-    
-    var passport = new Passport();
-    passport.use('success', new Strategy());
-    
-    var request, response;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('success', new Strategy());
+
+    let request;
+    let response;
+
+    before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'http://www.example.com/default' }))
-        .req(function(req) {
+        .req((req) => {
           request = req;
           req.session = { returnTo: 'http://www.example.com/return' };
-          
-          req.logIn = function(user, options, done) {
+
+          req.logIn = function logIn(user, options, done) {
             this.user = user;
             done();
           };
         })
-        .end(function(res) {
+        .end((res) => {
           response = res;
           done();
         })
         .dispatch();
     });
-    
-    it('should set user', function() {
+
+    it('should set user', () => {
       expect(request.user).to.be.an('object');
       expect(request.user.id).to.equal('1');
       expect(request.user.username).to.equal('jaredhanson');
     });
-    
-    it('should set authInfo', function() {
+
+    it('should set authInfo', () => {
       expect(request.authInfo).to.be.an('object');
       expect(Object.keys(request.authInfo)).to.have.length(0);
     });
-    
-    it('should redirect', function() {
+
+    it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
       expect(response.getHeader('Location')).to.equal('http://www.example.com/return');
     });
-    
-    it('should move return to from session', function() {
+
+    it('should move return to from session', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.session.returnTo).to.be.undefined;
     });
   });
-  
-  describe('success with return to default location', function() {
+
+  describe('success with return to default location', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req, options) {
-      var user = { id: '1', username: 'jaredhanson' };
+    Strategy.prototype.authenticate = function authenticate() {
+      const user = { id: '1', username: 'jaredhanson' };
       this.success(user);
     };
-    
-    var passport = new Passport();
-    passport.use('success', new Strategy());
-    
-    var request, response;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('success', new Strategy());
+
+    let request;
+    let response;
+
+    before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'http://www.example.com/default' }))
-        .req(function(req) {
+        .req((req) => {
           request = req;
-          
-          req.logIn = function(user, options, done) {
+
+          req.logIn = function logIn(user, options, done) {
             this.user = user;
             done();
           };
         })
-        .end(function(res) {
+        .end((res) => {
           response = res;
           done();
         })
         .dispatch();
     });
-    
-    it('should set user', function() {
+
+    it('should set user', () => {
       expect(request.user).to.be.an('object');
       expect(request.user.id).to.equal('1');
       expect(request.user.username).to.equal('jaredhanson');
     });
-    
-    it('should set authInfo', function() {
+
+    it('should set authInfo', () => {
       expect(request.authInfo).to.be.an('object');
       expect(Object.keys(request.authInfo)).to.have.length(0);
     });
-    
-    it('should redirect', function() {
+
+    it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
       expect(response.getHeader('Location')).to.equal('http://www.example.com/default');
     });
   });
-  
-  describe('success, but login that encounters an error', function() {
+
+  describe('success, but login that encounters an error', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
-      var user = { id: '1', username: 'jaredhanson' };
+    Strategy.prototype.authenticate = function authenticate() {
+      const user = { id: '1', username: 'jaredhanson' };
       this.success(user);
     };
-    
-    var passport = new Passport();
-    passport.use('success', new Strategy());
-    
-    var request, error;
 
-    before(function(done) {
+    const passport = new Passport();
+    passport.use('success', new Strategy());
+
+    let request;
+    let error;
+
+    before((done) => {
       chai.connect.use(authenticate(passport, 'success'))
-        .req(function(req) {
+        .req((req) => {
           request = req;
-          
-          req.logIn = function(user, options, done) {
+
+          req.logIn = function logIn(user, options, done) {
             done(new Error('something went wrong'));
           };
         })
-        .next(function(err) {
+        .next((err) => {
           error = err;
           done();
         })
         .dispatch();
     });
-    
-    it('should error', function() {
+
+    it('should error', () => {
       expect(error).to.be.an.instanceOf(Error);
       expect(error.message).to.equal('something went wrong');
     });
-    
-    it('should not set user', function() {
+
+    it('should not set user', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
-    
-    it('should not set authInfo', function() {
+
+    it('should not set authInfo', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.authInfo).to.be.undefined;
     });
   });
-  
 });

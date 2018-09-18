@@ -1,91 +1,95 @@
 /* global describe, it, expect, before */
 /* jshint expr: true */
 
-var chai = require('chai')
-  , authenticate = require('../../lib/middleware/authenticate')
-  , Passport = require('../..').Passport;
+/* eslint-disable camelcase, no-proto, no-shadow */
 
 
-describe('middleware/authenticate', function() {
-  
-  describe('error with callback', function() {
+const chai = require('chai');
+const Passport = require('../..').Passport;
+const authenticate = require('../../lib/middleware/authenticate');
+
+describe('middleware/authenticate', () => {
+  describe('error with callback', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.error(new Error('something is wrong'));
     };
-    
-    var passport = new Passport();
-    passport.use('error', new Strategy());
-    
-    var request, error, user;
 
-    before(function(done) {
-      function callback(e, u) {
+    const passport = new Passport();
+    passport.use('error', new Strategy());
+
+    let request;
+    let error;
+
+    before((done) => {
+      function callback(e) {
         error = e;
-        user = u;
         done();
       }
-      
+
       chai.connect.use(authenticate(passport, 'error', callback))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
         .dispatch();
     });
-    
-    it('should pass error to callback', function() {
+
+    it('should pass error to callback', () => {
       expect(error).to.be.an.instanceOf(Error);
       expect(error.message).to.equal('something is wrong');
     });
-    
-    it('should pass user as undefined to callback', function() {
+
+    it('should pass user as undefined to callback', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
-    
-    it('should not set user on request', function() {
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
-  
-  describe('error with callback and options passed to middleware', function() {
+
+  describe('error with callback and options passed to middleware', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.error(new Error('something is wrong'));
     };
-    
-    var passport = new Passport();
-    passport.use('error', new Strategy());
-    
-    var request, error, user;
 
-    before(function(done) {
-      function callback(e, u) {
+    const passport = new Passport();
+    passport.use('error', new Strategy());
+
+    let request;
+    let error;
+
+    before((done) => {
+      function callback(e) {
         error = e;
-        user = u;
         done();
       }
-      
+
       chai.connect.use(authenticate(passport, 'error', { foo: 'bar' }, callback))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
         .dispatch();
     });
-    
-    it('should pass error to callback', function() {
+
+    it('should pass error to callback', () => {
       expect(error).to.be.an.instanceOf(Error);
       expect(error.message).to.equal('something is wrong');
     });
-    
-    it('should pass user as undefined to callback', function() {
+
+    it('should pass user as undefined to callback', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
-    
-    it('should not set user on request', function() {
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
-  
 });

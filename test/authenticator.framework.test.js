@@ -1,55 +1,53 @@
 /* global describe, it, expect */
 
-var Authenticator = require('../lib/authenticator');
+/* eslint-disable camelcase, no-proto, no-shadow */
+
+const Authenticator = require('../lib/authenticator');
 
 
-describe('Authenticator', function() {
-  
-  describe('#framework', function() {
-    
-    describe('with an authenticate function used for authorization', function() {
-      var passport = new Authenticator();
+describe('Authenticator', () => {
+  describe('#framework', () => {
+    describe('with an authenticate function used for authorization', () => {
+      const passport = new Authenticator();
       passport.framework({
-        initialize: function() {
-          return function() {};
+        initialize() {
+          return function initialize() {};
         },
-        authenticate: function(passport, name, options) {
-          return function() {
-            return 'authenticate(): ' + name + ' ' + options.assignProperty;
+        authenticate(passport, name, options) {
+          return function authenticate() {
+            return `authenticate(): ${name} ${options.assignProperty}`;
           };
-        }
+        },
       });
-      
-      var rv = passport.authorize('foo')();
-      it('should call authenticate', function() {
+
+      const rv = passport.authorize('foo')();
+      it('should call authenticate', () => {
         expect(rv).to.equal('authenticate(): foo account');
       });
     });
-    
-    describe('with an authorize function used for authorization', function() {
-      var passport = new Authenticator();
+
+    describe('with an authorize function used for authorization', () => {
+      const passport = new Authenticator();
       passport.framework({
-        initialize: function() {
-          return function() {};
+        initialize() {
+          return function initialize() {};
         },
-        authenticate: function(passport, name, options) {
-          return function() {
-            return 'authenticate(): ' + name + ' ' + options.assignProperty;
+        authenticate(passport, name, options) {
+          return function authenticate() {
+            return `authenticate(): ${name} ${options.assignProperty}`;
           };
         },
-        authorize: function(passport, name, options) {
-          return function() {
-            return 'authorize(): ' + name + ' ' + options.assignProperty;
+        authorize(passport, name, options) {
+          return function authorize() {
+            return `authorize(): ${name} ${options.assignProperty}`;
           };
-        }
+        },
       });
-      
-      var rv = passport.authorize('foo')();
-      it('should call authorize', function() {
+
+      const rv = passport.authorize('foo')();
+      it('should call authorize', () => {
         expect(rv).to.equal('authorize(): foo account');
       });
     });
-    
   });
-  
 });

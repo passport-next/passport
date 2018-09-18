@@ -1,197 +1,207 @@
 /* global describe, it, expect, before */
 /* jshint expr: true */
 
-var chai = require('chai')
-  , authenticate = require('../../lib/middleware/authenticate')
-  , Passport = require('../..').Passport;
+/* eslint-disable camelcase, no-proto, no-shadow */
+
+const chai = require('chai');
+const authenticate = require('../../lib/middleware/authenticate');
+const Passport = require('../..').Passport;
 
 
-describe('middleware/authenticate', function() {
-
-  describe('redirect', function() {
+describe('middleware/authenticate', () => {
+  describe('redirect', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.redirect('http://www.example.com/idp');
     };
 
-    var passport = new Passport();
+    const passport = new Passport();
     passport.use('redirect', new Strategy());
 
-    var request, response;
+    let request;
+    let response;
 
-    before(function(done) {
+    before((done) => {
       chai.connect.use(authenticate(passport, 'redirect'))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
-        .end(function(res) {
+        .end((res) => {
           response = res;
           done();
         })
         .dispatch();
     });
 
-    it('should not set user', function() {
+    it('should not set user', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
-    it('should redirect', function() {
+    it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
       expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
       expect(response.getHeader('Content-Length')).to.equal('0');
     });
   });
 
-  describe('redirect with session', function() {
+  describe('redirect with session', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req, options) {
+    Strategy.prototype.authenticate = function authenticate() {
       const user = { id: '1', username: 'idurotola' };
       this.success(user);
     };
 
-    var passport = new Passport();
+    const passport = new Passport();
     passport.use('success', new Strategy());
 
-    var request, response;
-    var authenticator = authenticate(passport, 'success', {
-      successRedirect: 'http://www.example.com/idp'
-    })
+    let request;
+    let response;
+    const authenticator = authenticate(passport, 'success', {
+      successRedirect: 'http://www.example.com/idp',
+    });
 
-    before(function(done) {
+    before((done) => {
       chai.connect.use('express', authenticator)
-        .req(function(req) {
+        .req((req) => {
           request = req;
 
           req.session = {};
-          req.session.save = function(done) {
+          req.session.save = function save(done) {
             done();
-          }
+          };
 
-          req.logIn = function(user, options, done) {
+          req.logIn = function logIn(user, options, done) {
             this.user = user;
             done();
           };
         })
-        .end(function(res) {
+        .end((res) => {
           response = res;
           done();
         })
         .dispatch();
     });
 
-    it('should set user', function() {
+    it('should set user', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.not.be.undefined;
     });
 
-    it('should redirect', function() {
+    it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
       expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
     });
   });
 
-  describe('redirect with status', function() {
+  describe('redirect with status', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.redirect('http://www.example.com/idp', 303);
     };
 
-    var passport = new Passport();
+    const passport = new Passport();
     passport.use('redirect', new Strategy());
 
-    var request, response;
+    let request;
+    let response;
 
-    before(function(done) {
+    before((done) => {
       chai.connect.use(authenticate(passport, 'redirect'))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
-        .end(function(res) {
+        .end((res) => {
           response = res;
           done();
         })
         .dispatch();
     });
 
-    it('should not set user', function() {
+    it('should not set user', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
-    it('should redirect', function() {
+    it('should redirect', () => {
       expect(response.statusCode).to.equal(303);
       expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
       expect(response.getHeader('Content-Length')).to.equal('0');
     });
   });
 
-  describe('redirect using framework function', function() {
+  describe('redirect using framework function', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.redirect('http://www.example.com/idp');
     };
 
-    var passport = new Passport();
+    const passport = new Passport();
     passport.use('redirect', new Strategy());
 
-    var request, response;
+    let request;
+    let response;
 
-    before(function(done) {
+    before((done) => {
       chai.connect.use('express', authenticate(passport, 'redirect'))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
-        .end(function(res) {
+        .end((res) => {
           response = res;
           done();
         })
         .dispatch();
     });
 
-    it('should not set user', function() {
+    it('should not set user', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
-    it('should redirect', function() {
+    it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
       expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
     });
   });
 
-  describe('redirect with status using framework function', function() {
+  describe('redirect with status using framework function', () => {
     function Strategy() {
     }
-    Strategy.prototype.authenticate = function(req) {
+    Strategy.prototype.authenticate = function authenticate() {
       this.redirect('http://www.example.com/idp', 303);
     };
 
-    var passport = new Passport();
+    const passport = new Passport();
     passport.use('redirect', new Strategy());
 
-    var request, response;
+    let request;
+    let response;
 
-    before(function(done) {
+    before((done) => {
       chai.connect.use('express', authenticate(passport, 'redirect'))
-        .req(function(req) {
+        .req((req) => {
           request = req;
         })
-        .end(function(res) {
+        .end((res) => {
           response = res;
           done();
         })
         .dispatch();
     });
 
-    it('should not set user', function() {
+    it('should not set user', () => {
+      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
-    it('should redirect', function() {
+    it('should redirect', () => {
       expect(response.statusCode).to.equal(303);
       expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
     });
   });
-
 });

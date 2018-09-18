@@ -36,12 +36,18 @@
     "mocha": "5.2.x",
     "chai": "4.1.x",
     "chai-connect-middleware": "0.3.x",
+    "eslint-config-airbnb-base": "13.0.0",
+    "eslint-plugin-import": "2.12.0",
+    "eslint": "4.19.1",
     "@passport-next/chai-passport-strategy": "1.x.x"
   },
   "engines": {
     "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js"
+    "spec": "node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js",
+    "lint": "eslint --ext .js . --max-warnings 0",
+    "lintfix": "eslint --ext .js . --fix",
+    "test": "npm run lint && npm run spec"
   }
 }
