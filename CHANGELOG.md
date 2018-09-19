@@ -5,6 +5,8 @@ This changelog follows Semantic Versioning https://semver.org/
 ### Major
 
 * Added eslint configuration, and fixed a pletora of lint errors @idurotola
+  * This change should have been a patch (to 1.0.2) but because of the size of the
+  number of lines changed it was made a major.
 
 # 1.0.1 (2018-08-11)
 
