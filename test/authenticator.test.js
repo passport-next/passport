@@ -7,6 +7,17 @@ const Authenticator = require('../lib/authenticator');
 
 
 describe('Authenticator', () => {
+
+  describe('#sessionManager', () => {
+    it('should set custom session manager', () => {
+      const passport = new Authenticator();
+      const sessionManager = {};
+      passport.sessionManager(sessionManager);
+
+      expect(passport._sm).to.equal(sessionManager);
+    });
+  });
+
   describe('#use', () => {
     describe('with instance name', () => {
       function Strategy() {
