@@ -1,5 +1,12 @@
 This changelog follows Semantic Versioning https://semver.org/
 
+# 2.1.0 (2018-11-03)
+
+* Exposed the method to customize the SessionManager object @adamhathcock
+* Added node 11 support @rwky
+* Lint fixes @rwky
+* Updated dev deps @rwky
+
 # 2.0.0 (2018-08-18)
 
 ### Major

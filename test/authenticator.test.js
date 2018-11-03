@@ -7,7 +7,6 @@ const Authenticator = require('../lib/authenticator');
 
 
 describe('Authenticator', () => {
-
   describe('#sessionManager', () => {
     it('should set custom session manager', () => {
       const passport = new Authenticator();
