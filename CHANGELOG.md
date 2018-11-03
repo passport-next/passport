@@ -6,6 +6,7 @@ This changelog follows Semantic Versioning https://semver.org/
 * Added node 11 support @rwky
 * Lint fixes @rwky
 * Updated dev deps @rwky
+* Added linting to travis @rwky
 
 # 2.0.0 (2018-08-18)
 

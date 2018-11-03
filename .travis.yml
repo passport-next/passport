@@ -11,6 +11,7 @@ before_install:
 
 script:
   - "make test-cov"
+  - "npm run-script lint"
 
 after_success:
   - "make report-cov"
