@@ -1,5 +1,11 @@
 This changelog follows Semantic Versioning https://semver.org/
 
+# Unreleased
+
+* Added gitlab sast testing @rwky
+* Updated npm dev deps @rwky
+* Updated README and CONTRIBUTING to explain differences between passport and passport-next #13 @rwky
+
 # 2.1.0 (2018-11-03)
 
 * Exposed the method to customize the SessionManager object @adamhathcock

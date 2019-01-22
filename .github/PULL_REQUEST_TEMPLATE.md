@@ -1,22 +1,10 @@
 ** READ THIS FIRST! **
 
-#### Are you implementing a new feature?
-
-Requests for new features should first be discussed on the [discussion forum](https://github.com/passport/discuss).
-This allows the community to gather feedback and assess whether or not there is
-an existing way to achieve the desired functionality.
-
-If it is determined that a new feature needs to be implemented, include a link
-to the relevant discussion along with the pull request.
-
 #### Is this a security patch?
 
-Do not open pull requests that might have security implications.  Potential
-security vulnerabilities should be reported privately to jaredhanson@gmail.com.
-Once any vulerabilities have been repaired, the details will be disclosed
-publicly in a responsible manner.  This also allows time for coordinating with
-affected parties in order to mitigate negative consequences.
-
+If you discover a security issue please create an issue stating you've discovered a security
+issue but don't divulge the issue, one of the maintainers will respond with an email address
+you can send the details to. Once the issue has been patched the details can be made public.
 
 <!-- Provide a brief summary of the request in the title field above. -->
 
@@ -34,4 +22,4 @@ affected parties in order to mitigate negative consequences.
 - [ ] I have added test cases which verify the correct operation of this feature or patch.
 - [ ] I have added documentation pertaining to this feature or patch.
 - [ ] The automated test suite (`$ make test`) executes successfully.
-- [ ] The automated code linting (`$ make lint`) executes successfully.
+- [ ] The automated code linting (`$ npm run-script lint`) executes successfully.

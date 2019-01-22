@@ -1,6 +1,6 @@
-# Passport
+# Passport-Next/Passport
 
-Passport is [Express](http://expressjs.com/)-compatible authentication
+Passport-Next/Passport is [Express](http://expressjs.com/)-compatible authentication
 middleware for [Node.js](http://nodejs.org/).
 
 Passport's sole purpose is to authenticate requests, which it does through an
@@ -16,7 +16,31 @@ Status:
 [![Coverage Status](https://coveralls.io/repos/github/passport-next/passport/badge.svg?branch=master)](https://coveralls.io/github/passport-next/passport?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/deaf381bf0cff6bf26a5/maintainability)](https://codeclimate.com/github/passport-next/passport/maintainability)
 [![Dependencies](https://david-dm.org/passport-next/passport.png)](https://david-dm.org/passport-next/passport)
-<!--[![SAST](https://gitlab.com/passport-next/passport-strategy/badges/master/build.svg)](https://gitlab.com/passport-next/passport-strategy/badges/master/build.svg)-->
+[![SAST](https://gitlab.com/passport-next/passport/badges/master/build.svg)](https://gitlab.com/passport-next/passport/badges/master/build.svg)
+
+
+## Differences between passport and passport-next
+
+[Passport Next](https://github.com/passport-next) was created as a fork of the Passport repositories
+when the upstream repositories became stale and stopped working due to changes at the various
+authentication providers (e.g. Facebook API deprecation, Tumblr using HTTPS etc.)
+
+Passport Next aims to:
+
+* Keep the modules up to date with the various authentication providers
+* Maintain up to date dependencies
+* Address any security issues promptly
+* Ensure compatibility with the current [supported versions](https://github.com/nodejs/Release) of Node
+* Maintain the repositories in an organisation so maintaining isn't the responsibility of one person
+* Follow [Semantic Versioning](https://semver.org/)
+* Keep an up to date CHANGELOG.md
+
+**Passport Next does not aim to be backwards compatible with the upstream repositories. 
+The changes required to keep up to date and functioning prohibit that so if you're migrating
+from the upstream modules please test your code thouroughly!**
+
+If you wish to join the team please raise an issue and one of the maintainers will assess your
+request.
 
 ## Install
 
