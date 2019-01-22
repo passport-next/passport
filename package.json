@@ -37,8 +37,8 @@
     "chai": "4.2.x",
     "chai-connect-middleware": "0.3.x",
     "eslint-config-airbnb-base": "13.1.x",
-    "eslint-plugin-import": "2.14.x",
-    "eslint": "5.8.x",
+    "eslint-plugin-import": "2.15.x",
+    "eslint": "5.12.x",
     "@passport-next/chai-passport-strategy": "1.x.x"
   },
   "engines": {
