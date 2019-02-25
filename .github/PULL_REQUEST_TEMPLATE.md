@@ -18,7 +18,7 @@ you can send the details to. Once the issue has been patched the details can be 
 <!-- Place an `x` in the boxes that apply.  If you are unsure, please ask and -->
 <!-- we will help. -->
 
-- [ ] I have read the [CONTRIBUTING](https://github.com/jaredhanson/passport/blob/master/CONTRIBUTING.md) guidelines.
+- [ ] I have read the [CONTRIBUTING](https://github.com/passport-next/passport/blob/master/CONTRIBUTING.md) guidelines.
 - [ ] I have added test cases which verify the correct operation of this feature or patch.
 - [ ] I have added documentation pertaining to this feature or patch.
 - [ ] The automated test suite (`$ make test`) executes successfully.
