@@ -32,24 +32,38 @@
     }
   ],
   "main": "./lib",
+  "browserslist": ["node >= 6.0.0"],
   "dependencies": {
     "@passport-next/passport-strategy": "1.x.x"
   },
   "devDependencies": {
+    "@mysticatea/eslint-plugin": "^10.0.3",
     "@passport-next/chai-passport-strategy": "1.x.x",
     "chai": "4.x.x",
     "chai-connect-middleware": "0.x.x",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "13.x.x",
+    "eslint-config-ash-nazg": "^4.0.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-compat": "^3.1.1",
+    "eslint-plugin-eslint-comments": "^3.1.1",
     "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsdoc": "^4.8.3",
+    "eslint-plugin-markdown": "^1.0.0",
+    "eslint-plugin-no-use-extend-native": "^0.4.0",
+    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-unicorn": "^8.0.2",
     "make-node": "^0.4.6",
-    "mocha": "6.x.x"
+    "mocha": "6.x.x",
+    "typescript": "^3.4.5"
   },
   "engines": {
     "node": ">=8.0.0"
   },
   "scripts": {
-    "spec": "node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js",
+    "spec": "mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js",
     "lint": "eslint --ext .js . --max-warnings 0",
     "lintfix": "eslint --ext .js . --fix",
     "test": "npm run lint && npm run spec"

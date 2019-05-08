@@ -1,6 +1,6 @@
 ## Contributing
 
-Pull Requests are welcome for any issues, if you have any questions please 
+Pull Requests are welcome for any issues, if you have any questions please
 [raise an issue](https://github.com/passport-next/passport/issues).
 
 If you discover a security issue please create an issue stating you've discovered a security

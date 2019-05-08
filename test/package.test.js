@@ -1,3 +1,5 @@
+'use strict';
+
 const passport = require('..');
 
 describe('passport', () => {

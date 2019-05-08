@@ -1,4 +1,5 @@
 /* eslint-disable no-shadow */
+'use strict';
 
 const chai = require('chai');
 const SessionStrategy = require('../../lib/strategies/session');
@@ -41,9 +42,9 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session', () => {
-    const strategy = new SessionStrategy(((user, req, done) => {
+    const strategy = new SessionStrategy((user, req, done) => {
       done(null, { id: user });
-    }));
+    });
 
     let request;
     let pass = false;
@@ -76,17 +77,15 @@ describe('SessionStrategy', () => {
     });
 
     it('should maintain session', () => {
-      // eslint-disable-next-line no-underscore-dangle
       expect(request._passport.session).to.be.an('object');
-      // eslint-disable-next-line no-underscore-dangle
       expect(request._passport.session.user).to.equal('123456');
     });
   });
 
   describe('handling a request with a login session serialized to 0', () => {
-    const strategy = new SessionStrategy(((user, req, done) => {
+    const strategy = new SessionStrategy((user, req, done) => {
       done(null, { id: user });
-    }));
+    });
 
     let request;
     let pass = false;
@@ -125,9 +124,9 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session that has been invalidated', () => {
-    const strategy = new SessionStrategy(((user, req, done) => {
+    const strategy = new SessionStrategy((user, req, done) => {
       done(null, false);
-    }));
+    });
 
     let request;
     let pass = false;
@@ -167,9 +166,9 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session and setting custom user property', () => {
-    const strategy = new SessionStrategy(((user, req, done) => {
+    const strategy = new SessionStrategy((user, req, done) => {
       done(null, { id: user });
-    }));
+    });
 
     let request;
     let pass = false;
@@ -183,7 +182,6 @@ describe('SessionStrategy', () => {
         .req((req) => {
           request = req;
 
-          // eslint-disable-next-line no-underscore-dangle
           req._passport = {};
           req._passport.instance = {};
           req._passport.instance._userProperty = 'currentUser';
@@ -210,9 +208,9 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session that encounters an error when deserializing', () => {
-    const strategy = new SessionStrategy(((user, req, done) => {
+    const strategy = new SessionStrategy((user, req, done) => {
       done(new Error('something went wrong'));
-    }));
+    });
 
     let request;
     let error;

@@ -1,3 +1,5 @@
+'use strict';
+
 const chai = require('chai');
 const { Passport } = require('../..');
 const authenticate = require('../../lib/middleware/authenticate');

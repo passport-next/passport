@@ -1,5 +1,7 @@
 /* eslint-disable no-shadow */
 
+'use strict';
+
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
 const { Passport } = require('../..');

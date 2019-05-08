@@ -1,3 +1,5 @@
+'use strict';
+
 const Authenticator = require('../lib/authenticator');
 
 

@@ -62,7 +62,7 @@ application must be configured.
 
 ```javascript
 passport.use(new LocalStrategy(
-  function(username, password, done) {
+  function (username, password, done) {
     User.findOne({ username }, function (err, user) {
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
@@ -88,11 +88,11 @@ as simple as serializing the user ID, and finding the user by ID when
 deserializing.
 
 ```javascript
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
+passport.deserializeUser(function (id, done) {
   User.findById(id, function (err, user) {
     done(err, user);
   });
@@ -109,7 +109,7 @@ middleware must also be used.
 
 ```javascript
 const app = express();
-app.use(require('serve-static')(__dirname + '/../../public'));
+app.use(require('serve-static')(path.join(__dirname, '/../../public')));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
@@ -125,7 +125,7 @@ middleware to authenticate requests.
 ```javascript
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
-  function(req, res) {
+  function (req, res) {
     res.redirect('/');
   });
 ```
@@ -138,12 +138,12 @@ session.
 
 ```javascript
 app.post('/some/protected/route',
-  function(req, res, next) {
-    if(req.isAuthenticated()){
+  function (req, res, next) {
+    if (req.isAuthenticated()) {
       next();
-    } else {
-      next(new Error('Unauthorized'));
+      return;
     }
+    next(new Error('Unauthorized'));
   });
 ```
 

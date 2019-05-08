@@ -1,8 +1,10 @@
+'use strict';
+
 const http = require('http');
 const { Passport } = require('../..');
 const initialize = require('../../lib/middleware/initialize');
 
-function setup() {
+function setupPassport() {
   const passport = new Passport();
   const req = new http.IncomingMessage();
   const middleware = initialize(passport);
@@ -12,7 +14,7 @@ function setup() {
 
 describe('http.ServerRequest', () => {
   describe('prototoype', () => {
-    const { req } = setup();
+    const { req } = setupPassport();
     it('should be extended with login', () => {
       expect(req.login).to.be.an('function');
       expect(req.login).to.equal(req.logIn);
@@ -34,7 +36,7 @@ describe('http.ServerRequest', () => {
 
   describe('#login', () => {
     describe('not establishing a session', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
       req._passport.session = {};
       let error;
 
@@ -72,7 +74,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('not establishing a session and setting custom user property', () => {
-      const { req, passport } = setup();
+      const { req, passport } = setupPassport();
       req._passport.session = {};
       passport._userProperty = 'currentUser';
       let error;
@@ -116,7 +118,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('not establishing a session and invoked without a callback', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
       req._passport.session = {};
 
       const user = { id: '1', username: 'root' };
@@ -142,7 +144,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('not establishing a session, without passport.initialize() middleware', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
       let error;
 
       before((done) => {
@@ -174,7 +176,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('establishing a session', () => {
-      const { req, passport } = setup();
+      const { req, passport } = setupPassport();
       passport.serializeUser((user, done) => {
         done(null, user.id);
       });
@@ -213,7 +215,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('establishing a session and setting custom user property', () => {
-      const { req, passport } = setup();
+      const { req, passport } = setupPassport();
       passport.serializeUser((user, done) => {
         done(null, user.id);
       });
@@ -259,7 +261,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('encountering an error when serializing to session', () => {
-      const { req, passport } = setup();
+      const { req, passport } = setupPassport();
       req._passport.session = {};
       passport.serializeUser((user, done) => {
         done(new Error('something went wrong'));
@@ -300,7 +302,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('establishing a session, but not passing a callback argument', () => {
-      const { req, passport } = setup();
+      const { req, passport } = setupPassport();
       passport.serializeUser((user, done) => {
         done(null, user.id);
       });
@@ -318,7 +320,7 @@ describe('http.ServerRequest', () => {
 
   describe('#logout', () => {
     describe('existing session', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
       req.user = { id: '1', username: 'root' };
       req._passport.session = {};
       req._passport.session.user = '1';
@@ -344,7 +346,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('existing session and clearing custom user property', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
       req.currentUser = { id: '1', username: 'root' };
       req._passport.instance._userProperty = 'currentUser';
       req._passport.session = {};
@@ -371,7 +373,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('existing session, without passport.initialize() middleware', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
       req.user = { id: '1', username: 'root' };
 
       req.logout();
@@ -393,7 +395,7 @@ describe('http.ServerRequest', () => {
 
   describe('#isAuthenticated', () => {
     describe('with a user', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
       req.user = { id: '1', username: 'root' };
 
       it('should be authenticated', () => {
@@ -405,7 +407,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('with a user set on custom property', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
       req.currentUser = { id: '1', username: 'root' };
       req._passport.instance._userProperty = 'currentUser';
 
@@ -418,7 +420,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('without a user', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
 
       it('should not be authenticated', () => {
         // eslint-disable-next-line no-unused-expressions
@@ -429,7 +431,7 @@ describe('http.ServerRequest', () => {
     });
 
     describe('with a null user', () => {
-      const { req } = setup();
+      const { req } = setupPassport();
       req.user = null;
 
       it('should not be authenticated', () => {

@@ -1,4 +1,5 @@
 /* eslint-disable no-shadow */
+'use strict';
 
 const Authenticator = require('../lib/authenticator');
 
