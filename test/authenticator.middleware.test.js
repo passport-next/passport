@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-
 'use strict';
 
 const chai = require('chai');
@@ -128,9 +126,8 @@ describe('Authenticator', () => {
           .req((req) => {
             request = req;
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
           })
           .next((err) => {
@@ -184,9 +181,8 @@ describe('Authenticator', () => {
           .req((req) => {
             request = req;
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
           })
           .next((err) => {
@@ -227,8 +223,8 @@ describe('Authenticator', () => {
 
     describe('handling a request', () => {
       const passport = new Authenticator();
-      passport.deserializeUser((user, done) => {
-        done(null, { id: user });
+      passport.deserializeUser((req, user) => {
+        return { id: user };
       });
 
       let request;

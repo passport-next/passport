@@ -8,6 +8,14 @@ module.exports = {
       // Override ash-nazg's current preference for ESM
       'plugin:node/recommended-script'
     ],
+    settings: {
+      polyfills: [
+        // Needing these for some reason to avoid an error
+        "Promise",
+        "Promise.reject",
+        "Promise.resolve"
+      ]
+    },
     overrides: [
       {
         files: ['test/**'],
@@ -60,9 +68,8 @@ module.exports = {
       'no-underscore-dangle': 0,
       'no-param-reassign': 0,
 
-      // Disable until implementing promises and Node version supporting
+      // Disable as middleware approach requires some callbacks
       'promise/prefer-await-to-callbacks': 0,
-      'promise/prefer-await-to-then': 0,
 
       // Disable until ready to tackle
       'require-jsdoc': 0,

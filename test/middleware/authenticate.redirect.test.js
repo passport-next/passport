@@ -72,9 +72,8 @@ describe('middleware/authenticate', () => {
             done();
           };
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {

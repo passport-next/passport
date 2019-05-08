@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 'use strict';
 
 const chai = require('chai');
@@ -26,9 +25,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {
@@ -74,9 +72,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {
@@ -130,11 +127,12 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          // eslint-disable-next-line consistent-return
-          req.logIn = function logIn(user, options, done) {
-            if (options.scope !== 'email') { return done(new Error('invalid options')); }
+          req.logIn = function logIn(user, options) {
+            if (options.scope !== 'email') {
+              return Promise.reject(new Error('invalid options'));
+            }
             this.user = user;
-            done();
+            return Promise.resolve();
           };
         })
         .next((err) => {
@@ -181,9 +179,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -230,9 +227,8 @@ describe('middleware/authenticate', () => {
           request = req;
           req.session = { returnTo: 'http://www.example.com/return' };
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -283,9 +279,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -331,8 +326,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
-            done(new Error('something went wrong'));
+          req.logIn = function logIn() {
+            return Promise.reject(new Error('something went wrong'));
           };
         })
         .next((err) => {
