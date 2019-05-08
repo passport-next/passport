@@ -1,21 +1,18 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+/* eslint-disable no-shadow */
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('success with info', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { clientId: '123', scope: 'read' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { clientId: '123', scope: 'read' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -60,12 +57,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with info that is transformed', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { clientId: '123', scope: 'read' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { clientId: '123', scope: 'read' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -114,12 +111,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with info, but transform that encounters an error', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { clientId: '123', scope: 'read' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { clientId: '123', scope: 'read' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -165,12 +162,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with info, but option that disables info', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { clientId: '123', scope: 'read' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { clientId: '123', scope: 'read' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());

@@ -1,6 +1,4 @@
-/* global describe, it, expect */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+/* eslint-disable no-shadow */
 
 const Authenticator = require('../lib/authenticator');
 

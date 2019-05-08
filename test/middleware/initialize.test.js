@@ -1,10 +1,5 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
-
 const chai = require('chai');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 const initialize = require('../../lib/middleware/initialize');
 
 describe('middleware/initialize', () => {

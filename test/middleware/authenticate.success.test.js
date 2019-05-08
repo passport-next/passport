@@ -1,22 +1,18 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
-
+/* eslint-disable no-shadow */
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('success', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user);
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -59,12 +55,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success that assigns a specific property', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user);
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -112,15 +108,15 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with strategy-specific options', () => {
-    function Strategy() {
-    }
-    Strategy.prototype.authenticate = function authenticate(req, options) {
-      const user = { id: '1', username: 'jaredhanson' };
-      if (options.scope === 'email') {
-        user.email = 'jaredhanson@example.com';
+    class Strategy {
+      authenticate(req, options) {
+        const user = { id: '1', username: 'jaredhanson' };
+        if (options.scope === 'email') {
+          user.email = 'jaredhanson@example.com';
+        }
+        this.success(user);
       }
-      this.success(user);
-    };
+    }
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -166,12 +162,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with redirect', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user);
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -214,12 +210,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with return to previous location', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user);
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -268,12 +264,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with return to default location', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user);
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -316,12 +312,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success, but login that encounters an error', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user);
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());

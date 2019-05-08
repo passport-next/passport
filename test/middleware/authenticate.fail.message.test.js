@@ -1,20 +1,15 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
-
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('fail with message set by route', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail({ message: 'Invalid password' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail({ message: 'Invalid password' });
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -55,11 +50,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with message set by route that is added to messages', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail({ message: 'Invalid password' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail({ message: 'Invalid password' });
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -102,11 +97,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with message set by strategy', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail({ message: 'Invalid password' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail({ message: 'Invalid password' });
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -147,11 +142,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with message set by strategy with extra info', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail({ message: 'Invalid password', scope: 'read' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail({ message: 'Invalid password', scope: 'read' });
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());

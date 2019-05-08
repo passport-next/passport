@@ -1,20 +1,14 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
-
-
 const chai = require('chai');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 const authenticate = require('../../lib/middleware/authenticate');
 
 describe('middleware/authenticate', () => {
   describe('error with callback', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.error(new Error('something is wrong'));
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.error(new Error('something is wrong'));
-    };
 
     const passport = new Passport();
     passport.use('error', new Strategy());
@@ -52,11 +46,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('error with callback and options passed to middleware', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.error(new Error('something is wrong'));
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.error(new Error('something is wrong'));
-    };
 
     const passport = new Passport();
     passport.use('error', new Strategy());

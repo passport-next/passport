@@ -1,8 +1,3 @@
-/* global describe, it, expect, before */
-/* jshint expr: true, sub: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
-
 const Authenticator = require('../lib/authenticator');
 
 
@@ -19,10 +14,14 @@ describe('Authenticator', () => {
 
   describe('#use', () => {
     describe('with instance name', () => {
-      function Strategy() {
-        this.name = 'default';
+      class Strategy {
+        constructor() {
+          this.name = 'default';
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        authenticate() {}
       }
-      Strategy.prototype.authenticate = function authenticate() {};
 
       const authenticator = new Authenticator();
       authenticator.use(new Strategy());
@@ -33,9 +32,10 @@ describe('Authenticator', () => {
     });
 
     describe('with registered name', () => {
-      function Strategy() {
+      class Strategy {
+        // eslint-disable-next-line class-methods-use-this
+        authenticate() {}
       }
-      Strategy.prototype.authenticate = function authenticate() {};
 
       const authenticator = new Authenticator();
       authenticator.use('foo', new Strategy());
@@ -46,10 +46,14 @@ describe('Authenticator', () => {
     });
 
     describe('with registered name overridding instance name', () => {
-      function Strategy() {
-        this.name = 'default';
+      class Strategy {
+        constructor() {
+          this.name = 'default';
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        authenticate() {}
       }
-      Strategy.prototype.authenticate = function authenticate() {};
 
       const authenticator = new Authenticator();
       authenticator.use('bar', new Strategy());
@@ -62,9 +66,10 @@ describe('Authenticator', () => {
     });
 
     it('should throw if lacking a name', () => {
-      function Strategy() {
+      class Strategy {
+        // eslint-disable-next-line class-methods-use-this
+        authenticate() {}
       }
-      Strategy.prototype.authenticate = function authenticate() {};
 
       expect(() => {
         const authenticator = new Authenticator();
@@ -75,9 +80,10 @@ describe('Authenticator', () => {
 
 
   describe('#unuse', () => {
-    function Strategy() {
+    class Strategy {
+      // eslint-disable-next-line class-methods-use-this
+      authenticate() {}
     }
-    Strategy.prototype.authenticate = function authenticate() {};
 
     const authenticator = new Authenticator();
     authenticator.use('one', new Strategy());

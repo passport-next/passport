@@ -5,8 +5,8 @@ docs/
 examples/
 reports/
 test/
+var/
 
 .github/
-.jshintrc
 .travis.yml
 .gitlab-ci.yml

@@ -1,22 +1,19 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+/* eslint-disable no-shadow */
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('using strategy that specifies message', () => {
     describe('success with flash message', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -66,12 +63,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message using type set by route', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -121,12 +118,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route as string', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -176,12 +173,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -231,12 +228,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options with type', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -289,12 +286,12 @@ describe('middleware/authenticate', () => {
 
   describe('using strategy that specifies message and type', () => {
     describe('success with flash message', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -344,12 +341,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message using type set by route', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -399,12 +396,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route as string', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -454,12 +451,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -509,12 +506,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options with type', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -567,12 +564,12 @@ describe('middleware/authenticate', () => {
 
   describe('using strategy that specifies message as string', () => {
     describe('success with flash message', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -622,12 +619,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message using type set by route', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -677,12 +674,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route as string', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -732,12 +729,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -787,12 +784,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options with type', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -845,12 +842,12 @@ describe('middleware/authenticate', () => {
 
   describe('using strategy that does not specify message', () => {
     describe('success with flash message left up to strategy', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -900,12 +897,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message left up to strategy using type set by route', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -955,12 +952,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message specified by route as string', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -1010,12 +1007,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message specified by route using options', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -1065,12 +1062,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message specified by route using options with type', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());

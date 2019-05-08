@@ -1,7 +1,4 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+/* eslint-disable no-shadow */
 
 const chai = require('chai');
 const SessionStrategy = require('../../lib/strategies/session');

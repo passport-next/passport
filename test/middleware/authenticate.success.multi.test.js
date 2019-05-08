@@ -1,26 +1,23 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+/* eslint-disable no-shadow */
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('with multiple strategies, the first of which succeeds', () => {
-    function StrategyA() {
+    class StrategyA {
+      authenticate() {
+        this.success({ username: 'bob-a' });
+      }
     }
-    StrategyA.prototype.authenticate = function authenticate() {
-      this.success({ username: 'bob-a' });
-    };
 
-    function StrategyB() {
+    class StrategyB {
+      authenticate() {
+        this.success({ username: 'bob-b' });
+      }
     }
-    StrategyB.prototype.authenticate = function authenticate() {
-      this.success({ username: 'bob-b' });
-    };
 
     const passport = new Passport();
     passport.use('a', new StrategyA());
@@ -58,17 +55,17 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with multiple strategies, the second of which succeeds', () => {
-    function StrategyA() {
+    class StrategyA {
+      authenticate() {
+        this.fail('A challenge');
+      }
     }
-    StrategyA.prototype.authenticate = function authenticate() {
-      this.fail('A challenge');
-    };
 
-    function StrategyB() {
+    class StrategyB {
+      authenticate() {
+        this.success({ username: 'bob-b' });
+      }
     }
-    StrategyB.prototype.authenticate = function authenticate() {
-      this.success({ username: 'bob-b' });
-    };
 
     const passport = new Passport();
     passport.use('a', new StrategyA());

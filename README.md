@@ -35,7 +35,7 @@ Passport Next aims to:
 * Follow [Semantic Versioning](https://semver.org/)
 * Keep an up to date CHANGELOG.md
 
-**Passport Next does not aim to be backwards compatible with the upstream repositories. 
+**Passport Next does not aim to be backwards compatible with the upstream repositories.
 The changes required to keep up to date and functioning prohibit that so if you're migrating
 from the upstream modules please test your code thouroughly!**
 
@@ -63,7 +63,7 @@ application must be configured.
 ```javascript
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
+    User.findOne({ username }, function (err, user) {
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
       if (!user.verifyPassword(password)) { return done(null, false); }
@@ -108,7 +108,7 @@ persistent login sessions (recommended, but not required), `passport.session()`
 middleware must also be used.
 
 ```javascript
-var app = express();
+const app = express();
 app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
@@ -123,7 +123,7 @@ Passport provides an `authenticate()` function, which is used as route
 middleware to authenticate requests.
 
 ```javascript
-app.post('/login', 
+app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
@@ -132,12 +132,12 @@ app.post('/login',
 
 #### Protect Routes When Using Sessions
 
-Passport provides an `isAuthenticated()` function on the request object, which 
-is used to determine if the user has been authenticated and stored in the 
+Passport provides an `isAuthenticated()` function on the request object, which
+is used to determine if the user has been authenticated and stored in the
 session.
 
 ```javascript
-app.post('/some/protected/route', 
+app.post('/some/protected/route',
   function(req, res, next) {
     if(req.isAuthenticated()){
       next();
@@ -147,7 +147,7 @@ app.post('/some/protected/route',
   });
 ```
 
-For a more complete solution to handling unauthenticated users, see 
+For a more complete solution to handling unauthenticated users, see
 [connect-ensure-login](https://github.com/jaredhanson/connect-ensure-login), a
 middleware to ensure login sessions.
 

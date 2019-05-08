@@ -13,6 +13,9 @@
     "name": "Rowan Wookey",
     "email": "admin@rwky.net"
   },
+  "contributors": [
+    "Brett Zamir"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/passport-next/passport.git"
@@ -20,6 +23,7 @@
   "bugs": {
     "url": "http://github.com/passport-next/passport/issues"
   },
+  "homepage": "https://github.com/passport-next/passport",
   "license": "MIT",
   "licenses": [
     {
