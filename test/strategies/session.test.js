@@ -42,8 +42,8 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(null, { id: user });
+    const strategy = new SessionStrategy((user) => {
+      return { id: user };
     });
 
     let request;
@@ -83,8 +83,8 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session serialized to 0', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(null, { id: user });
+    const strategy = new SessionStrategy((user) => {
+      return { id: user };
     });
 
     let request;
@@ -124,8 +124,8 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session that has been invalidated', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(null, false);
+    const strategy = new SessionStrategy((/* user, req */) => {
+      return false;
     });
 
     let request;
@@ -166,8 +166,8 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session and setting custom user property', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(null, { id: user });
+    const strategy = new SessionStrategy((user) => {
+      return { id: user };
     });
 
     let request;
@@ -208,8 +208,8 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session that encounters an error when deserializing', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(new Error('something went wrong'));
+    const strategy = new SessionStrategy(() => {
+      throw new Error('something went wrong');
     });
 
     let request;

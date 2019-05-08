@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 'use strict';
 
 const chai = require('chai');
@@ -22,9 +21,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {

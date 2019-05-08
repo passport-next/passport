@@ -51,13 +51,14 @@ describe('http.ServerRequest', () => {
       req._passport.session = {};
       let error;
 
-      before((done) => {
+      before(async () => {
         const user = { id: '1', username: 'root' };
 
-        req.login(user, { session: false }, (err) => {
+        try {
+          await req.login(user, { session: false });
+        } catch (err) {
           error = err;
-          done();
-        });
+        }
       });
 
       it('should not error', () => {
@@ -90,13 +91,14 @@ describe('http.ServerRequest', () => {
       passport._userProperty = 'currentUser';
       let error;
 
-      before((done) => {
+      before(async () => {
         const user = { id: '1', username: 'root' };
 
-        req.login(user, { session: false }, (err) => {
+        try {
+          await req.login(user, { session: false });
+        } catch (err) {
           error = err;
-          done();
-        });
+        }
       });
 
       it('should not error', () => {
@@ -128,12 +130,12 @@ describe('http.ServerRequest', () => {
       });
     });
 
-    describe('not establishing a session and invoked without a callback', () => {
+    describe('not establishing a session and invoked without a callback', async () => {
       const { req } = setupPassport();
       req._passport.session = {};
 
       const user = { id: '1', username: 'root' };
-      req.login(user, { session: false });
+      await req.login(user, { session: false });
 
       it('should be authenticated', () => {
         // eslint-disable-next-line no-unused-expressions
@@ -158,13 +160,14 @@ describe('http.ServerRequest', () => {
       const { req } = setupPassport();
       let error;
 
-      before((done) => {
+      before(async () => {
         const user = { id: '1', username: 'root' };
 
-        req.login(user, { session: false }, (err) => {
+        try {
+          await req.login(user, { session: false });
+        } catch (err) {
           error = err;
-          done();
-        });
+        }
       });
 
       it('should not error', () => {
@@ -188,18 +191,19 @@ describe('http.ServerRequest', () => {
 
     describe('establishing a session', () => {
       const { req, passport } = setupPassport();
-      passport.serializeUser((user, done) => {
+      passport.serializeUser((rq, user, done) => {
         done(null, user.id);
       });
       let error;
 
-      before((done) => {
+      before(async () => {
         const user = { id: '1', username: 'root' };
 
-        req.login(user, (err) => {
+        try {
+          await req.login(user);
+        } catch (err) {
           error = err;
-          done();
-        });
+        }
       });
 
       it('should not error', () => {
@@ -227,20 +231,21 @@ describe('http.ServerRequest', () => {
 
     describe('establishing a session and setting custom user property', () => {
       const { req, passport } = setupPassport();
-      passport.serializeUser((user, done) => {
+      passport.serializeUser((rq, user, done) => {
         done(null, user.id);
       });
       passport._userProperty = 'currentUser';
 
       let error;
 
-      before((done) => {
+      before(async () => {
         const user = { id: '1', username: 'root' };
 
-        req.login(user, (err) => {
+        try {
+          await req.login(user);
+        } catch (err) {
           error = err;
-          done();
-        });
+        }
       });
 
       it('should not error', () => {
@@ -274,19 +279,20 @@ describe('http.ServerRequest', () => {
     describe('encountering an error when serializing to session', () => {
       const { req, passport } = setupPassport();
       req._passport.session = {};
-      passport.serializeUser((user, done) => {
+      passport.serializeUser((rq, user, done) => {
         done(new Error('something went wrong'));
       });
 
       let error;
 
-      before((done) => {
+      before(async () => {
         const user = { id: '1', username: 'root' };
 
-        req.login(user, (err) => {
+        try {
+          await req.login(user);
+        } catch (err) {
           error = err;
-          done();
-        });
+        }
       });
 
       it('should error', () => {
@@ -314,16 +320,16 @@ describe('http.ServerRequest', () => {
 
     describe('establishing a session, but not passing a callback argument', () => {
       const { req, passport } = setupPassport();
-      passport.serializeUser((user, done) => {
-        done(null, user.id);
+      passport.serializeUser(() => {
+        return Promise.resolve(user.id);
       });
 
       const user = { id: '1', username: 'root' };
 
-      it('should throw an exception', () => {
-        expect(() => {
-          req.login(user);
-        }).to.throw(Error, 'req#login requires a callback function');
+      it('should not throw an exception', () => {
+        expect(async () => {
+          await req.login(user);
+        }).to.not.throw(Error, 'req#login no longer requires a callback function');
       });
     });
   });

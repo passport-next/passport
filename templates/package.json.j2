@@ -35,9 +35,12 @@
         "eslint-plugin-sonarjs": "^0.4.0",
         "eslint-plugin-standard": "^4.0.1",
         "eslint-plugin-unicorn": "^10.0.0",
+        "jsdoc": "^3.6.2",
         "mocha": "6.x.x",
+        "node-static": "^0.7.11",
         "nunjucks": "^3.2.0",
         "nyc": "^14.1.1",
+        "open-cli": "^5.0.0"
         "typescript": "^3.6.2"
     },
     "engines": {
@@ -57,11 +60,15 @@
         "url": "{{github}}"
     },
     "scripts": {
+        "start": "static -p 8003",
+        "build-docs": "rm -rf docs/jsdoc/*;jsdoc --pedantic -c docs/jsdoc-config.js lib",
+        "open-docs": "open-cli http://localhost:8003/docs/jsdoc/ && npm start",
         "templates": "node ./templates/gen.js",
         "init-new-project": "node ./templates/gen --init",
         "lint": "eslint --max-warnings 0 --ext js,md .",
         "lintfix": "eslint --ext js,md . --fix",
         "testonly": "mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js",
+        "test-one": "mocha --reporter spec --require test/bootstrap/node",
         "test": "nyc --report-dir=var/coverage --reporter=lcov --reporter=text npm run testonly",
         "coveralls": "nyc report --report-dir=var/coverage --reporter=text-lcov | coveralls"
     }

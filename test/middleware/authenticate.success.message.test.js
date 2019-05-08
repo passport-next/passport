@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 'use strict';
 
 const chai = require('chai');
@@ -30,9 +29,8 @@ describe('middleware/authenticate', () => {
           request = req;
           req.session = {};
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -83,9 +81,8 @@ describe('middleware/authenticate', () => {
           req.session = {};
           req.session.messages = ['I exist!'];
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -136,9 +133,8 @@ describe('middleware/authenticate', () => {
           request = req;
           req.session = {};
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -188,9 +184,8 @@ describe('middleware/authenticate', () => {
           request = req;
           req.session = {};
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
