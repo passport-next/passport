@@ -32,7 +32,7 @@
     }
   ],
   "main": "./lib",
-  "browserslist": ["node >= 6.0.0"],
+  "browserslist": ["node >= 8.0.0"],
   "dependencies": {
     "@passport-next/passport-strategy": "1.x.x"
   },
