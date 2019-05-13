@@ -64,8 +64,8 @@
   },
   "scripts": {
     "spec": "mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js",
-    "lint": "eslint --ext .js . --max-warnings 0",
-    "lintfix": "eslint --ext .js . --fix",
+    "lint": "eslint --ext js,md . --max-warnings 0",
+    "lintfix": "eslint --ext js,md . --fix",
     "test": "npm run lint && npm run spec"
   }
 }
