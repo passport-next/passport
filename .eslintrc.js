@@ -8,13 +8,6 @@ module.exports = {
       // Override ash-nazg's current preference for ESM
       'plugin:node/recommended-script'
     ],
-    settings: {
-      jsdoc: {
-        // For `jsdoc/check-examples` in `ash-nazg`
-        matchingFileName: 'dummy.md',
-        rejectExampleCodeRegex: '^`',
-      }
-    },
     overrides: [
       {
         files: ['test/**'],
@@ -26,6 +19,7 @@ module.exports = {
           expect: 'readonly'
         },
         rules: {
+          'jsdoc/require-jsdoc': 'off'
           // 'jest/no-disabled-tests': [2],
           // 'jest/no-focused-tests': [2],
           // 'jest/no-identical-title': [2],

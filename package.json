@@ -26,7 +26,9 @@
   "homepage": "https://github.com/passport-next/passport",
   "license": "MIT",
   "main": "./lib",
-  "browserslist": ["node >= 8.0.0"],
+  "browserslist": [
+    "node >= 8.0.0"
+  ],
   "dependencies": {
     "@passport-next/passport-strategy": "1.x.x"
   },
@@ -37,15 +39,15 @@
     "chai-connect-middleware": "0.x.x",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "13.x.x",
-    "eslint-config-ash-nazg": "^4.0.0",
+    "eslint-config-ash-nazg": "^6.0.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-compat": "^3.1.1",
     "eslint-plugin-eslint-comments": "^3.1.1",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-jsdoc": "^4.8.3",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jsdoc": "^7.0.2",
     "eslint-plugin-markdown": "^1.0.0",
     "eslint-plugin-no-use-extend-native": "^0.4.0",
-    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-unicorn": "^8.0.2",
