@@ -25,12 +25,6 @@
   },
   "homepage": "https://github.com/passport-next/passport",
   "license": "MIT",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://opensource.org/licenses/MIT"
-    }
-  ],
   "main": "./lib",
   "browserslist": ["node >= 8.0.0"],
   "dependencies": {
