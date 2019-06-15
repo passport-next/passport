@@ -4,7 +4,7 @@ module.exports = {
       browser: false
     },
     extends: [
-      'ash-nazg/sauron-node',
+      '@passport-next/eslint-config-passport-next/sauron-node.js',
       // Override ash-nazg's current preference for ESM
       'plugin:node/recommended-script'
     ],
@@ -57,7 +57,7 @@ module.exports = {
       // 'jest'
     ],
     rules: {
-      'comma-dangle': 0,
+      'comma-dangle': 2,
       'no-underscore-dangle': 0,
       'no-param-reassign': 0,
 

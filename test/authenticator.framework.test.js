@@ -16,7 +16,7 @@ describe('Authenticator', () => {
           return function authenticate() {
             return `authenticate(): ${name} ${options.assignProperty}`;
           };
-        },
+        }
       });
 
       const rv = passport.authorize('foo')();
@@ -40,7 +40,7 @@ describe('Authenticator', () => {
           return function authorize() {
             return `authorize(): ${name} ${options.assignProperty}`;
           };
-        },
+        }
       });
 
       const rv = passport.authorize('foo')();

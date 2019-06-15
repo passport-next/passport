@@ -24,7 +24,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', {
         successMessage: 'Login complete',
-        successRedirect: 'http://www.example.com/account',
+        successRedirect: 'http://www.example.com/account'
       }))
         .req((req) => {
           request = req;
@@ -76,7 +76,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', {
         successMessage: 'Login complete',
-        successRedirect: 'http://www.example.com/account',
+        successRedirect: 'http://www.example.com/account'
       }))
         .req((req) => {
           request = req;
@@ -130,7 +130,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', {
         successMessage: true,
-        successRedirect: 'http://www.example.com/account',
+        successRedirect: 'http://www.example.com/account'
       }))
         .req((req) => {
           request = req;
@@ -182,7 +182,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', {
         successMessage: true,
-        successRedirect: 'http://www.example.com/account',
+        successRedirect: 'http://www.example.com/account'
       }))
         .req((req) => {
           request = req;

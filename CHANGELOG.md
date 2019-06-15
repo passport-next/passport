@@ -1,5 +1,13 @@
 This changelog follows Semantic Versioning https://semver.org/
 
+# 3.0.0 (UNRELEASED)
+
+### Major
+
+* Major lint changes, there are no functional changes but due to the massive
+  amount of code changes this is being marked as a major bump for caution sake
+  this will hopefully be the last of the changes like this for a while.
+
 # 2.1.1 (2019-04-30)
 
 ### Patch
@@ -27,7 +35,7 @@ This changelog follows Semantic Versioning https://semver.org/
 ### Major
 
 * Added eslint configuration, and fixed a pletora of lint errors @idurotola
-  * This change should have been a patch (to 1.0.2) but because of the size of the
+  This change should have been a patch (to 1.0.2) but because of the size of the
   number of lines changed it was made a major.
 
 # 1.0.1 (2018-08-11)

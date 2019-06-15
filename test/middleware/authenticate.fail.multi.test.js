@@ -148,7 +148,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, ['a', 'b'], {
         failureFlash: true,
-        failureRedirect: 'http://www.example.com/login',
+        failureRedirect: 'http://www.example.com/login'
       }))
         .req((req) => {
           request = req;

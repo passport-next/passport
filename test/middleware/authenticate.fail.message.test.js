@@ -22,7 +22,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'fail', {
         failureMessage: 'Wrong credentials',
-        failureRedirect: 'http://www.example.com/login',
+        failureRedirect: 'http://www.example.com/login'
       }))
         .req((req) => {
           request = req;
@@ -67,7 +67,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'fail', {
         failureMessage: 'Wrong credentials',
-        failureRedirect: 'http://www.example.com/login',
+        failureRedirect: 'http://www.example.com/login'
       }))
         .req((req) => {
           request = req;
@@ -114,7 +114,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'fail', {
         failureMessage: true,
-        failureRedirect: 'http://www.example.com/login',
+        failureRedirect: 'http://www.example.com/login'
       }))
         .req((req) => {
           request = req;
@@ -159,7 +159,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'fail', {
         failureMessage: true,
-        failureRedirect: 'http://www.example.com/login',
+        failureRedirect: 'http://www.example.com/login'
       }))
         .req((req) => {
           request = req;

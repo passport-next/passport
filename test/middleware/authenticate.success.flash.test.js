@@ -25,7 +25,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -80,7 +80,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'info' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -135,7 +135,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Login complete',
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -190,7 +190,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'OK' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -245,7 +245,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'notice', message: 'Last login was yesterday' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -303,7 +303,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -358,7 +358,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'ok' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -413,7 +413,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Success!',
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -468,7 +468,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'Okay' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -523,7 +523,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'warn', message: 'Last login from far away place' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -581,7 +581,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -636,7 +636,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'info' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -691,7 +691,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Login complete',
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -746,7 +746,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'OK' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -801,7 +801,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'notice', message: 'Last login was yesterday' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -859,7 +859,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -914,7 +914,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'info' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -969,7 +969,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Login complete',
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -1024,7 +1024,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'OK' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -1079,7 +1079,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'notice', message: 'Last login was yesterday' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;

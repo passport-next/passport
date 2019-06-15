@@ -59,7 +59,7 @@ describe('middleware/authenticate', () => {
     let request;
     let response;
     const authenticator = authenticate(passport, 'success', {
-      successRedirect: 'http://www.example.com/idp',
+      successRedirect: 'http://www.example.com/idp'
     });
 
     before((done) => {

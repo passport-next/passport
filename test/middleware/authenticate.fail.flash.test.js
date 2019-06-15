@@ -23,7 +23,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: true,
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -72,7 +72,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { type: 'info' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -121,7 +121,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: 'Wrong credentials',
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -170,7 +170,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { message: 'Try again' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -219,7 +219,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { type: 'notice', message: 'Try again' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -271,7 +271,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: true,
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -320,7 +320,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { type: 'info' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -369,7 +369,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: 'Wrong credentials',
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -418,7 +418,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { message: 'Try again' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -467,7 +467,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { type: 'info', message: 'Try again' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -519,7 +519,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: true,
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -568,7 +568,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { type: 'info' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -617,7 +617,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: 'Wrong credentials',
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -666,7 +666,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { message: 'Try again' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -715,7 +715,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { type: 'notice', message: 'Try again' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -767,7 +767,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: true,
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -816,7 +816,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { type: 'info' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -865,7 +865,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: 'Wrong credentials',
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -914,7 +914,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { message: 'Try again' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;
@@ -963,7 +963,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'fail', {
           failureFlash: { type: 'notice', message: 'Try again' },
-          failureRedirect: 'http://www.example.com/login',
+          failureRedirect: 'http://www.example.com/login'
         }))
           .req((req) => {
             request = req;

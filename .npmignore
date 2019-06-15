@@ -1,12 +1,10 @@
 CONTRIBUTING.md
 Makefile
-SPONSORS.md
-docs/
 examples/
 reports/
 test/
-var/
-
 .github/
 .travis.yml
 .gitlab-ci.yml
+.eslintrc.js
+.eslintignore
