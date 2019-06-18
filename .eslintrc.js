@@ -57,7 +57,6 @@ module.exports = {
       // 'jest'
     ],
     rules: {
-      'comma-dangle': 2,
       'no-underscore-dangle': 0,
       'no-param-reassign': 0,
 

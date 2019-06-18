@@ -49,12 +49,6 @@
         "authentication"
     ],
     "license": "MIT",
-    "licenses": [
-        {
-            "type": "MIT",
-            "url": "http://opensource.org/licenses/MIT"
-        }
-    ],
     "main": "./lib",
     "repository": {
         "type": "git",
@@ -63,10 +57,8 @@
     "scripts": {
         "templates": "node ./templates/gen.js",
         "init-new-project": "node ./templates/gen --init",
-        "lint": "./node_modules/.bin/eslint --report-unused-disable-directives --max-warnings 0 --ext js,md .",
-        "lintfix": "./node_modules/.bin/eslint --ext js,md . --fix",
-        "test": "./node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js",
-        "test-cov": "make test-cov",
-        "view-cov": "make view-cov"
+        "lint": "eslint --max-warnings 0 --ext js,md .",
+        "lintfix": "eslint --ext js,md . --fix",
+        "test": "mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js"
     }
 }
