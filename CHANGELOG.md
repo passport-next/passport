@@ -1,5 +1,9 @@
 This changelog follows Semantic Versioning https://semver.org/
 
+# 1.0.3 (2019-06-18)
+
+* Updated .github templates
+
 # 1.0.2 (2019-06-18)
 
 ### Patch
