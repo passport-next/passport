@@ -4,12 +4,11 @@ docs/
 .eslintignore
 .eslintrc.js
 examples/
-.github
 .github/
 .gitlab-ci.yml
 Makefile
 reports/
-temmplates
+templates
 test/
 .travis.yml
 var/
