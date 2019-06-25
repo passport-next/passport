@@ -1,20 +1,19 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
+/* eslint-disable no-shadow */
 
-/* eslint-disable camelcase, no-proto, no-shadow */
+'use strict';
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('redirect', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.redirect('http://www.example.com/idp');
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.redirect('http://www.example.com/idp');
-    };
 
     const passport = new Passport();
     passport.use('redirect', new Strategy());
@@ -47,12 +46,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('redirect with session', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'idurotola' };
+        this.success(user);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'idurotola' };
-      this.success(user);
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -60,7 +59,7 @@ describe('middleware/authenticate', () => {
     let request;
     let response;
     const authenticator = authenticate(passport, 'success', {
-      successRedirect: 'http://www.example.com/idp',
+      successRedirect: 'http://www.example.com/idp'
     });
 
     before((done) => {
@@ -97,11 +96,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('redirect with status', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.redirect('http://www.example.com/idp', 303);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.redirect('http://www.example.com/idp', 303);
-    };
 
     const passport = new Passport();
     passport.use('redirect', new Strategy());
@@ -134,11 +133,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('redirect using framework function', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.redirect('http://www.example.com/idp');
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.redirect('http://www.example.com/idp');
-    };
 
     const passport = new Passport();
     passport.use('redirect', new Strategy());
@@ -170,11 +169,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('redirect with status using framework function', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.redirect('http://www.example.com/idp', 303);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.redirect('http://www.example.com/idp', 303);
-    };
 
     const passport = new Passport();
     passport.use('redirect', new Strategy());

@@ -1,4 +1,4 @@
-** READ THIS FIRST! **
+# READ THIS FIRST!
 
 #### Is this a security patch?
 
@@ -19,7 +19,9 @@ you can send the details to. Once the issue has been patched the details can be 
 <!-- we will help. -->
 
 - [ ] I have read the [CONTRIBUTING](https://github.com/passport-next/passport/blob/master/CONTRIBUTING.md) guidelines.
+- [ ] I have updated the UNRELEASED section of the [CHANGELOG](https://github.com/passport-next/passport/blob/master/CHANGELOG.md).
+- [ ] I have added myself to the contributors section of package.json if I wish to be listed
 - [ ] I have added test cases which verify the correct operation of this feature or patch.
 - [ ] I have added documentation pertaining to this feature or patch.
-- [ ] The automated test suite (`$ make test`) executes successfully.
+- [ ] The automated test suite (`$ npm test`) executes successfully.
 - [ ] The automated code linting (`$ npm run-script lint`) executes successfully.

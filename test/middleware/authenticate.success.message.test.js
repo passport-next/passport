@@ -1,20 +1,19 @@
-/* global describe, it, expect, before */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+/* eslint-disable no-shadow */
+'use strict';
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('success with message set by route', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { message: 'Welcome!' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { message: 'Welcome!' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -25,7 +24,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', {
         successMessage: 'Login complete',
-        successRedirect: 'http://www.example.com/account',
+        successRedirect: 'http://www.example.com/account'
       }))
         .req((req) => {
           request = req;
@@ -61,12 +60,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with message set by route that is added to messages', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { message: 'Welcome!' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { message: 'Welcome!' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -77,7 +76,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', {
         successMessage: 'Login complete',
-        successRedirect: 'http://www.example.com/account',
+        successRedirect: 'http://www.example.com/account'
       }))
         .req((req) => {
           request = req;
@@ -115,12 +114,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with message set by strategy', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { message: 'Welcome!' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { message: 'Welcome!' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -131,7 +130,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', {
         successMessage: true,
-        successRedirect: 'http://www.example.com/account',
+        successRedirect: 'http://www.example.com/account'
       }))
         .req((req) => {
           request = req;
@@ -167,12 +166,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with message set by strategy with extra info', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { message: 'Welcome!', scope: 'read' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { message: 'Welcome!', scope: 'read' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -183,7 +182,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, 'success', {
         successMessage: true,
-        successRedirect: 'http://www.example.com/account',
+        successRedirect: 'http://www.example.com/account'
       }))
         .req((req) => {
           request = req;

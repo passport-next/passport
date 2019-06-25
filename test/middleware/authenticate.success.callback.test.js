@@ -1,21 +1,18 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+'use strict';
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('success with callback', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { message: 'Hello' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { message: 'Hello' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());
@@ -68,13 +65,12 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with callback and options passed to middleware', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user, { message: 'Hello' });
+      }
     }
-    // eslint-disable-next-line consistent-return
-    Strategy.prototype.authenticate = function authenticate() {
-      const user = { id: '1', username: 'jaredhanson' };
-      this.success(user, { message: 'Hello' });
-    };
 
     const passport = new Passport();
     passport.use('success', new Strategy());

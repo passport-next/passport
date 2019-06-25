@@ -13,7 +13,7 @@ view-docs:
 	open ./docs/index.html
 
 view-cov:
-	open ./reports/coverage/lcov-report/index.html
+	open ./var/cov/index.html
 
 clean: clean-docs clean-cov
 	-rm -r $(REPORTSDIR)

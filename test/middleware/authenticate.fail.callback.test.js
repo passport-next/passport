@@ -1,19 +1,16 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+'use strict';
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 describe('middleware/authenticate', () => {
   describe('fail with callback', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail();
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail();
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -52,11 +49,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with callback, passing info', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail({ message: 'Invalid password' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail({ message: 'Invalid password' });
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -109,11 +106,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with callback, passing info and status', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail({ message: 'Invalid password' }, 403);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail({ message: 'Invalid password' }, 403);
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -165,11 +162,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with callback, passing challenge', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail('Bearer challenge');
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail('Bearer challenge');
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -221,11 +218,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with callback, passing challenge and status', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail('Bearer challenge', 403);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail('Bearer challenge', 403);
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -276,11 +273,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with callback, passing status', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail(402);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail(402);
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -332,11 +329,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with callback and options passed to middleware', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail();
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail();
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());

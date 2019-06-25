@@ -1,20 +1,17 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+'use strict';
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('fail', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail();
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail();
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -48,11 +45,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with redirect', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail();
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail();
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -84,11 +81,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with challenge', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail('MOCK challenge');
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail('MOCK challenge');
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -128,11 +125,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with challenge and status', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail('MOCK challenge', 403);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail('MOCK challenge', 403);
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -166,11 +163,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with status', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail(400);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail(400);
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -204,11 +201,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with error', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail();
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail();
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -254,11 +251,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with error, passing info to fail', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail({ message: 'Invalid credentials' });
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail({ message: 'Invalid credentials' });
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -304,11 +301,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with error, passing info and status to fail', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail({ message: 'Multiple credentials' }, 400);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail({ message: 'Multiple credentials' }, 400);
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -354,11 +351,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with error, passing challenge to fail', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail('Bearer challenge');
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail('Bearer challenge');
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -410,11 +407,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with error, passing challenge and status to fail', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail('Bearer challenge', 403);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail('Bearer challenge', 403);
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());
@@ -460,11 +457,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('fail with error, passing status to fail', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.fail(402);
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.fail(402);
-    };
 
     const passport = new Passport();
     passport.use('fail', new Strategy());

@@ -1,53 +1,64 @@
 {
-  "name": "@passport-next/passport",
-  "version": "2.1.1",
-  "description": "Simple, unobtrusive authentication for Node.js.",
-  "keywords": [
-    "express",
-    "connect",
-    "auth",
-    "authn",
-    "authentication"
-  ],
-  "author": {
-    "name": "Rowan Wookey",
-    "email": "admin@rwky.net"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/passport-next/passport.git"
-  },
-  "bugs": {
-    "url": "http://github.com/passport-next/passport/issues"
-  },
-  "license": "MIT",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://opensource.org/licenses/MIT"
+    "name": "@passport-next/passport",
+    "version": "3.0.0",
+    "description": "Simple, unobtrusive authentication for Node.js.",
+    "author": {
+        "name": "Passport Next Developers",
+        "url": "https://github.com/orgs/passport-next/people"
+    },
+    "homepage": "https://github.com/passport-next/passport",
+    "contributors": [
+        "Brett Zamir"
+    ],
+    "bugs": {
+        "url": "https://github.com/passport-next/passport/issues"
+    },
+    "dependencies": {
+        "@passport-next/passport-strategy": "1.x.x"
+    },
+    "devDependencies": {
+        "@mysticatea/eslint-plugin": "^10.0.3",
+        "@passport-next/eslint-config-passport-next": "1.x.x",
+        "@passport-next/chai-passport-strategy": "1.x.x",
+        "chai": "4.x.x",
+        "chai-connect-middleware": "0.x.x",
+        "eslint": "^5.16.0",
+        "eslint-config-standard": "^12.0.0",
+        "eslint-plugin-compat": "^3.1.1",
+        "eslint-plugin-eslint-comments": "^3.1.1",
+        "eslint-plugin-import": "^2.17.3",
+        "eslint-plugin-jsdoc": "^8.0.0",
+        "eslint-plugin-markdown": "^1.0.0",
+        "eslint-plugin-no-use-extend-native": "^0.4.0",
+        "eslint-plugin-node": "^9.1.0",
+        "eslint-plugin-promise": "^4.1.1",
+        "eslint-plugin-standard": "^4.0.0",
+        "eslint-plugin-unicorn": "^9.1.0",
+        "make-node": "^0.4.6",
+        "mocha": "6.x.x",
+        "nunjucks": "^3.2.0"
+    },
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "keywords": [
+        "express",
+        "connect",
+        "auth",
+        "authn",
+        "authentication"
+    ],
+    "license": "MIT",
+    "main": "./lib",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/passport-next/passport"
+    },
+    "scripts": {
+        "templates": "node ./templates/gen.js",
+        "init-new-project": "node ./templates/gen --init",
+        "lint": "eslint --max-warnings 0 --ext js,md .",
+        "lintfix": "eslint --ext js,md . --fix",
+        "test": "mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js"
     }
-  ],
-  "main": "./lib",
-  "dependencies": {
-    "@passport-next/passport-strategy": "1.x.x"
-  },
-  "devDependencies": {
-    "@passport-next/chai-passport-strategy": "1.x.x",
-    "chai": "4.x.x",
-    "chai-connect-middleware": "0.x.x",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "13.x.x",
-    "eslint-plugin-import": "^2.17.2",
-    "make-node": "^0.4.6",
-    "mocha": "6.x.x"
-  },
-  "engines": {
-    "node": ">=8.0.0"
-  },
-  "scripts": {
-    "spec": "node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js",
-    "lint": "eslint --ext .js . --max-warnings 0",
-    "lintfix": "eslint --ext .js . --fix",
-    "test": "npm run lint && npm run spec"
-  }
 }

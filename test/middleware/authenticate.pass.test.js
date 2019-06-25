@@ -1,20 +1,17 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+'use strict';
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('pass', () => {
-    function Strategy() {
+    class Strategy {
+      authenticate() {
+        this.pass();
+      }
     }
-    Strategy.prototype.authenticate = function authenticate() {
-      this.pass();
-    };
 
     const passport = new Passport();
     passport.use('pass', new Strategy());

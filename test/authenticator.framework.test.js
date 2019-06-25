@@ -1,6 +1,5 @@
-/* global describe, it, expect */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+/* eslint-disable no-shadow */
+'use strict';
 
 const Authenticator = require('../lib/authenticator');
 
@@ -17,7 +16,7 @@ describe('Authenticator', () => {
           return function authenticate() {
             return `authenticate(): ${name} ${options.assignProperty}`;
           };
-        },
+        }
       });
 
       const rv = passport.authorize('foo')();
@@ -41,7 +40,7 @@ describe('Authenticator', () => {
           return function authorize() {
             return `authorize(): ${name} ${options.assignProperty}`;
           };
-        },
+        }
       });
 
       const rv = passport.authorize('foo')();

@@ -1,22 +1,20 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+/* eslint-disable no-shadow */
+'use strict';
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('using strategy that specifies message', () => {
     describe('success with flash message', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -27,7 +25,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -66,12 +64,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message using type set by route', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -82,7 +80,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'info' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -121,12 +119,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route as string', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -137,7 +135,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Login complete',
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -176,12 +174,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -192,7 +190,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'OK' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -231,12 +229,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options with type', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { message: 'Welcome!' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { message: 'Welcome!' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -247,7 +245,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'notice', message: 'Last login was yesterday' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -289,12 +287,12 @@ describe('middleware/authenticate', () => {
 
   describe('using strategy that specifies message and type', () => {
     describe('success with flash message', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -305,7 +303,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -344,12 +342,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message using type set by route', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -360,7 +358,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'ok' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -399,12 +397,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route as string', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -415,7 +413,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Success!',
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -454,12 +452,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -470,7 +468,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'Okay' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -509,12 +507,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options with type', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, { type: 'info', message: 'Hello' });
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, { type: 'info', message: 'Hello' });
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -525,7 +523,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'warn', message: 'Last login from far away place' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -567,12 +565,12 @@ describe('middleware/authenticate', () => {
 
   describe('using strategy that specifies message as string', () => {
     describe('success with flash message', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -583,7 +581,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -622,12 +620,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message using type set by route', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -638,7 +636,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'info' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -677,12 +675,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route as string', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -693,7 +691,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Login complete',
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -732,12 +730,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -748,7 +746,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'OK' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -787,12 +785,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message overridden by route using options with type', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user, 'Greetings');
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user, 'Greetings');
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -803,7 +801,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'notice', message: 'Last login was yesterday' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -845,12 +843,12 @@ describe('middleware/authenticate', () => {
 
   describe('using strategy that does not specify message', () => {
     describe('success with flash message left up to strategy', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -861,7 +859,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -900,12 +898,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message left up to strategy using type set by route', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -916,7 +914,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'info' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -955,12 +953,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message specified by route as string', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -971,7 +969,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Login complete',
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -1010,12 +1008,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message specified by route using options', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -1026,7 +1024,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'OK' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -1065,12 +1063,12 @@ describe('middleware/authenticate', () => {
     });
 
     describe('success with flash message specified by route using options with type', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Passport();
       passport.use('success', new Strategy());
@@ -1081,7 +1079,7 @@ describe('middleware/authenticate', () => {
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'notice', message: 'Last login was yesterday' },
-          successRedirect: 'http://www.example.com/account',
+          successRedirect: 'http://www.example.com/account'
         }))
           .req((req) => {
             request = req;

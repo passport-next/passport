@@ -1,5 +1,8 @@
-docs/
 reports/
+docs/
+var/
+
+
 
 # Mac OS X
 .DS_Store

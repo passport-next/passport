@@ -1,32 +1,29 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-
-/* eslint-disable camelcase, no-proto, no-shadow */
+'use strict';
 
 const chai = require('chai');
 const authenticate = require('../../lib/middleware/authenticate');
-const Passport = require('../..').Passport;
+const { Passport } = require('../..');
 
 
 describe('middleware/authenticate', () => {
   describe('with multiple strategies, all of which fail, and responding with unauthorized status', () => {
-    function BasicStrategy() {
+    class BasicStrategy {
+      authenticate() {
+        this.fail('BASIC challenge');
+      }
     }
-    BasicStrategy.prototype.authenticate = function authenticate() {
-      this.fail('BASIC challenge');
-    };
 
-    function DigestStrategy() {
+    class DigestStrategy {
+      authenticate() {
+        this.fail('DIGEST challenge');
+      }
     }
-    DigestStrategy.prototype.authenticate = function authenticate() {
-      this.fail('DIGEST challenge');
-    };
 
-    function NoChallengeStrategy() {
+    class NoChallengeStrategy {
+      authenticate() {
+        this.fail();
+      }
     }
-    NoChallengeStrategy.prototype.authenticate = function authenticate() {
-      this.fail();
-    };
 
     const passport = new Passport();
     passport.use('basic', new BasicStrategy());
@@ -73,23 +70,23 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with multiple strategies, all of which fail, and responding with specified status', () => {
-    function BasicStrategy() {
+    class BasicStrategy {
+      authenticate() {
+        this.fail('BASIC challenge', 400);
+      }
     }
-    BasicStrategy.prototype.authenticate = function authenticate() {
-      this.fail('BASIC challenge', 400);
-    };
 
-    function BearerStrategy() {
+    class BearerStrategy {
+      authenticate() {
+        this.fail('BEARER challenge', 403);
+      }
     }
-    BearerStrategy.prototype.authenticate = function authenticate() {
-      this.fail('BEARER challenge', 403);
-    };
 
-    function NoChallengeStrategy() {
+    class NoChallengeStrategy {
+      authenticate() {
+        this.fail(402);
+      }
     }
-    NoChallengeStrategy.prototype.authenticate = function authenticate() {
-      this.fail(402);
-    };
 
     const passport = new Passport();
     passport.use('basic', new BasicStrategy());
@@ -129,17 +126,17 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with multiple strategies, all of which fail, and flashing message', () => {
-    function StrategyA() {
+    class StrategyA {
+      authenticate() {
+        this.fail('A message');
+      }
     }
-    StrategyA.prototype.authenticate = function authenticate() {
-      this.fail('A message');
-    };
 
-    function StrategyB() {
+    class StrategyB {
+      authenticate() {
+        this.fail('B message');
+      }
     }
-    StrategyB.prototype.authenticate = function authenticate() {
-      this.fail('B message');
-    };
 
     const passport = new Passport();
     passport.use('a', new StrategyA());
@@ -151,7 +148,7 @@ describe('middleware/authenticate', () => {
     before((done) => {
       chai.connect.use('express', authenticate(passport, ['a', 'b'], {
         failureFlash: true,
-        failureRedirect: 'http://www.example.com/login',
+        failureRedirect: 'http://www.example.com/login'
       }))
         .req((req) => {
           request = req;
@@ -184,23 +181,23 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with multiple strategies, all of which fail with unauthorized status, and invoking callback', () => {
-    function BasicStrategy() {
+    class BasicStrategy {
+      authenticate() {
+        this.fail('BASIC challenge');
+      }
     }
-    BasicStrategy.prototype.authenticate = function authenticate() {
-      this.fail('BASIC challenge');
-    };
 
-    function DigestStrategy() {
+    class DigestStrategy {
+      authenticate() {
+        this.fail('DIGEST challenge');
+      }
     }
-    DigestStrategy.prototype.authenticate = function authenticate() {
-      this.fail('DIGEST challenge');
-    };
 
-    function NoChallengeStrategy() {
+    class NoChallengeStrategy {
+      authenticate() {
+        this.fail();
+      }
     }
-    NoChallengeStrategy.prototype.authenticate = function authenticate() {
-      this.fail();
-    };
 
     const passport = new Passport();
     passport.use('basic', new BasicStrategy());
@@ -265,23 +262,23 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with multiple strategies, all of which fail with specific status, and invoking callback', () => {
-    function BasicStrategy() {
+    class BasicStrategy {
+      authenticate() {
+        this.fail('BASIC challenge', 400);
+      }
     }
-    BasicStrategy.prototype.authenticate = function authenticate() {
-      this.fail('BASIC challenge', 400);
-    };
 
-    function BearerStrategy() {
+    class BearerStrategy {
+      authenticate() {
+        this.fail('BEARER challenge', 403);
+      }
     }
-    BearerStrategy.prototype.authenticate = function authenticate() {
-      this.fail('BEARER challenge', 403);
-    };
 
-    function NoChallengeStrategy() {
+    class NoChallengeStrategy {
+      authenticate() {
+        this.fail(402);
+      }
     }
-    NoChallengeStrategy.prototype.authenticate = function authenticate() {
-      this.fail(402);
-    };
 
     const passport = new Passport();
     passport.use('basic', new BasicStrategy());
@@ -343,11 +340,11 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with single strategy in list, which fails with unauthorized status, and invoking callback', () => {
-    function BasicStrategy() {
+    class BasicStrategy {
+      authenticate() {
+        this.fail('BASIC challenge');
+      }
     }
-    BasicStrategy.prototype.authenticate = function authenticate() {
-      this.fail('BASIC challenge');
-    };
 
     const passport = new Passport();
     passport.use('basic', new BasicStrategy());

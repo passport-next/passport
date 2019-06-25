@@ -1,6 +1,6 @@
-/* global describe, it, expect, before */
-/* jshint expr: true */
-/* eslint-disable no-underscore-dangle, camelcase, no-proto, no-shadow */
+/* eslint-disable no-shadow */
+
+'use strict';
 
 const chai = require('chai');
 const Authenticator = require('../lib/authenticator');
@@ -110,12 +110,12 @@ describe('Authenticator', () => {
     });
 
     describe('handling a request', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Authenticator();
       passport.use('success', new Strategy());
@@ -166,12 +166,12 @@ describe('Authenticator', () => {
     });
 
     describe('handling a request', () => {
-      function Strategy() {
+      class Strategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Authenticator();
       passport.use('success', new Strategy());
