@@ -5,7 +5,7 @@ module.exports = {
     },
     extends: [
       '@passport-next/eslint-config-passport-next/sauron-node.js',
-      // Override ash-nazg's current preference for ESM
+      // Override eslint-config-passport-next's current preference for ESM
       'plugin:node/recommended-script'
     ],
     settings: {
@@ -77,7 +77,7 @@ module.exports = {
       // Disable until ready to tackle
       'require-jsdoc': 0,
 
-      // Disable current preferences of ash-nazg
+      // Disable current preferences of eslint-config-passport-next
       'import/no-commonjs': 0,
       'node/exports-style': 0,
 
