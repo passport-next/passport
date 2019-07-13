@@ -4,7 +4,7 @@ module.exports = {
       browser: false
     },
     extends: [
-      '@passport-next/eslint-config-passport-next/sauron-node.js',
+      'ash-nazg/sauron-node.js',
       // Override eslint-config-passport-next's current preference for ESM
       'plugin:node/recommended-script'
     ],
@@ -18,7 +18,7 @@ module.exports = {
     },
     overrides: [
       {
-        files: ['test/**'],
+        files: ['test/**/*.test.js'],
         env: {
           // jest: true,
           mocha: true
@@ -27,7 +27,7 @@ module.exports = {
           expect: 'readonly'
         },
         rules: {
-          'jsdoc/require-jsdoc': 'off'
+          'jsdoc/require-jsdoc': 'off',
           // 'jest/no-disabled-tests': [2],
           // 'jest/no-focused-tests': [2],
           // 'jest/no-identical-title': [2],
