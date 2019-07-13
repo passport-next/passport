@@ -2,15 +2,9 @@ language: "node_js"
 node_js:{% for version in supportedNodeVersions %}
   - "{{version}}"{% endfor %}
 
-before_install:
-  - "npm install make-node@0.3.x -g"
-  - "preinstall-compat"
-
 script:
-  - "make test-cov"
-  - "npm run-script lint"
+  - "npm run coverage"
+  - "npm run lint"
 
 after_success:
-  - "make report-cov"
-
-sudo: false
+  - "npm run coveralls"

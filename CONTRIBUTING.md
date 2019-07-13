@@ -24,31 +24,32 @@ $ npm test
 
 Ensure that lint passes
 ```bash
-$ npm run-script lint
+$ npm run lint
 ```
 
 Some lint errors can be fixed with
 
 ```bash
-npm run-script lintfix
+npm run lintfix
 ```
 
 Coverage reports can be generated and viewed by executing:
 
 ```bash
-npm run-script test-cov
-npm run-script view-cov
+npm run coverage
 ```
+
+The output in html form will be in `var/coverage`
 
 Templates such as README.md can be updated via
 
 ```bash
-npm run-script templates
+npm run templates
 ```
 
 If you are starting a new project run
 
 ```bash
-npm run-script init-new-project
+npm run init-new-project
 ```
 **WARNING** This will overwrite files which are listed in the `ignoreExisting` array of `templates/variables.js`
