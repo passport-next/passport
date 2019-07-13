@@ -18,10 +18,11 @@
     },
     "devDependencies": {
         "@mysticatea/eslint-plugin": "^10.0.3",
-        "@passport-next/eslint-config-passport-next": "1.x.x",
         "@passport-next/chai-passport-strategy": "1.x.x",
+        "@passport-next/eslint-config-passport-next": "1.x.x",
         "chai": "4.x.x",
         "chai-connect-middleware": "0.x.x",
+        "coveralls": "^3.0.5",
         "eslint": "^5.16.0",
         "eslint-config-standard": "^12.0.0",
         "eslint-plugin-compat": "^3.1.1",
@@ -36,7 +37,8 @@
         "eslint-plugin-unicorn": "^9.1.0",
         "make-node": "^0.4.6",
         "mocha": "6.x.x",
-        "nunjucks": "^3.2.0"
+        "nunjucks": "^3.2.0",
+        "nyc": "^14.1.1"
     },
     "engines": {
         "node": ">=8.0.0"
@@ -59,6 +61,8 @@
         "init-new-project": "node ./templates/gen --init",
         "lint": "eslint --max-warnings 0 --ext js,md .",
         "lintfix": "eslint --ext js,md . --fix",
-        "test": "mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js"
+        "test": "mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js",
+        "coverage": "nyc --report-dir=var/coverage --reporter=lcov npm test",
+        "coveralls": "nyc report --report-dir=var/coverage --reporter=text-lcov | coveralls"
     }
 }

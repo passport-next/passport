@@ -6,8 +6,7 @@ docs/
 examples/
 .github/
 .gitlab-ci.yml
-Makefile
-reports/
+.nyc_output
 templates
 test/
 .travis.yml
