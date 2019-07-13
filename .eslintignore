@@ -1,5 +1,4 @@
 .git
-coverage/
 node_modules/
 var/
 docs/jsdoc
