@@ -20,8 +20,8 @@ describe('SessionManager', () => {
     });
   });
   describe('#logIn', () => {
-    const func = (user, req, cb) => {
-      cb(null, JSON.stringify(user));
+    const func = (user /* , req */) => {
+      return JSON.stringify(user);
     };
     const sessionManager = new SessionManager(func);
     const user = {
@@ -38,8 +38,8 @@ describe('SessionManager', () => {
     });
   });
   describe('#logOut', () => {
-    const func = (user, req, cb) => {
-      cb(null, JSON.stringify(user));
+    const func = (user /* , req */) => {
+      return JSON.stringify(user);
     };
     const sessionManager = new SessionManager(func);
     const user = {
@@ -48,10 +48,9 @@ describe('SessionManager', () => {
     const req = {
       _passport: {}
     };
-    before((done) => {
-      sessionManager.logIn(req, user, () => {
-        sessionManager.logOut(req, done);
-      });
+    before(async () => {
+      await sessionManager.logIn(req, user);
+      return sessionManager.logOut(req);
     });
     it('deletes the session', () => {
       // eslint-disable-next-line no-unused-expressions
