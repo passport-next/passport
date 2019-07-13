@@ -1,18 +1,18 @@
 This changelog follows Semantic Versioning https://semver.org/
 
-# 3.0.1 (2019-07-13)
 
-### Patch
-
-* Fixed premature redirect in logOut #20 @rwky
-
-# 3.0.0 (UNRELEASED)
+# 3.0.0 (2019-07-13)
 
 ### Major
 
 * Major lint changes, there are no functional changes but due to the massive
   amount of code changes this is being marked as a major bump for caution sake
   this will hopefully be the last of the changes like this for a while.
+
+### Patch
+
+* Fixed premature redirect in logOut and improved test coverage #20 @rwky
+* Removed make-node and replaced with nyc and coveralls @rwky
 
 # 2.1.1 (2019-04-30)
 
