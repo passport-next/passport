@@ -35,6 +35,17 @@ describe('http.ServerRequest', () => {
   });
 
   describe('#login', () => {
+    describe('passport not in use', () => {
+      const { req } = setupPassport();
+      const user = { id: '1', username: 'root' };
+      delete req._passport;
+      it('should throw an exception', () => {
+        expect(() => {
+          req.logIn(user, () => {});
+        }).to.throw(Error, 'passport.initialize() middleware not in use');
+      });
+    });
+
     describe('not establishing a session', () => {
       const { req } = setupPassport();
       req._passport.session = {};
