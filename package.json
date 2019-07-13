@@ -1,6 +1,6 @@
 {
     "name": "@passport-next/passport",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "Simple, unobtrusive authentication for Node.js.",
     "author": {
         "name": "Passport Next Developers",

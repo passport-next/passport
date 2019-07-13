@@ -1,5 +1,11 @@
 This changelog follows Semantic Versioning https://semver.org/
 
+# 3.0.1 (2019-07-13)
+
+### Patch
+
+* Fixed premature redirect in logOut #20 @rwky
+
 # 3.0.0 (UNRELEASED)
 
 ### Major
