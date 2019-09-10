@@ -1,5 +1,12 @@
 This changelog follows Semantic Versioning https://semver.org/
 
+# UNRELEASED
+
+# 3.0.1
+
+### Patch
+
+* Updated npm deps @rwky
 
 # 3.0.0 (2019-07-13)
 
