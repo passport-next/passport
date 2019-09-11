@@ -85,6 +85,53 @@ describe('http.ServerRequest', () => {
       });
     });
 
+    describe('not establishing a session (with done callback)', () => {
+      const { req } = setupPassport();
+      req._passport.session = {};
+      let error;
+      let callbackRan;
+
+      before(async () => {
+        const user = { id: '1', username: 'root' };
+
+        try {
+          await req.login(user, { session: false }, () => {
+            callbackRan = true;
+          });
+        } catch (err) {
+          error = err;
+        }
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.undefined;
+      });
+
+      it('should be authenticated', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.isAuthenticated()).to.be.true;
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.isUnauthenticated()).to.be.false;
+      });
+
+      it('should set user', () => {
+        expect(req.user).to.be.an('object');
+        expect(req.user.id).to.equal('1');
+        expect(req.user.username).to.equal('root');
+      });
+
+      it('should not serialize user', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(req._passport.session.user).to.be.undefined;
+      });
+
+      it('should run callback', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(callbackRan).to.be.true;
+      });
+    });
+
     describe('not establishing a session and setting custom user property', () => {
       const { req, passport } = setupPassport();
       req._passport.session = {};
@@ -298,6 +345,51 @@ describe('http.ServerRequest', () => {
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
         expect(error.message).to.equal('something went wrong');
+      });
+
+      it('should not be authenticated', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.isAuthenticated()).to.be.false;
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.isUnauthenticated()).to.be.true;
+      });
+
+      it('should not set user', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.user).to.be.null;
+      });
+
+      it('should not serialize user', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(req._passport.session.user).to.be.undefined;
+      });
+    });
+
+    describe('encountering an error when serializing to session with callback', () => {
+      const { req, passport } = setupPassport();
+      req._passport.session = {};
+      passport.serializeUser((rq, user, done) => {
+        done(new Error('something went wrong'));
+      });
+
+      let callbackError;
+
+      before((done) => {
+        const user = { id: '1', username: 'root' };
+
+        try {
+          req.login(user, (err) => {
+            callbackError = err;
+            done();
+          });
+        } catch (err) {
+          done(err);
+        }
+      });
+
+      it('should error', () => {
+        expect(callbackError).to.be.an.instanceOf(Error);
+        expect(callbackError.message).to.equal('something went wrong');
       });
 
       it('should not be authenticated', () => {
