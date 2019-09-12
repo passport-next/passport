@@ -483,6 +483,8 @@ describe('http.ServerRequest', () => {
 
     describe('existing session, without passport.initialize() middleware', () => {
       const { req } = setupPassport();
+      delete req._passport;
+
       req.user = { id: '1', username: 'root' };
 
       req.logout();
