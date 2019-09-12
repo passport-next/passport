@@ -205,6 +205,7 @@ describe('http.ServerRequest', () => {
 
     describe('not establishing a session, without passport.initialize() middleware', () => {
       const { req } = setupPassport();
+      delete req._passport.instance._userProperty;
       let error;
 
       before(async () => {
