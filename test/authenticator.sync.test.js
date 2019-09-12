@@ -156,6 +156,31 @@ describe('Authenticator (Sync return)', () => {
       });
     });
 
+    describe('with one serializer that returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.serializeUser((/* req, user */) => undefined);
+
+      let error;
+      let obj;
+
+      before(async () => {
+        await authenticator.serializeUser({ id: '1', username: 'jared' }, (err, o) => {
+          error = err;
+          obj = o;
+        });
+      });
+
+      it('should error', () => {
+        expect(error).to.be.an.instanceOf(Error);
+        expect(error.message).to.equal('Failed to serialize user into session');
+      });
+
+      it('should not serialize user', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(obj).to.be.undefined;
+      });
+    });
+
     describe('with one serializer that serializes to 0', () => {
       const authenticator = new Authenticator();
       authenticator.serializeUser((/* req, user */) => {
@@ -292,6 +317,34 @@ describe('Authenticator (Sync return)', () => {
       it('should not serialize user', () => {
         // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
+      });
+    });
+
+    describe('with two serializers, the first of which serializes and the second of which returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.serializeUser((/* req, user */) => {
+        return 'one';
+      });
+      authenticator.serializeUser((/* req, user */) => undefined);
+
+      let error;
+      let obj;
+
+      before((done) => {
+        authenticator.serializeUser({ id: '1', username: 'jared' }, (err, o) => {
+          error = err;
+          obj = o;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.null;
+      });
+
+      it('should serialize user', () => {
+        expect(obj).to.equal('one');
       });
     });
 
@@ -480,6 +533,31 @@ describe('Authenticator (Sync return)', () => {
       });
     });
 
+    describe('with one deserializer that returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.deserializeUser((/* req, obj */) => undefined);
+
+      let error;
+      let user;
+
+      before(async () => {
+        await authenticator.deserializeUser({ id: '1', username: 'jared' }, (err, u) => {
+          error = err;
+          user = u;
+        });
+      });
+
+      it('should error', () => {
+        expect(error).to.be.an.instanceOf(Error);
+        expect(error.message).to.equal('Failed to deserialize user out of session');
+      });
+
+      it('should not deserialize user', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(user).to.be.undefined;
+      });
+    });
+
     describe('with one deserializer that deserializes to false', () => {
       const authenticator = new Authenticator();
       authenticator.deserializeUser((/* req, obj */) => {
@@ -589,6 +667,34 @@ describe('Authenticator (Sync return)', () => {
       it('should invalidate session', () => {
         // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.undefined;
+      });
+    });
+
+    describe('with two deserializers, the first of which deserializes and the second of which returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'one';
+      });
+      authenticator.deserializeUser((/* req, obj */) => undefined);
+
+      let error;
+      let user;
+
+      before((done) => {
+        authenticator.deserializeUser({ id: '1', username: 'jared' }, (err, u) => {
+          error = err;
+          user = u;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.null;
+      });
+
+      it('should deserialize user', () => {
+        expect(user).to.equal('one');
       });
     });
 
@@ -935,7 +1041,64 @@ describe('Authenticator (Sync return)', () => {
       });
     });
 
-    describe('with three transform, the first of which passes and the second of which transforms', () => {
+    describe('with one sync transform which returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.transformAuthInfo((/* req, info */) => undefined);
+
+      let error;
+      let obj;
+
+      before(async () => {
+        await authenticator.transformAuthInfo({ clientId: '1', scope: 'write' }, (err, o) => {
+          error = err;
+          obj = o;
+        });
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.undefined;
+      });
+
+      it('should not transform info', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(obj).to.be.undefined;
+      });
+    });
+
+    describe('with two transforms, the first of which transforms and the second of which returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.transformAuthInfo((req, info) => {
+        return { clientId: info.clientId, client: { name: 'One' } };
+      });
+      authenticator.transformAuthInfo((/* req, info */) => undefined);
+
+      let error;
+      let obj;
+
+      before((done) => {
+        authenticator.transformAuthInfo({ clientId: '1', scope: 'write' }, (err, o) => {
+          error = err;
+          obj = o;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.null;
+      });
+
+      it('should not transform info', () => {
+        expect(Object.keys(obj)).to.have.length(2);
+        expect(obj.clientId).to.equal('1');
+        expect(obj.client.name).to.equal('One');
+        // eslint-disable-next-line no-unused-expressions
+        expect(obj.scope).to.be.undefined;
+      });
+    });
+
+    describe('with three transforms, the first of which passes and the second of which transforms', () => {
       const authenticator = new Authenticator();
       authenticator.transformAuthInfo((/* req, obj */) => {
         throw new Error('pass');
