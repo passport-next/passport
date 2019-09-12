@@ -1057,12 +1057,13 @@ describe('Authenticator (Sync return)', () => {
 
       it('should not error', () => {
         // eslint-disable-next-line no-unused-expressions
-        expect(error).to.be.undefined;
+        expect(error).to.be.null;
       });
 
       it('should not transform info', () => {
-        // eslint-disable-next-line no-unused-expressions
-        expect(obj).to.be.undefined;
+        expect(Object.keys(obj)).to.have.length(2);
+        expect(obj.clientId).to.equal('1');
+        expect(obj.scope).to.equal('write');
       });
     });
 
