@@ -276,6 +276,52 @@ describe('http.ServerRequest', () => {
       });
     });
 
+    describe('establishing a session with a done callback', () => {
+      const { req, passport } = setupPassport();
+      passport.serializeUser((rq, user, done) => {
+        done(null, user.id);
+      });
+      let error;
+
+      before(async () => {
+        const user = { id: '1', username: 'root' };
+
+        let invokedDone = false;
+        try {
+          await req.login(user, function doneCallback() {
+            invokedDone = true;
+          });
+          if (!invokedDone) {
+            throw new Error('Did not invoke `done` callback');
+          }
+        } catch (err) {
+          error = err;
+        }
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.undefined;
+      });
+
+      it('should be authenticated', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.isAuthenticated()).to.be.true;
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.isUnauthenticated()).to.be.false;
+      });
+
+      it('should set user', () => {
+        expect(req.user).to.be.an('object');
+        expect(req.user.id).to.equal('1');
+        expect(req.user.username).to.equal('root');
+      });
+
+      it('should serialize user', () => {
+        expect(req._passport.session.user).to.equal('1');
+      });
+    });
+
     describe('establishing a session and setting custom user property', () => {
       const { req, passport } = setupPassport();
       passport.serializeUser((rq, user, done) => {
@@ -484,6 +530,27 @@ describe('http.ServerRequest', () => {
     describe('existing session, without passport.initialize() middleware', () => {
       const { req } = setupPassport();
       delete req._passport;
+
+      req.user = { id: '1', username: 'root' };
+
+      req.logout();
+
+      it('should not be authenticated', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.isAuthenticated()).to.be.false;
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.isUnauthenticated()).to.be.true;
+      });
+
+      it('should clear user', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(req.user).to.be.null;
+      });
+    });
+
+    describe('existing session, without passport.initialize() middleware but with an `instance` without a `_userProperty`', () => {
+      const { req } = setupPassport();
+      delete req._passport.instance._userProperty;
 
       req.user = { id: '1', username: 'root' };
 
