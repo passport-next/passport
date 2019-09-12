@@ -348,6 +348,34 @@ describe('Authenticator (Sync return)', () => {
       });
     });
 
+    describe('with two serializers, the first of which returns `undefined` and the second of which serializes', () => {
+      const authenticator = new Authenticator();
+      authenticator.serializeUser((/* req, user */) => undefined);
+      authenticator.serializeUser((/* req, user */) => {
+        return 'one';
+      });
+
+      let error;
+      let obj;
+
+      before((done) => {
+        authenticator.serializeUser({ id: '1', username: 'jared' }, (err, o) => {
+          error = err;
+          obj = o;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.null;
+      });
+
+      it('should serialize user', () => {
+        expect(obj).to.equal('one');
+      });
+    });
+
     describe('with three serializers, the first of which passes and the second of which serializes', () => {
       const authenticator = new Authenticator();
       authenticator.serializeUser((/* req, obj */) => {
@@ -676,6 +704,34 @@ describe('Authenticator (Sync return)', () => {
         return 'one';
       });
       authenticator.deserializeUser((/* req, obj */) => undefined);
+
+      let error;
+      let user;
+
+      before((done) => {
+        authenticator.deserializeUser({ id: '1', username: 'jared' }, (err, u) => {
+          error = err;
+          user = u;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.null;
+      });
+
+      it('should deserialize user', () => {
+        expect(user).to.equal('one');
+      });
+    });
+
+    describe('with two deserializers, the first of which returns `undefined` and the second of which deserializes', () => {
+      const authenticator = new Authenticator();
+      authenticator.deserializeUser((/* req, obj */) => undefined);
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'one';
+      });
 
       let error;
       let user;
@@ -1073,6 +1129,38 @@ describe('Authenticator (Sync return)', () => {
         return { clientId: info.clientId, client: { name: 'One' } };
       });
       authenticator.transformAuthInfo((/* req, info */) => undefined);
+
+      let error;
+      let obj;
+
+      before((done) => {
+        authenticator.transformAuthInfo({ clientId: '1', scope: 'write' }, (err, o) => {
+          error = err;
+          obj = o;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.null;
+      });
+
+      it('should not transform info', () => {
+        expect(Object.keys(obj)).to.have.length(2);
+        expect(obj.clientId).to.equal('1');
+        expect(obj.client.name).to.equal('One');
+        // eslint-disable-next-line no-unused-expressions
+        expect(obj.scope).to.be.undefined;
+      });
+    });
+
+    describe('with two transforms, the first of which returns `undefined` and the second of which transforms', () => {
+      const authenticator = new Authenticator();
+      authenticator.transformAuthInfo((/* req, info */) => undefined);
+      authenticator.transformAuthInfo((req, info) => {
+        return { clientId: info.clientId, client: { name: 'One' } };
+      });
 
       let error;
       let obj;
