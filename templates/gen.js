@@ -34,10 +34,8 @@ fileList.forEach((file) => {
   parsedPath.dir += path.sep;
   const destDir = parsedPath.dir.replace(templateDir, '');
   const dest = destDir + parsedPath.name;
-  if (destDir !== '') {
-    if (!fs.existsSync(destDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
-    }
+  if (destDir !== '' && !fs.existsSync(destDir)) {
+    fs.mkdirSync(destDir, { recursive: true });
   }
   if (!init && variables.ignoreExisting.includes(dest) && fs.existsSync(dest)) {
     console.log('Skipping ' + dest);
