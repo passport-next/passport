@@ -41,6 +41,35 @@ describe('SessionStrategy', () => {
     });
   });
 
+  describe('handling a request without a login session object', () => {
+    let request;
+    let pass = false;
+
+    before((done) => {
+      chai.passport.use(strategy)
+        .pass(() => {
+          pass = true;
+          done();
+        })
+        .req((req) => {
+          request = req;
+
+          req._passport = {};
+        })
+        .authenticate();
+    });
+
+    it('should pass', () => {
+      // eslint-disable-next-line no-unused-expressions
+      expect(pass).to.be.true;
+    });
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
+      expect(request.user).to.be.undefined;
+    });
+  });
+
   describe('handling a request with a login session', () => {
     const strategy = new SessionStrategy((user) => {
       return { id: user };

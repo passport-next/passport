@@ -3,7 +3,7 @@ node_js:{% for version in supportedNodeVersions %}
   - "{{version}}"{% endfor %}
 
 script:
-  - "npm run coverage"
+  - "npm run test"
   - "npm run lint"
 
 after_success:

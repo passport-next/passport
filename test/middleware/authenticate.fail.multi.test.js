@@ -398,4 +398,66 @@ describe('middleware/authenticate', () => {
       expect(request.user).to.be.undefined;
     });
   });
+
+  describe('without a valid strategy name, which fails with unauthorized status, and invoking callback', () => {
+    class BasicStrategy {
+      authenticate() {
+        this.fail('BASIC challenge');
+      }
+    }
+
+    const passport = new Passport();
+    passport.use('basic', new BasicStrategy());
+
+    let request;
+    let error;
+    let user;
+    let challenge;
+    let status;
+
+    before((done) => {
+      function callback(e, u, c, s) {
+        error = e;
+        user = u;
+        challenge = c;
+        status = s;
+        done();
+      }
+
+      chai.connect.use(authenticate(
+        passport,
+        // Bad strategy name
+        null,
+        callback
+      ))
+        .req((req) => {
+          request = req;
+        })
+        .dispatch();
+    });
+
+    it('should not error', () => {
+      // eslint-disable-next-line no-unused-expressions
+      expect(error).to.be.null;
+    });
+
+    it('should pass false to callback', () => {
+      expect(user).to.equal(false);
+    });
+
+    it('should not pass challenges to callback', () => {
+      expect(challenge).to.be.an('array');
+      expect(challenge).to.have.length(0);
+    });
+
+    it('should not pass statuses to callback', () => {
+      expect(status).to.be.an('array');
+      expect(status).to.have.length(0);
+    });
+
+    it('should not set user on request', () => {
+      // eslint-disable-next-line no-unused-expressions
+      expect(request.user).to.be.undefined;
+    });
+  });
 });
