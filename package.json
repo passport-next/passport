@@ -20,6 +20,7 @@
         "@passport-next/chai-passport-strategy": "1.x.x",
         "@passport-next/eslint-config-passport-next": "^2.0.0",
         "chai": "4.x.x",
+        "chai-as-promised": "^7.1.1",
         "coveralls": "^3.0.6",
         "eslint": "^6.3.0",
         "eslint-config-standard": "^14.1.0",

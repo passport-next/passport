@@ -129,6 +129,16 @@ describe('Authenticator', () => {
       });
     });
 
+    describe('without serializers (and no callback)', () => {
+      const authenticator = new Authenticator();
+
+      it('should be rejected', () => {
+        expect(
+          authenticator.serializeUser({ id: '1', username: 'jared' })
+        ).to.be.rejectedWith(Error, 'Failed to serialize user into session');
+      });
+    });
+
     describe('with one serializer', () => {
       const authenticator = new Authenticator();
       authenticator.serializeUser((req, user, done) => {
@@ -292,6 +302,20 @@ describe('Authenticator', () => {
       it('should not serialize user', () => {
         // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
+      });
+    });
+
+    describe('with one serializer that encounters an error (preceded by serialization without callback)', () => {
+      const authenticator = new Authenticator();
+
+      authenticator.serializeUser((req, user, done) => {
+        done(new Error('something went wrong'));
+      });
+
+      it('should be rejected', () => {
+        expect(
+          authenticator.serializeUser({ id: '1', username: 'jared' })
+        ).to.be.rejectedWith(Error, 'something went wrong');
       });
     });
 
@@ -479,6 +503,16 @@ describe('Authenticator', () => {
       });
     });
 
+    describe('without deserializers and no callback', () => {
+      const authenticator = new Authenticator();
+
+      it('should be rejected', () => {
+        expect(
+          authenticator.deserializeUser({ id: '1', username: 'jared' })
+        ).to.be.rejectedWith(Error, 'Failed to deserialize user out of session');
+      });
+    });
+
     describe('with one deserializer', () => {
       const authenticator = new Authenticator();
       authenticator.deserializeUser((req, obj, done) => {
@@ -615,6 +649,19 @@ describe('Authenticator', () => {
       it('should invalidate session', () => {
         // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.undefined;
+      });
+    });
+
+    describe('with one deserializer that encounters an error (and no callback)', () => {
+      const authenticator = new Authenticator();
+      authenticator.deserializeUser((req, obj, done) => {
+        done(new Error('something went wrong'));
+      });
+
+      it('should be rejected', () => {
+        expect(
+          authenticator.deserializeUser({ id: '1', username: 'jared' })
+        ).to.be.rejectedWith(Error, 'something went wrong');
       });
     });
 
