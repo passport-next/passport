@@ -30,7 +30,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
@@ -39,7 +38,6 @@ describe('Authenticator', () => {
       });
 
       it('should not initialize namespace within session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.session.passport).to.be.undefined;
       });
 
@@ -50,7 +48,6 @@ describe('Authenticator', () => {
       });
 
       it('should not expose session storage on internal request property', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request._passport.session).to.be.undefined;
       });
     });
@@ -74,7 +71,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
@@ -83,7 +79,6 @@ describe('Authenticator', () => {
       });
 
       it('should not initialize namespace within session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.session.passport).to.be.undefined;
       });
 
@@ -94,7 +89,6 @@ describe('Authenticator', () => {
       });
 
       it('should not expose session storage on internal request property', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request._passport.session).to.be.undefined;
       });
     });
@@ -138,7 +132,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
@@ -193,12 +186,10 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
       it('should not set user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.user).to.be.undefined;
       });
 
@@ -209,7 +200,6 @@ describe('Authenticator', () => {
       });
 
       it('should not set authInfo', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.authInfo).to.be.undefined;
       });
     });
@@ -248,7 +238,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 

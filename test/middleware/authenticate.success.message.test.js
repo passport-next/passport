@@ -253,7 +253,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not add message to session', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.session.messages).to.be.undefined;
     });
 
@@ -304,7 +303,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not add message to session', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.session.messages).to.be.undefined;
     });
 

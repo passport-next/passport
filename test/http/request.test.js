@@ -62,14 +62,11 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
 
@@ -80,7 +77,6 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req._passport.session.user).to.be.undefined;
       });
     });
@@ -104,14 +100,11 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
 
@@ -122,12 +115,10 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req._passport.session.user).to.be.undefined;
       });
 
       it('should run callback', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(callbackRan).to.be.true;
       });
     });
@@ -149,19 +140,15 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
 
       it('should not set user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.user).to.be.undefined;
       });
 
@@ -172,7 +159,6 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req._passport.session.user).to.be.undefined;
       });
     });
@@ -185,9 +171,7 @@ describe('http.ServerRequest', () => {
       await req.login(user, { session: false });
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
 
@@ -198,7 +182,6 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req._passport.session.user).to.be.undefined;
       });
     });
@@ -219,14 +202,11 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
 
@@ -255,14 +235,11 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
 
@@ -301,14 +278,11 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
 
@@ -343,19 +317,15 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
 
       it('should not set user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.user).to.be.undefined;
       });
 
@@ -395,19 +365,15 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.false;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.true;
       });
 
       it('should not set user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.user).to.be.null;
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req._passport.session.user).to.be.undefined;
       });
     });
@@ -440,19 +406,15 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.false;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.true;
       });
 
       it('should not set user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.user).to.be.null;
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req._passport.session.user).to.be.undefined;
       });
     });
@@ -484,19 +446,15 @@ describe('http.ServerRequest', () => {
       req.logout();
 
       it('should not be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.false;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.true;
       });
 
       it('should clear user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.user).to.be.null;
       });
 
       it('should clear serialized user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req._passport.session.user).to.be.undefined;
       });
     });
@@ -511,19 +469,15 @@ describe('http.ServerRequest', () => {
       req.logout();
 
       it('should not be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.false;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.true;
       });
 
       it('should clear user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.currentUser).to.be.null;
       });
 
       it('should clear serialized user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req._passport.session.user).to.be.undefined;
       });
     });
@@ -537,14 +491,11 @@ describe('http.ServerRequest', () => {
       req.logout();
 
       it('should not be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.false;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.true;
       });
 
       it('should clear user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.user).to.be.null;
       });
     });
@@ -558,14 +509,11 @@ describe('http.ServerRequest', () => {
       req.logout();
 
       it('should not be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.false;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.true;
       });
 
       it('should clear user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.user).to.be.null;
       });
     });
@@ -578,9 +526,7 @@ describe('http.ServerRequest', () => {
       req.user = { id: '1', username: 'root' };
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
     });
@@ -591,9 +537,7 @@ describe('http.ServerRequest', () => {
       req._passport.instance._userProperty = 'currentUser';
 
       it('should be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.true;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.false;
       });
     });
@@ -602,9 +546,7 @@ describe('http.ServerRequest', () => {
       const { req } = setupPassport();
 
       it('should not be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.false;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.true;
       });
     });
@@ -614,9 +556,7 @@ describe('http.ServerRequest', () => {
       req.user = null;
 
       it('should not be authenticated', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isAuthenticated()).to.be.false;
-        // eslint-disable-next-line no-unused-expressions
         expect(req.isUnauthenticated()).to.be.true;
       });
     });

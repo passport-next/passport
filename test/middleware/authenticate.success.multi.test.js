@@ -43,7 +43,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
@@ -90,7 +89,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 

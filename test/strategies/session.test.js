@@ -31,12 +31,10 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -60,12 +58,10 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -96,7 +92,6 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
@@ -137,7 +132,6 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
@@ -178,18 +172,15 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should remove user from session', () => {
       expect(request._passport.session).to.be.an('object');
-      // eslint-disable-next-line no-unused-expressions
       expect(request._passport.session.user).to.be.undefined;
     });
   });
@@ -221,12 +212,10 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
     it('should not set "user" on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -267,7 +256,6 @@ describe('SessionStrategy', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -299,7 +287,6 @@ describe('SessionStrategy', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });

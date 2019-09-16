@@ -112,7 +112,6 @@ describe('SessionManager', () => {
       return sessionManager.logOut(req);
     });
     it('deletes the session', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(req.session.passport.user).to.undefined;
     });
   });
@@ -136,7 +135,6 @@ describe('SessionManager', () => {
       });
     });
     it('deletes the session', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(req.session.passport.user).to.undefined;
     });
   });

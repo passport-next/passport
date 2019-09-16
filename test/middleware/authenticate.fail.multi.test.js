@@ -50,7 +50,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -113,13 +112,11 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should respond', () => {
       expect(response.statusCode).to.equal(400);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.getHeader('WWW-Authenticate')).to.be.undefined;
       expect(response.body).to.equal('Bad Request');
     });
@@ -165,7 +162,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -227,7 +223,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -239,7 +234,6 @@ describe('middleware/authenticate', () => {
       expect(challenge).to.be.an('array');
       expect(challenge).to.have.length(3);
       expect(challenge[0]).to.equal('BASIC challenge');
-      // eslint-disable-next-line no-unused-expressions
       expect(challenge[1]).to.be.undefined;
       expect(challenge[2]).to.equal('DIGEST challenge');
     });
@@ -247,16 +241,12 @@ describe('middleware/authenticate', () => {
     it('should pass statuses to callback', () => {
       expect(status).to.be.an('array');
       expect(status).to.have.length(3);
-      // eslint-disable-next-line no-unused-expressions
       expect(status[0]).to.be.undefined;
-      // eslint-disable-next-line no-unused-expressions
       expect(status[1]).to.be.undefined;
-      // eslint-disable-next-line no-unused-expressions
       expect(status[2]).to.be.undefined;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -308,7 +298,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -320,7 +309,6 @@ describe('middleware/authenticate', () => {
       expect(challenge).to.be.an('array');
       expect(challenge).to.have.length(3);
       expect(challenge[0]).to.equal('BASIC challenge');
-      // eslint-disable-next-line no-unused-expressions
       expect(challenge[1]).to.be.undefined;
       expect(challenge[2]).to.equal('BEARER challenge');
     });
@@ -334,7 +322,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -372,7 +359,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -389,12 +375,11 @@ describe('middleware/authenticate', () => {
     it('should pass statuses to callback', () => {
       expect(status).to.be.an('array');
       expect(status).to.have.length(1);
-      // eslint-disable-next-line no-unused-expressions
+
       expect(status[0]).to.be.undefined;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -437,7 +422,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -456,7 +440,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });

@@ -38,7 +38,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -53,7 +52,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should run authentication', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(ranAuthentication).to.be.true;
     });
   });
@@ -90,7 +88,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -105,7 +102,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not run authentication', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(ranAuthentication).to.be.false;
     });
   });
@@ -141,7 +137,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -187,7 +182,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -232,7 +226,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -277,12 +270,10 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not add message to session', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.session.messages).to.be.undefined;
     });
 
@@ -322,12 +313,10 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not add message to session', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.session.messages).to.be.undefined;
     });
 

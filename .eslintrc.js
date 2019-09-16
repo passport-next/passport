@@ -26,7 +26,16 @@ module.exports = {
         globals: {
           expect: 'readonly'
         },
+        plugins: [
+          'chai-friendly'
+        ],
         rules: {
+          'no-unused-expressions': 'off',
+          'chai-friendly/no-unused-expressions': ['error', {
+            allowShortCircuit: false,
+            allowTernary: false,
+            allowTaggedTemplates: false,
+          }],
           'jsdoc/require-jsdoc': 'off'
           // 'jest/no-disabled-tests': [2],
           // 'jest/no-focused-tests': [2],

@@ -37,12 +37,10 @@ describe('middleware/authenticate', () => {
     });
 
     it('should pass user as undefined to callback', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -79,12 +77,10 @@ describe('middleware/authenticate', () => {
     });
 
     it('should pass user as undefined to callback', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });

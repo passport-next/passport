@@ -37,7 +37,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });

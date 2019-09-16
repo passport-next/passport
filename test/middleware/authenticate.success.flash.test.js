@@ -870,7 +870,6 @@ describe('middleware/authenticate', () => {
       });
 
       it('should not flash message', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.message).to.be.undefined;
       });
 
@@ -924,7 +923,6 @@ describe('middleware/authenticate', () => {
       });
 
       it('should not flash message', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.message).to.be.undefined;
       });
 

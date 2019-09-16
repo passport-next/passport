@@ -34,7 +34,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -43,7 +42,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -81,7 +79,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -95,12 +92,10 @@ describe('middleware/authenticate', () => {
     });
 
     it('should pass status to callback', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(status).to.be.undefined;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -138,7 +133,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -156,7 +150,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -194,7 +187,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -207,12 +199,10 @@ describe('middleware/authenticate', () => {
     });
 
     it('should pass status to callback', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(status).to.be.undefined;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -250,7 +240,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -267,7 +256,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -305,7 +293,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -314,7 +301,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should pass challenge to callback', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(challenge).to.be.undefined;
     });
 
@@ -323,7 +309,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
@@ -357,7 +342,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.null;
     });
 
@@ -366,7 +350,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });

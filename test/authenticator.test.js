@@ -62,7 +62,6 @@ describe('Authenticator', () => {
 
       it('should register strategy', () => {
         expect(authenticator._strategies.bar).to.be.an('object');
-        // eslint-disable-next-line no-unused-expressions
         expect(authenticator._strategies.default).to.be.undefined;
       });
     });
@@ -97,7 +96,6 @@ describe('Authenticator', () => {
     authenticator.unuse('one');
 
     it('should unregister strategy', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(authenticator._strategies.one).to.be.undefined;
       expect(authenticator._strategies.two).to.be.an('object');
     });
@@ -124,7 +122,6 @@ describe('Authenticator', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
       });
     });
@@ -157,7 +154,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -184,7 +180,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -216,7 +211,6 @@ describe('Authenticator', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
       });
     });
@@ -244,7 +238,6 @@ describe('Authenticator', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
       });
     });
@@ -272,7 +265,6 @@ describe('Authenticator', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
       });
     });
@@ -300,7 +292,6 @@ describe('Authenticator', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
       });
     });
@@ -342,7 +333,6 @@ describe('Authenticator', () => {
       });
 
       it('should not serialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
       });
     });
@@ -371,7 +361,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -404,7 +393,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -437,7 +425,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -467,7 +454,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -498,7 +484,6 @@ describe('Authenticator', () => {
       });
 
       it('should not deserialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.undefined;
       });
     });
@@ -531,7 +516,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -558,12 +542,10 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
       it('should invalidate session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.false;
       });
     });
@@ -586,12 +568,10 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
       it('should invalidate session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.false;
       });
     });
@@ -619,7 +599,6 @@ describe('Authenticator', () => {
       });
 
       it('should not deserialize user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.undefined;
       });
     });
@@ -647,7 +626,6 @@ describe('Authenticator', () => {
       });
 
       it('should invalidate session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.undefined;
       });
     });
@@ -688,7 +666,6 @@ describe('Authenticator', () => {
       });
 
       it('should invalidate session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.undefined;
       });
     });
@@ -717,7 +694,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -750,7 +726,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -783,7 +758,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -816,12 +790,10 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
       it('should invalidate session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.false;
       });
     });
@@ -850,12 +822,10 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
       it('should invalidate session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(user).to.be.false;
       });
     });
@@ -881,7 +851,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -907,7 +876,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -936,7 +904,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -944,7 +911,6 @@ describe('Authenticator', () => {
         expect(Object.keys(obj)).to.have.length(2);
         expect(obj.clientId).to.equal('1');
         expect(obj.client.name).to.equal('Foo');
-        // eslint-disable-next-line no-unused-expressions
         expect(obj.scope).to.be.undefined;
       });
     });
@@ -972,7 +938,6 @@ describe('Authenticator', () => {
       });
 
       it('should not transform info', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
       });
     });
@@ -1000,7 +965,6 @@ describe('Authenticator', () => {
       });
 
       it('should not transform info', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(obj).to.be.undefined;
       });
     });
@@ -1021,7 +985,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -1029,7 +992,6 @@ describe('Authenticator', () => {
         expect(Object.keys(obj)).to.have.length(2);
         expect(obj.clientId).to.equal('1');
         expect(obj.client.name).to.equal('Foo');
-        // eslint-disable-next-line no-unused-expressions
         expect(obj.scope).to.be.undefined;
       });
     });
@@ -1058,7 +1020,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -1066,7 +1027,6 @@ describe('Authenticator', () => {
         expect(Object.keys(obj)).to.have.length(2);
         expect(obj.clientId).to.equal('1');
         expect(obj.client.name).to.equal('Two');
-        // eslint-disable-next-line no-unused-expressions
         expect(obj.scope).to.be.undefined;
       });
     });
@@ -1092,7 +1052,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.null;
       });
 
@@ -1100,7 +1059,6 @@ describe('Authenticator', () => {
         expect(Object.keys(obj)).to.have.length(2);
         expect(obj.clientId).to.equal('1');
         expect(obj.client.name).to.equal('Foo');
-        // eslint-disable-next-line no-unused-expressions
         expect(obj.scope).to.be.undefined;
       });
     });
