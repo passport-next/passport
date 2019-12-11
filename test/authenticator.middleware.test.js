@@ -156,6 +156,50 @@ describe('Authenticator', () => {
         expect(Object.keys(request.authInfo)).to.have.length(0);
       });
     });
+    describe('handling a request with instantiated strategy', () => {
+      function Strategy() {
+      }
+      Strategy.prototype.authenticate = function authenticate() {
+        const user = { id: '1', username: 'jaredhanson' };
+        this.success(user);
+      };
+
+      const passport = new Authenticator();
+
+      let request, error;
+
+      before((done) => {
+        chai.connect.use(passport.authenticate(new Strategy())).req((req) => {
+          request = req;
+
+          req.logIn = function logIn(user, options, done) {
+            this.user = user;
+            done();
+          };
+        })
+          .next((err) => {
+            error = err;
+            done();
+          })
+          .dispatch();
+      });
+
+      it('should not error', () => {
+        // eslint-disable-next-line no-unused-expressions
+        expect(error).to.be.undefined;
+      });
+
+      it('should set user', () => {
+        expect(request.user).to.be.an('object');
+        expect(request.user.id).to.equal('1');
+        expect(request.user.username).to.equal('jaredhanson');
+      });
+
+      it('should set authInfo', () => {
+        expect(request.authInfo).to.be.an('object');
+        expect(Object.keys(request.authInfo)).to.have.length(0);
+      });
+    });
   });
 
 
