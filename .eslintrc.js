@@ -4,7 +4,7 @@ module.exports = {
       browser: false
     },
     extends: [
-      '@passport-next/eslint-config-passport-next/sauron-node.js',
+      'eslint-config-ash-nazg/sauron-node.js',
       // Override eslint-config-passport-next's current preference for ESM
       'plugin:node/recommended-script'
     ],
