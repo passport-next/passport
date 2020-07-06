@@ -71,8 +71,8 @@
         "init-new-project": "node ./templates/gen --init",
         "lint": "eslint --max-warnings 0 --ext js,md,html .",
         "lintfix": "eslint --ext js,md,html . --fix",
-        "testonly": "mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js",
-        "test-one": "mocha --reporter spec --require test/bootstrap/node",
+        "testonly": "mocha --require chai/register-expect --require test/bootstrap/node test/*.test.js test/**/*.test.js",
+        "test-one": "mocha --require chai/register-expect --require test/bootstrap/node",
         "test": "nyc --report-dir=var/coverage --reporter=lcov --reporter=text npm run testonly",
         "coveralls": "nyc report --report-dir=var/coverage --reporter=text-lcov | coveralls"
     }
