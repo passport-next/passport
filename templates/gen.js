@@ -1,4 +1,4 @@
-/* eslint no-sync: 0, no-console: 0, node/no-unpublished-require: 0 */
+/* eslint-disable node/no-sync, no-console */
 'use strict';
 const fs = require('fs');
 const path = require('path');
