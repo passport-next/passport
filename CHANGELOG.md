@@ -2,6 +2,13 @@ This changelog follows Semantic Versioning https://semver.org/
 
 # UNRELEASED
 
+# 3.1.0
+
+### Minor
+
+* Feature: Pass instantiated strategy to authenticate. @rwky @jaredhanson @ayZagen
+* Updated npm deps @rwky
+
 # 3.0.1
 
 ### Patch
