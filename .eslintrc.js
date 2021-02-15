@@ -47,6 +47,10 @@ module.exports = {
     },
     {
       files: ['**/*.md'],
+      processor: 'markdown/markdown'
+    },
+    {
+      files: '**/*.md/*.js',
       rules: {
         'eol-last': 'off',
         'no-console': 'off',
