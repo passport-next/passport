@@ -124,6 +124,11 @@ module.exports = {
       allowShortCircuit: false,
       allowTernary: false,
       allowTaggedTemplates: false
+    }],
+    'jsdoc/tag-lines': ['error', 'never', {
+      tags: {
+        example: { lines: 'always' }
+      }
     }]
   }
 };
