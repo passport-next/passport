@@ -1,7 +1,7 @@
 'use strict';
 
 const chai = require('chai');
-const Authenticator = require('../lib/authenticator');
+const Authenticator = require('../lib/authenticator.js');
 
 
 describe('Authenticator', () => {

@@ -2,7 +2,7 @@
 'use strict';
 
 const chai = require('chai');
-const SessionStrategy = require('../../lib/strategies/session');
+const SessionStrategy = require('../../lib/strategies/session.js');
 
 describe('SessionStrategy', () => {
   const strategy = new SessionStrategy();

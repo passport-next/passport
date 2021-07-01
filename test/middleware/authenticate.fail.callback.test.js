@@ -1,8 +1,8 @@
 'use strict';
 
 const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate');
-const { Passport } = require('../..');
+const authenticate = require('../../lib/middleware/authenticate.js');
+const { Passport } = require('../../lib/index.js');
 
 describe('middleware/authenticate', () => {
   describe('fail with callback', () => {

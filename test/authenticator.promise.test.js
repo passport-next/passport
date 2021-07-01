@@ -1,6 +1,6 @@
 'use strict';
 
-const Authenticator = require('../lib/authenticator');
+const Authenticator = require('../lib/authenticator.js');
 
 
 describe('Authenticator (Promise return)', () => {

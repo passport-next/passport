@@ -1,8 +1,8 @@
 'use strict';
 
 const chai = require('chai');
-const { Passport } = require('../..');
-const initialize = require('../../lib/middleware/initialize');
+const { Passport } = require('../../lib/index.js');
+const initialize = require('../../lib/middleware/initialize.js');
 
 describe('middleware/initialize', () => {
   it('should be named initialize', () => {

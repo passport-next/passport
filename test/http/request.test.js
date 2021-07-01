@@ -1,8 +1,8 @@
 'use strict';
 
 const http = require('http');
-const { Passport } = require('../..');
-const initialize = require('../../lib/middleware/initialize');
+const { Passport } = require('../../lib/index.js');
+const initialize = require('../../lib/middleware/initialize.js');
 
 function setupPassport() {
   const passport = new Passport();

@@ -1,6 +1,6 @@
 'use strict';
 
-const SessionManager = require('../lib/sessionmanager');
+const SessionManager = require('../lib/sessionmanager.js');
 
 
 describe('SessionManager', () => {
