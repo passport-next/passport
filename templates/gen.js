@@ -1,4 +1,4 @@
-/* eslint no-sync: 0, no-console: 0, node/no-unpublished-require: 0 */
+/* eslint-disable node/no-sync, no-console */
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -34,10 +34,8 @@ fileList.forEach((file) => {
   parsedPath.dir += path.sep;
   const destDir = parsedPath.dir.replace(templateDir, '');
   const dest = destDir + parsedPath.name;
-  if (destDir !== '') {
-    if (!fs.existsSync(destDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
-    }
+  if (destDir !== '' && !fs.existsSync(destDir)) {
+    fs.mkdirSync(destDir, { recursive: true });
   }
   if (!init && variables.ignoreExisting.includes(dest) && fs.existsSync(dest)) {
     console.log('Skipping ' + dest);

@@ -1,9 +1,8 @@
-/* eslint-disable no-shadow */
 'use strict';
 
 const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate');
-const { Passport } = require('../..');
+const authenticate = require('../../lib/middleware/authenticate.js');
+const { Passport } = require('../../lib/index.js');
 
 
 describe('middleware/authenticate', () => {
@@ -26,9 +25,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {
@@ -39,7 +37,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
@@ -74,9 +71,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {
@@ -87,12 +83,10 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -103,7 +97,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set authInfo', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.authInfo).to.be.undefined;
     });
   });
@@ -130,11 +123,12 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          // eslint-disable-next-line consistent-return
-          req.logIn = function logIn(user, options, done) {
-            if (options.scope !== 'email') { return done(new Error('invalid options')); }
+          req.logIn = function logIn(user, options) {
+            if (options.scope !== 'email') {
+              return Promise.reject(new Error('invalid options'));
+            }
             this.user = user;
-            done();
+            return Promise.resolve();
           };
         })
         .next((err) => {
@@ -145,7 +139,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
@@ -181,9 +174,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -230,9 +222,8 @@ describe('middleware/authenticate', () => {
           request = req;
           req.session = { returnTo: 'http://www.example.com/return' };
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -259,7 +250,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should move return to from session', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.session.returnTo).to.be.undefined;
     });
   });
@@ -283,9 +273,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -331,8 +320,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
-            done(new Error('something went wrong'));
+          req.logIn = function logIn() {
+            return Promise.reject(new Error('something went wrong'));
           };
         })
         .next((err) => {
@@ -348,12 +337,10 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set authInfo', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.authInfo).to.be.undefined;
     });
   });

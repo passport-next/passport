@@ -1,9 +1,8 @@
-/* eslint-disable no-shadow */
 'use strict';
 
 const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate');
-const { Passport } = require('../..');
+const authenticate = require('../../lib/middleware/authenticate.js');
+const { Passport } = require('../../lib/index.js');
 
 
 describe('middleware/authenticate', () => {
@@ -22,9 +21,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {
@@ -40,12 +38,10 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set authInfo', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.authInfo).to.be.undefined;
     });
   });

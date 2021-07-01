@@ -1,9 +1,8 @@
-/* eslint-disable no-shadow */
 'use strict';
 
 const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate');
-const { Passport } = require('../..');
+const authenticate = require('../../lib/middleware/authenticate.js');
+const { Passport } = require('../../lib/index.js');
 
 
 describe('middleware/authenticate', () => {
@@ -31,9 +30,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -86,9 +84,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -141,9 +138,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -196,9 +192,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -251,9 +246,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -309,9 +303,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -364,9 +357,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -419,9 +411,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -474,9 +465,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -529,9 +519,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -587,9 +576,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -642,9 +630,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -697,9 +684,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -752,9 +738,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -807,9 +792,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -865,9 +849,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -887,7 +870,6 @@ describe('middleware/authenticate', () => {
       });
 
       it('should not flash message', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.message).to.be.undefined;
       });
 
@@ -920,9 +902,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -942,7 +923,6 @@ describe('middleware/authenticate', () => {
       });
 
       it('should not flash message', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.message).to.be.undefined;
       });
 
@@ -975,9 +955,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -1030,9 +1009,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };
@@ -1085,9 +1063,8 @@ describe('middleware/authenticate', () => {
             request = req;
             req.session = {};
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
             req.flash = function flash(type, msg) {
               this.message = { type, msg };

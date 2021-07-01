@@ -1,8 +1,8 @@
 'use strict';
 
 const chai = require('chai');
-const { Passport } = require('../..');
-const initialize = require('../../lib/middleware/initialize');
+const { Passport } = require('../../lib/index.js');
+const initialize = require('../../lib/middleware/initialize.js');
 
 describe('middleware/initialize', () => {
   it('should be named initialize', () => {
@@ -27,7 +27,6 @@ describe('middleware/initialize', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
@@ -38,7 +37,6 @@ describe('middleware/initialize', () => {
     });
 
     it('should not expose empty object as session storage on internal request property', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request._passport.session).to.be.undefined;
     });
   });
@@ -63,12 +61,10 @@ describe('middleware/initialize', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
     it('should not initialize namespace within session', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.session.passport).to.be.undefined;
     });
 
@@ -79,7 +75,6 @@ describe('middleware/initialize', () => {
     });
 
     it('should not expose session storage on internal request property', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request._passport.session).to.be.undefined;
     });
   });
@@ -106,7 +101,6 @@ describe('middleware/initialize', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
@@ -152,7 +146,6 @@ describe('middleware/initialize', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 

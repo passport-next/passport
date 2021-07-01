@@ -1,6 +1,6 @@
 'use strict';
 
-const SessionManager = require('../lib/sessionmanager');
+const SessionManager = require('../lib/sessionmanager.js');
 
 
 describe('SessionManager', () => {
@@ -20,8 +20,8 @@ describe('SessionManager', () => {
     });
   });
   describe('#logIn', () => {
-    const func = (user, req, cb) => {
-      cb(null, JSON.stringify(user));
+    const func = (user /* , req */) => {
+      return JSON.stringify(user);
     };
     const sessionManager = new SessionManager(func);
     const user = {
@@ -37,9 +37,49 @@ describe('SessionManager', () => {
       expect(req.session.passport.user).to.equal('{"username":"dummy"}');
     });
   });
-  describe('#logOut', () => {
-    const func = (user, req, cb) => {
-      cb(null, JSON.stringify(user));
+  describe('#logIn (with pre-provided private passport session)', () => {
+    const func = (user /* , req */) => {
+      return JSON.stringify(user);
+    };
+    const sessionManager = new SessionManager(func);
+    const user = {
+      username: 'dummy'
+    };
+    const req = {
+      _passport: {
+        session: {}
+      }
+    };
+    before((done) => {
+      sessionManager.logIn(req, user, done);
+    });
+    it('serializes user', () => {
+      expect(req.session.passport.user).to.equal('{"username":"dummy"}');
+    });
+  });
+  describe('#logIn (with pre-provided session)', () => {
+    const func = (user /* , req */) => {
+      return JSON.stringify(user);
+    };
+    const sessionManager = new SessionManager(func);
+    const user = {
+      username: 'dummy'
+    };
+    const req = {
+      _passport: {
+      },
+      session: {}
+    };
+    before((done) => {
+      sessionManager.logIn(req, user, done);
+    });
+    it('serializes user', () => {
+      expect(req.session.passport.user).to.equal('{"username":"dummy"}');
+    });
+  });
+  describe('#logIn (erring with callback)', () => {
+    const func = (/* user, req */) => {
+      throw new Error('Bad serializer');
     };
     const sessionManager = new SessionManager(func);
     const user = {
@@ -48,13 +88,53 @@ describe('SessionManager', () => {
     const req = {
       _passport: {}
     };
-    before((done) => {
-      sessionManager.logIn(req, user, () => {
-        sessionManager.logOut(req, done);
+    it('does not throw with callback and bad serializer', (done) => {
+      expect(() => {
+        sessionManager.logIn(req, user, () => {
+          setTimeout(() => done());
+        });
+      }).to.not.throw();
+    });
+  });
+  describe('#logOut', () => {
+    const func = (user /* , req */) => {
+      return JSON.stringify(user);
+    };
+    const sessionManager = new SessionManager(func);
+    const user = {
+      username: 'dummy'
+    };
+    const req = {
+      _passport: {}
+    };
+    before(async () => {
+      await sessionManager.logIn(req, user);
+      return sessionManager.logOut(req);
+    });
+    it('deletes the session', () => {
+      expect(req.session.passport.user).to.undefined;
+    });
+  });
+
+  describe('#logOut (with callback)', () => {
+    const func = (user /* , req */) => {
+      return JSON.stringify(user);
+    };
+    const sessionManager = new SessionManager(func);
+    const user = {
+      username: 'dummy'
+    };
+    const req = {
+      _passport: {}
+    };
+    before(async () => {
+      await sessionManager.logIn(req, user);
+      // eslint-disable-next-line promise/avoid-new
+      return new Promise((resolve) => {
+        sessionManager.logOut(req, resolve);
       });
     });
     it('deletes the session', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(req.session.passport.user).to.undefined;
     });
   });

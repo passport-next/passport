@@ -3,8 +3,8 @@
 'use strict';
 
 const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate');
-const { Passport } = require('../..');
+const authenticate = require('../../lib/middleware/authenticate.js');
+const { Passport } = require('../../lib/index.js');
 
 
 describe('middleware/authenticate', () => {
@@ -34,7 +34,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -72,9 +71,8 @@ describe('middleware/authenticate', () => {
             done();
           };
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .end((res) => {
@@ -85,7 +83,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.not.be.undefined;
     });
 
@@ -121,7 +118,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -158,7 +154,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -194,7 +189,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
