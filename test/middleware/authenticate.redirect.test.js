@@ -1,24 +1,24 @@
-/* eslint-disable no-shadow */
+/* eslint-disable no-shadow -- Convenient */
 
-'use strict';
-
-const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate.js');
-const { Passport } = require('../../lib/index.js');
+import { chai, expect } from '../bootstrap/node.js';
+import authenticate from '../../lib/middleware/authenticate.js';
+import { Passport, EnhancedStrategy } from '../../lib/index.js';
 
 
 describe('middleware/authenticate', () => {
   describe('redirect', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
-        this.redirect('http://www.example.com/idp');
+        this.redirect('https://www.example.com/idp');
       }
     }
 
     const passport = new Passport();
     passport.use('redirect', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
@@ -39,13 +39,13 @@ describe('middleware/authenticate', () => {
 
     it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
-      expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/idp');
       expect(response.getHeader('Content-Length')).to.equal('0');
     });
   });
 
   describe('redirect with session', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'idurotola' };
         this.success(user);
@@ -55,10 +55,12 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
     const authenticator = authenticate(passport, 'success', {
-      successRedirect: 'http://www.example.com/idp'
+      successRedirect: 'https://www.example.com/idp'
     });
 
     before((done) => {
@@ -88,21 +90,23 @@ describe('middleware/authenticate', () => {
 
     it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
-      expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/idp');
     });
   });
 
   describe('redirect with status', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
-        this.redirect('http://www.example.com/idp', 303);
+        this.redirect('https://www.example.com/idp', 303);
       }
     }
 
     const passport = new Passport();
     passport.use('redirect', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
@@ -123,22 +127,24 @@ describe('middleware/authenticate', () => {
 
     it('should redirect', () => {
       expect(response.statusCode).to.equal(303);
-      expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/idp');
       expect(response.getHeader('Content-Length')).to.equal('0');
     });
   });
 
   describe('redirect using framework function', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
-        this.redirect('http://www.example.com/idp');
+        this.redirect('https://www.example.com/idp');
       }
     }
 
     const passport = new Passport();
     passport.use('redirect', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
@@ -159,21 +165,23 @@ describe('middleware/authenticate', () => {
 
     it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
-      expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/idp');
     });
   });
 
   describe('redirect with status using framework function', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
-        this.redirect('http://www.example.com/idp', 303);
+        this.redirect('https://www.example.com/idp', 303);
       }
     }
 
     const passport = new Passport();
     passport.use('redirect', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
@@ -194,7 +202,7 @@ describe('middleware/authenticate', () => {
 
     it('should redirect', () => {
       expect(response.statusCode).to.equal(303);
-      expect(response.getHeader('Location')).to.equal('http://www.example.com/idp');
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/idp');
     });
   });
 });

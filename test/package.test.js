@@ -1,6 +1,5 @@
-'use strict';
-
-const passport = require('..');
+import { expect } from './bootstrap/node.js';
+import passport from '../lib/index.js';
 
 describe('passport', () => {
   it('should expose singleton authenticator', () => {
@@ -15,6 +14,6 @@ describe('passport', () => {
   });
 
   it('should export strategies', () => {
-    expect(passport.strategies.SessionStrategy).to.be.a('function');
+    expect(passport.strategies?.SessionStrategy).to.be.a('function');
   });
 });

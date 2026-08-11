@@ -1,31 +1,41 @@
-
+export namespace strategies {
+    export { SessionStrategy };
+}
+export default index;
+export type ConnectRequest = import("@passport-next/http-types").ConnectRequest & import("@passport-next/passport-types").Request;
+export type Response = import("@passport-next/http-types").ConnectResponse;
+export type ConnectNextCallback = import("@passport-next/http-types").NextFunction;
 /**
- * Module dependencies.
+ * This middleware conforms to Connect/Express middleware by
+ * the arguments it accepts.
  */
-
-import { Strategy, EnhancedStrategy } from '@passport-next/passport-strategy';
+export type ConnectMiddleware = (req: ConnectRequest, res: Response, next: ConnectNextCallback) => void;
+export type AugmentedPassport = Passport & {
+    Authenticator: typeof Authenticator;
+    Passport: typeof Passport;
+    Strategy: typeof Strategy;
+    strategies: typeof strategies;
+};
 import Passport from './authenticator.js';
+export const Authenticator: typeof Passport;
+import { Strategy } from '@passport-next/passport-strategy';
+import { EnhancedStrategy } from '@passport-next/passport-strategy';
 import SessionStrategy from './strategies/session.js';
-
 /**
  * Middleware function passed `req`, `res`, and `next`
  * @external ConnectMiddleware
  * @see https://github.com/senchalabs/connect#appusefn
  */
-
 /**
  * @typedef {import('@passport-next/http-types').ConnectRequest &
  *   import('@passport-next/passport-types').Request} ConnectRequest
  */
-
 /**
  * @typedef {import('@passport-next/http-types').ConnectResponse} Response
  */
-
 /**
  * @typedef {import('@passport-next/http-types').NextFunction} ConnectNextCallback
  */
-
 /**
  * This middleware conforms to Connect/Express middleware by
  * the arguments it accepts.
@@ -36,7 +46,6 @@ import SessionStrategy from './strategies/session.js';
  * @param {ConnectNextCallback} next
  * @returns {void}
  */
-
 /**
  * @typedef {Passport & {
  *   Authenticator: typeof Authenticator,
@@ -45,25 +54,10 @@ import SessionStrategy from './strategies/session.js';
  *   strategies: typeof strategies
  * }} AugmentedPassport
  */
-
 /**
  * Export default singleton.
  * @type {AugmentedPassport}
  * @public
  */
-const index = /** @type {AugmentedPassport} */ (new Passport());
-
-// Expose constructors.
-const Authenticator = Passport;
-export { Passport, Authenticator };
-
-export { Strategy, EnhancedStrategy };
-
-// Expose strategies.
-export const strategies = {};
-strategies.SessionStrategy = SessionStrategy;
-
-// eslint-disable-next-line unicorn/no-top-level-side-effects -- Ok
-Object.assign(index, { Authenticator, Passport, Strategy, strategies });
-
-export default index;
+declare const index: AugmentedPassport;
+export { Passport, Strategy, EnhancedStrategy };

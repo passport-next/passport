@@ -1,7 +1,7 @@
-/* eslint-disable no-shadow */
-'use strict';
+/* eslint-disable no-shadow -- Convenient */
 
-const Authenticator = require('../lib/authenticator.js');
+import { expect } from './bootstrap/node.js';
+import Authenticator from '../lib/authenticator.js';
 
 
 describe('Authenticator', () => {
@@ -14,11 +14,15 @@ describe('Authenticator', () => {
         },
         authenticate(passport, name, options) {
           return function authenticate() {
-            return `authenticate(): ${name} ${options.assignProperty}`;
+            const assignProperty = typeof options === 'function'
+              ? undefined
+              : options?.assignProperty;
+            return `authenticate(): ${name} ${assignProperty}`;
           };
         }
       });
 
+      // @ts-expect-error -- Invoke the test middleware directly without Connect arguments.
       const rv = passport.authorize('foo')();
       it('should call authenticate', () => {
         expect(rv).to.equal('authenticate(): foo account');
@@ -33,16 +37,23 @@ describe('Authenticator', () => {
         },
         authenticate(passport, name, options) {
           return function authenticate() {
-            return `authenticate(): ${name} ${options.assignProperty}`;
+            const assignProperty = typeof options === 'function'
+              ? undefined
+              : options?.assignProperty;
+            return `authenticate(): ${name} ${assignProperty}`;
           };
         },
         authorize(passport, name, options) {
           return function authorize() {
-            return `authorize(): ${name} ${options.assignProperty}`;
+            const assignProperty = typeof options === 'function'
+              ? undefined
+              : options?.assignProperty;
+            return `authorize(): ${name} ${assignProperty}`;
           };
         }
       });
 
+      // @ts-expect-error -- Invoke the test middleware directly without Connect arguments.
       const rv = passport.authorize('foo')();
       it('should call authorize', () => {
         expect(rv).to.equal('authorize(): foo account');

@@ -1,13 +1,12 @@
-'use strict';
-
-const Authenticator = require('../lib/authenticator.js');
-
+import { expect } from './bootstrap/node.js';
+import Authenticator from '../lib/authenticator.js';
 
 describe('Authenticator (Promise return)', () => {
   describe('#sessionManager', () => {
     it('should set custom session manager', () => {
       const passport = new Authenticator();
       const sessionManager = {};
+      // @ts-expect-error -- Just mocking
       passport.sessionManager(sessionManager);
 
       expect(passport._sm).to.equal(sessionManager);
@@ -17,11 +16,9 @@ describe('Authenticator (Promise return)', () => {
   describe('#use', () => {
     describe('with instance name', () => {
       class Strategy {
-        constructor() {
-          this.name = 'default';
-        }
+        name = 'default';
 
-        // eslint-disable-next-line class-methods-use-this
+        // eslint-disable-next-line class-methods-use-this -- Testing
         authenticate() {}
       }
 
@@ -35,7 +32,7 @@ describe('Authenticator (Promise return)', () => {
 
     describe('with registered name', () => {
       class Strategy {
-        // eslint-disable-next-line class-methods-use-this
+        // eslint-disable-next-line class-methods-use-this -- Testing
         authenticate() {}
       }
 
@@ -49,11 +46,9 @@ describe('Authenticator (Promise return)', () => {
 
     describe('with registered name overriding instance name', () => {
       class Strategy {
-        constructor() {
-          this.name = 'default';
-        }
+        name = 'default';
 
-        // eslint-disable-next-line class-methods-use-this
+        // eslint-disable-next-line class-methods-use-this -- Testing
         authenticate() {}
       }
 
@@ -68,7 +63,7 @@ describe('Authenticator (Promise return)', () => {
 
     it('should throw if lacking a name', () => {
       class Strategy {
-        // eslint-disable-next-line class-methods-use-this
+        // eslint-disable-next-line class-methods-use-this -- Testing
         authenticate() {}
       }
 
@@ -82,7 +77,7 @@ describe('Authenticator (Promise return)', () => {
 
   describe('#unuse', () => {
     class Strategy {
-      // eslint-disable-next-line class-methods-use-this
+      // eslint-disable-next-line class-methods-use-this -- Testing
       authenticate() {}
     }
 
@@ -105,7 +100,10 @@ describe('Authenticator (Promise return)', () => {
   describe('#serializeUser', () => {
     describe('without serializers', () => {
       const authenticator = new Authenticator();
+
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -118,7 +116,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to serialize user into session');
+        expect(/** @type {Error} */ (error)?.message).to.equal('Failed to serialize user into session');
       });
 
       it('should not serialize user', () => {
@@ -132,7 +130,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve(user.id);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -158,7 +158,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve(0);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -184,7 +186,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve(false);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -197,7 +201,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to serialize user into session');
+        expect(/** @type {Error} */ (error)?.message).to.equal('Failed to serialize user into session');
       });
 
       it('should not serialize user', () => {
@@ -211,7 +215,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve(null);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -224,7 +230,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to serialize user into session');
+        expect(/** @type {Error} */ (error)?.message).to.equal('Failed to serialize user into session');
       });
 
       it('should not serialize user', () => {
@@ -238,7 +244,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.reject(new Error('something went wrong'));
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -251,7 +259,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went wrong');
+        expect(/** @type {Error} */ (error)?.message).to.equal('something went wrong');
       });
 
       it('should not serialize user', () => {
@@ -265,7 +273,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.reject(new Error('something went horribly wrong'));
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -278,7 +288,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went horribly wrong');
+        expect(/** @type {Error} */ (error).message).to.equal('something went horribly wrong');
       });
 
       it('should not serialize user', () => {
@@ -298,7 +308,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve('three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -330,7 +342,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve('three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -362,7 +376,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve('three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -385,13 +401,15 @@ describe('Authenticator (Promise return)', () => {
     describe('with one serializer that takes request as argument', () => {
       const authenticator = new Authenticator();
       authenticator.serializeUser((req, user) => {
-        if (req.url !== '/foo') {
+        if (req?.url !== '/foo') {
           return Promise.reject(new Error('incorrect req argument'));
         }
         return Promise.resolve(user.id);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -418,7 +436,10 @@ describe('Authenticator (Promise return)', () => {
   describe('#deserializeUser', () => {
     describe('without deserializers', () => {
       const authenticator = new Authenticator();
+
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -431,7 +452,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to deserialize user out of session');
+        expect(/** @type {Error} */ (error)?.message).to.equal('Failed to deserialize user out of session');
       });
 
       it('should not deserialize user', () => {
@@ -442,10 +463,15 @@ describe('Authenticator (Promise return)', () => {
     describe('with one deserializer', () => {
       const authenticator = new Authenticator();
       authenticator.deserializeUser((req, obj) => {
-        return Promise.resolve(obj.username);
+        return Promise.resolve(
+          /** @type {import('../lib/authenticator.js').User} */
+          (obj).username
+        );
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -471,7 +497,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve(false);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -497,7 +525,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve(null);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -523,7 +553,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.reject(new Error('something went wrong'));
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -536,7 +568,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went wrong');
+        expect(/** @type {Error} */ (error)?.message).to.equal('something went wrong');
       });
 
       it('should invalidate session', () => {
@@ -550,7 +582,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.reject(new Error('something went horribly wrong'));
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -563,7 +597,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went horribly wrong');
+        expect(/** @type {Error} */ (error)?.message).to.equal('something went horribly wrong');
       });
 
       it('should invalidate session', () => {
@@ -583,7 +617,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve('three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -615,7 +651,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve('three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -647,7 +685,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve('three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -679,7 +719,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve('three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -711,7 +753,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve('three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -734,13 +778,15 @@ describe('Authenticator (Promise return)', () => {
     describe('with one deserializer that takes request as argument', () => {
       const authenticator = new Authenticator();
       authenticator.deserializeUser((req, obj) => {
-        if (req.url !== '/foo') {
+        if (typeof obj !== 'object' || req?.url !== '/foo') {
           return Promise.reject(new Error('incorrect req argument'));
         }
         return Promise.resolve(obj.username);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | import('../lib/authenticator.js').User | false | null | undefined} */
       let user;
 
       before((done) => {
@@ -767,7 +813,10 @@ describe('Authenticator (Promise return)', () => {
   describe('#transformAuthInfo', () => {
     describe('without transforms', () => {
       const authenticator = new Authenticator();
+
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('./types.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -783,9 +832,9 @@ describe('Authenticator (Promise return)', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.scope).to.equal('write');
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.scope).to.equal('write');
       });
     });
 
@@ -795,7 +844,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve({ clientId: info.clientId, client: { name: 'Foo' } });
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('./types.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -811,10 +862,10 @@ describe('Authenticator (Promise return)', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.client.name).to.equal('Foo');
-        expect(obj.scope).to.be.undefined;
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.client?.name).to.equal('Foo');
+        expect(obj?.scope).to.be.undefined;
       });
     });
 
@@ -824,7 +875,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.reject(new Error('something went wrong'));
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('./types.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -837,7 +890,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went wrong');
+        expect(/** @type {Error} */ (error)?.message).to.equal('something went wrong');
       });
 
       it('should not transform info', () => {
@@ -851,7 +904,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.reject(new Error('something went horribly wrong'));
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('./types.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -864,7 +919,7 @@ describe('Authenticator (Promise return)', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went horribly wrong');
+        expect(/** @type {Error} */ (error)?.message).to.equal('something went horribly wrong');
       });
 
       it('should not transform info', () => {
@@ -878,7 +933,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve({ clientId: info.clientId, client: { name: 'Foo' } });
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('./types.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -894,10 +951,10 @@ describe('Authenticator (Promise return)', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.client.name).to.equal('Foo');
-        expect(obj.scope).to.be.undefined;
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.client?.name).to.equal('Foo');
+        expect(obj?.scope).to.be.undefined;
       });
     });
 
@@ -913,7 +970,9 @@ describe('Authenticator (Promise return)', () => {
         return Promise.resolve({ clientId: info.clientId, client: { name: 'Three' } });
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('./types.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -929,23 +988,25 @@ describe('Authenticator (Promise return)', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.client.name).to.equal('Two');
-        expect(obj.scope).to.be.undefined;
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.client?.name).to.equal('Two');
+        expect(obj?.scope).to.be.undefined;
       });
     });
 
     describe('with one transform that takes request as argument', () => {
       const authenticator = new Authenticator();
       authenticator.transformAuthInfo((req, info) => {
-        if (req.url !== '/foo') {
+        if (req?.url !== '/foo') {
           return Promise.reject(new Error('incorrect req argument'));
         }
         return Promise.resolve({ clientId: info.clientId, client: { name: 'Foo' } });
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('./types.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -963,10 +1024,10 @@ describe('Authenticator (Promise return)', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.client.name).to.equal('Foo');
-        expect(obj.scope).to.be.undefined;
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.client?.name).to.equal('Foo');
+        expect(obj?.scope).to.be.undefined;
       });
     });
   });

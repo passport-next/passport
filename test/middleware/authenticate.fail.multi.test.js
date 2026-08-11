@@ -1,25 +1,23 @@
-'use strict';
-
-const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate.js');
-const { Passport } = require('../../lib/index.js');
+import { chai, expect } from '../bootstrap/node.js';
+import authenticate from '../../lib/middleware/authenticate.js';
+import { Passport, EnhancedStrategy } from '../../lib/index.js';
 
 
 describe('middleware/authenticate', () => {
   describe('with multiple strategies, all of which fail, and responding with unauthorized status', () => {
-    class BasicStrategy {
+    class BasicStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('BASIC challenge');
       }
     }
 
-    class DigestStrategy {
+    class DigestStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('DIGEST challenge');
       }
     }
 
-    class NoChallengeStrategy {
+    class NoChallengeStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail();
       }
@@ -30,7 +28,9 @@ describe('middleware/authenticate', () => {
     passport.use('digest', new DigestStrategy());
     passport.use('no-challenge', new NoChallengeStrategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
@@ -63,25 +63,27 @@ describe('middleware/authenticate', () => {
       expect(val).to.be.an('array');
       expect(val).to.have.length(2);
 
-      expect(val[0]).to.equal('BASIC challenge');
-      expect(val[1]).to.equal('DIGEST challenge');
+      if (Array.isArray(val)) {
+        expect(val[0]).to.equal('BASIC challenge');
+        expect(val[1]).to.equal('DIGEST challenge');
+      }
     });
   });
 
   describe('with multiple strategies, all of which fail, and responding with specified status', () => {
-    class BasicStrategy {
+    class BasicStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('BASIC challenge', 400);
       }
     }
 
-    class BearerStrategy {
+    class BearerStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('BEARER challenge', 403);
       }
     }
 
-    class NoChallengeStrategy {
+    class NoChallengeStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail(402);
       }
@@ -92,7 +94,9 @@ describe('middleware/authenticate', () => {
     passport.use('bearer', new BearerStrategy());
     passport.use('no-challenge', new NoChallengeStrategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
@@ -123,13 +127,13 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with multiple strategies, all of which fail, and flashing message', () => {
-    class StrategyA {
+    class StrategyA extends EnhancedStrategy {
       authenticate() {
         this.fail('A message');
       }
     }
 
-    class StrategyB {
+    class StrategyB extends EnhancedStrategy {
       authenticate() {
         this.fail('B message');
       }
@@ -139,13 +143,15 @@ describe('middleware/authenticate', () => {
     passport.use('a', new StrategyA());
     passport.use('b', new StrategyB());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
       chai.connect.use('express', authenticate(passport, ['a', 'b'], {
         failureFlash: true,
-        failureRedirect: 'http://www.example.com/login'
+        failureRedirect: 'https://www.example.com/login'
       }))
         .req((req) => {
           request = req;
@@ -172,24 +178,24 @@ describe('middleware/authenticate', () => {
 
     it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
-      expect(response.getHeader('Location')).to.equal('http://www.example.com/login');
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/login');
     });
   });
 
   describe('with multiple strategies, all of which fail with unauthorized status, and invoking callback', () => {
-    class BasicStrategy {
+    class BasicStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('BASIC challenge');
       }
     }
 
-    class DigestStrategy {
+    class DigestStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('DIGEST challenge');
       }
     }
 
-    class NoChallengeStrategy {
+    class NoChallengeStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail();
       }
@@ -200,18 +206,25 @@ describe('middleware/authenticate', () => {
     passport.use('digest', new DigestStrategy());
     passport.use('no-challenge', new NoChallengeStrategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | null | undefined} */
     let error;
+    /** @type {unknown} */
     let user;
+    /** @type {Array<string | import('../types.js').AuthInfo | undefined>} */
     let challenge;
+    /** @type {Array<number | undefined>} */
     let status;
 
+    // eslint-disable-next-line mocha/handle-done-callback -- Bug
     before((done) => {
+      /** @type {import('../types.js').AuthenticateCallback} */
       function callback(e, u, c, s) {
         error = e;
         user = u;
-        challenge = c;
-        status = s;
+        challenge = /** @type {Array<string | import('../types.js').AuthInfo | undefined>} */ (c);
+        status = /** @type {Array<number | undefined>} */ (s);
         done();
       }
 
@@ -252,19 +265,19 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with multiple strategies, all of which fail with specific status, and invoking callback', () => {
-    class BasicStrategy {
+    class BasicStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('BASIC challenge', 400);
       }
     }
 
-    class BearerStrategy {
+    class BearerStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('BEARER challenge', 403);
       }
     }
 
-    class NoChallengeStrategy {
+    class NoChallengeStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail(402);
       }
@@ -275,18 +288,25 @@ describe('middleware/authenticate', () => {
     passport.use('bearer', new BearerStrategy());
     passport.use('no-challenge', new NoChallengeStrategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | null | undefined} */
     let error;
+    /** @type {unknown} */
     let user;
+    /** @type {Array<string | import('../types.js').AuthInfo | undefined>} */
     let challenge;
+    /** @type {Array<number | undefined>} */
     let status;
 
+    // eslint-disable-next-line mocha/handle-done-callback -- Bug
     before((done) => {
+      /** @type {import('../types.js').AuthenticateCallback} */
       function callback(e, u, c, s) {
         error = e;
         user = u;
-        challenge = c;
-        status = s;
+        challenge = /** @type {Array<string | import('../types.js').AuthInfo | undefined>} */ (c);
+        status = /** @type {Array<number | undefined>} */ (s);
         done();
       }
 
@@ -327,7 +347,7 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with single strategy in list, which fails with unauthorized status, and invoking callback', () => {
-    class BasicStrategy {
+    class BasicStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('BASIC challenge');
       }
@@ -336,18 +356,25 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('basic', new BasicStrategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | null | undefined} */
     let error;
+    /** @type {unknown} */
     let user;
+    /** @type {Array<string | import('../types.js').AuthInfo | undefined>} */
     let challenge;
+    /** @type {Array<number | undefined>} */
     let status;
 
+    // eslint-disable-next-line mocha/handle-done-callback -- Bug
     before((done) => {
+      /** @type {import('../types.js').AuthenticateCallback} */
       function callback(e, u, c, s) {
         error = e;
         user = u;
-        challenge = c;
-        status = s;
+        challenge = /** @type {Array<string | import('../types.js').AuthInfo | undefined>} */ (c);
+        status = /** @type {Array<number | undefined>} */ (s);
         done();
       }
 
@@ -385,7 +412,7 @@ describe('middleware/authenticate', () => {
   });
 
   describe('without a valid strategy name, which fails with unauthorized status, and invoking callback', () => {
-    class BasicStrategy {
+    class BasicStrategy extends EnhancedStrategy {
       authenticate() {
         this.fail('BASIC challenge');
       }
@@ -394,24 +421,32 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('basic', new BasicStrategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | null | undefined} */
     let error;
+    /** @type {unknown} */
     let user;
+    /** @type {Array<string | import('../types.js').AuthInfo | undefined>} */
     let challenge;
+    /** @type {Array<number | undefined>} */
     let status;
 
+    // eslint-disable-next-line mocha/handle-done-callback -- Bug
     before((done) => {
+      /** @type {import('../types.js').AuthenticateCallback} */
       function callback(e, u, c, s) {
         error = e;
         user = u;
-        challenge = c;
-        status = s;
+        challenge = /** @type {Array<string | import('../types.js').AuthInfo | undefined>} */ (c);
+        status = /** @type {Array<number | undefined>} */ (s);
         done();
       }
 
       chai.connect.use(authenticate(
         passport,
         // Bad strategy name
+        // @ts-expect-error -- Verify behavior when no strategy name is supplied.
         null,
         callback
       ))

@@ -1,13 +1,11 @@
 CONTRIBUTING.md
 docs/
 .DS_Store
-.eslintignore
-.eslintrc.js
+eslint.config.js
 examples/
 .github/
 .gitlab-ci.yml
 .nyc_output
 templates
 test/
-.travis.yml
 var/

@@ -1,5 +1,6 @@
 'use strict';
 
+// eslint-disable-next-line no-undef -- JSDoc requires .js despite CJS
 module.exports = {
   recurseDepth: 10,
   source: {

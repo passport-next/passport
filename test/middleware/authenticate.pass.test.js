@@ -1,13 +1,11 @@
-'use strict';
-
-const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate.js');
-const { Passport } = require('../../lib/index.js');
+import { chai, expect } from '../bootstrap/node.js';
+import authenticate from '../../lib/middleware/authenticate.js';
+import { Passport, EnhancedStrategy } from '../../lib/index.js';
 
 
 describe('middleware/authenticate', () => {
   describe('pass', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         this.pass();
       }
@@ -16,7 +14,9 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('pass', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {

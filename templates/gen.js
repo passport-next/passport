@@ -1,11 +1,10 @@
-/* eslint-disable node/no-sync, no-console */
-'use strict';
-const fs = require('fs');
-const path = require('path');
-const nunjucks = require('nunjucks');
+/* eslint-disable n/no-sync, no-console -- CLI */
+import fs from 'node:fs';
+import path from 'node:path';
+import nunjucks from 'nunjucks';
+import variables from './variables.js';
 
 const templateDir = '.' + path.sep + 'templates' + path.sep;
-const variables = require('./variables.js');
 
 const init = process.argv[2] === '--init';
 variables.templateDir = templateDir;

@@ -1,6 +1,5 @@
-'use strict';
-
-const Authenticator = require('../lib/authenticator.js');
+import { expect } from './bootstrap/node.js';
+import Authenticator from '../lib/authenticator.js';
 
 
 describe('Authenticator', () => {
@@ -8,6 +7,7 @@ describe('Authenticator', () => {
     it('should set custom session manager', () => {
       const passport = new Authenticator();
       const sessionManager = {};
+      // @ts-expect-error -- Just mocking
       passport.sessionManager(sessionManager);
 
       expect(passport._sm).to.equal(sessionManager);
@@ -17,11 +17,9 @@ describe('Authenticator', () => {
   describe('#use', () => {
     describe('with instance name', () => {
       class Strategy {
-        constructor() {
-          this.name = 'default';
-        }
+        name = 'default';
 
-        // eslint-disable-next-line class-methods-use-this
+        // eslint-disable-next-line class-methods-use-this -- Testing
         authenticate() {}
       }
 
@@ -35,7 +33,7 @@ describe('Authenticator', () => {
 
     describe('with registered name', () => {
       class Strategy {
-        // eslint-disable-next-line class-methods-use-this
+        // eslint-disable-next-line class-methods-use-this -- Testing
         authenticate() {}
       }
 
@@ -49,11 +47,9 @@ describe('Authenticator', () => {
 
     describe('with registered name overriding instance name', () => {
       class Strategy {
-        constructor() {
-          this.name = 'default';
-        }
+        name = 'default';
 
-        // eslint-disable-next-line class-methods-use-this
+        // eslint-disable-next-line class-methods-use-this -- Testing
         authenticate() {}
       }
 
@@ -68,7 +64,7 @@ describe('Authenticator', () => {
 
     it('should throw if lacking a name', () => {
       class Strategy {
-        // eslint-disable-next-line class-methods-use-this
+        // eslint-disable-next-line class-methods-use-this -- Testing
         authenticate() {}
       }
 
@@ -77,12 +73,19 @@ describe('Authenticator', () => {
         authenticator.use(new Strategy());
       }).to.throw(Error, 'Authentication strategies must have a name');
     });
+
+    it('should throw if lacking a strategy', () => {
+      expect(() => {
+        const authenticator = new Authenticator();
+        authenticator.use('name');
+      }).to.throw(Error, 'You must supply a strategy function to `use`');
+    });
   });
 
 
   describe('#unuse', () => {
     class Strategy {
-      // eslint-disable-next-line class-methods-use-this
+      // eslint-disable-next-line class-methods-use-this -- Testing
       authenticate() {}
     }
 
@@ -105,7 +108,10 @@ describe('Authenticator', () => {
   describe('#serializeUser', () => {
     describe('without serializers', () => {
       const authenticator = new Authenticator();
+
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -118,7 +124,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to serialize user into session');
+        expect(/** @type {Error} */ (error).message).to.equal('Failed to serialize user into session');
       });
 
       it('should not serialize user', () => {
@@ -142,7 +148,9 @@ describe('Authenticator', () => {
         done(null, user.id);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -168,7 +176,9 @@ describe('Authenticator', () => {
         done(null, 0);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -194,7 +204,9 @@ describe('Authenticator', () => {
         done(null, false);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -207,7 +219,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to serialize user into session');
+        expect(/** @type {Error} */ (error).message).to.equal('Failed to serialize user into session');
       });
 
       it('should not serialize user', () => {
@@ -221,7 +233,9 @@ describe('Authenticator', () => {
         done(null, null);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -234,7 +248,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to serialize user into session');
+        expect(/** @type {Error} */ (error).message).to.equal('Failed to serialize user into session');
       });
 
       it('should not serialize user', () => {
@@ -248,7 +262,9 @@ describe('Authenticator', () => {
         done(null, undefined);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -261,7 +277,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to serialize user into session');
+        expect(/** @type {Error} */ (error).message).to.equal('Failed to serialize user into session');
       });
 
       it('should not serialize user', () => {
@@ -275,7 +291,9 @@ describe('Authenticator', () => {
         done(new Error('something went wrong'));
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -288,7 +306,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went wrong');
+        expect(/** @type {Error} */ (error).message).to.equal('something went wrong');
       });
 
       it('should not serialize user', () => {
@@ -316,7 +334,9 @@ describe('Authenticator', () => {
         throw new Error('something went horribly wrong');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -329,7 +349,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went horribly wrong');
+        expect(/** @type {Error} */ (error).message).to.equal('something went horribly wrong');
       });
 
       it('should not serialize user', () => {
@@ -349,7 +369,9 @@ describe('Authenticator', () => {
         done(null, 'three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -381,7 +403,9 @@ describe('Authenticator', () => {
         done(null, 'three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -413,7 +437,9 @@ describe('Authenticator', () => {
         done(null, 'three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -436,11 +462,16 @@ describe('Authenticator', () => {
     describe('with one serializer that takes request as argument', () => {
       const authenticator = new Authenticator();
       authenticator.serializeUser((req, user, done) => {
-        if (req.url !== '/foo') { done(new Error('incorrect req argument')); return; }
+        if (req?.url !== '/foo') {
+          done(new Error('incorrect req argument'));
+          return;
+        }
         done(null, user.id);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | 0 | false | null | undefined} */
       let obj;
 
       before((done) => {
@@ -467,7 +498,10 @@ describe('Authenticator', () => {
   describe('#deserializeUser', () => {
     describe('without deserializers', () => {
       const authenticator = new Authenticator();
+
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -480,7 +514,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to deserialize user out of session');
+        expect(/** @type {Error} */ (error).message).to.equal('Failed to deserialize user out of session');
       });
 
       it('should not deserialize user', () => {
@@ -501,10 +535,17 @@ describe('Authenticator', () => {
     describe('with one deserializer', () => {
       const authenticator = new Authenticator();
       authenticator.deserializeUser((req, obj, done) => {
+        if (typeof obj !== 'object') {
+          done(new Error('incorrect obj argument'));
+          return;
+        }
         done(null, obj.username);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -530,7 +571,9 @@ describe('Authenticator', () => {
         done(null, false);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -556,7 +599,9 @@ describe('Authenticator', () => {
         done(null, null);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -582,7 +627,9 @@ describe('Authenticator', () => {
         done(null, undefined);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -595,7 +642,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to deserialize user out of session');
+        expect(/** @type {Error} */ (error).message).to.equal('Failed to deserialize user out of session');
       });
 
       it('should not deserialize user', () => {
@@ -609,7 +656,9 @@ describe('Authenticator', () => {
         done(new Error('something went wrong'));
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -622,7 +671,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went wrong');
+        expect(/** @type {Error} */ (error).message).to.equal('something went wrong');
       });
 
       it('should invalidate session', () => {
@@ -649,7 +698,9 @@ describe('Authenticator', () => {
         throw new Error('something went horribly wrong');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -662,7 +713,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went horribly wrong');
+        expect(/** @type {Error} */ (error).message).to.equal('something went horribly wrong');
       });
 
       it('should invalidate session', () => {
@@ -682,7 +733,9 @@ describe('Authenticator', () => {
         done(null, 'three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -714,7 +767,9 @@ describe('Authenticator', () => {
         done(null, 'three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -746,7 +801,9 @@ describe('Authenticator', () => {
         done(null, 'three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -778,7 +835,9 @@ describe('Authenticator', () => {
         done(null, 'three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -810,7 +869,9 @@ describe('Authenticator', () => {
         done(null, 'three');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -833,11 +894,20 @@ describe('Authenticator', () => {
     describe('with one deserializer that takes request as argument', () => {
       const authenticator = new Authenticator();
       authenticator.deserializeUser((req, obj, done) => {
-        if (req.url !== '/foo') { done(new Error('incorrect req argument')); return; }
+        if (req?.url !== '/foo') {
+          done(new Error('incorrect req argument'));
+          return;
+        }
+        if (typeof obj !== 'object') {
+          done(new Error('incorrect obj argument'));
+          return;
+        }
         done(null, obj.username);
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {string | false | import('../lib/authenticator.js').User | null | undefined} */
       let user;
 
       before((done) => {
@@ -864,7 +934,10 @@ describe('Authenticator', () => {
   describe('#transformAuthInfo', () => {
     describe('without transforms', () => {
       const authenticator = new Authenticator();
+
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('../lib/authenticator.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -880,9 +953,9 @@ describe('Authenticator', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.scope).to.equal('write');
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.scope).to.equal('write');
       });
     });
 
@@ -892,7 +965,9 @@ describe('Authenticator', () => {
         done(null, { clientId: info.clientId, client: { name: 'Foo' } });
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('../lib/authenticator.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -908,10 +983,10 @@ describe('Authenticator', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.client.name).to.equal('Foo');
-        expect(obj.scope).to.be.undefined;
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.client?.name).to.equal('Foo');
+        expect(obj?.scope).to.be.undefined;
       });
     });
 
@@ -921,7 +996,9 @@ describe('Authenticator', () => {
         done(new Error('something went wrong'));
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('../lib/authenticator.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -934,7 +1011,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went wrong');
+        expect(/** @type {Error} */ (error).message).to.equal('something went wrong');
       });
 
       it('should not transform info', () => {
@@ -948,7 +1025,9 @@ describe('Authenticator', () => {
         throw new Error('something went horribly wrong');
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('../lib/authenticator.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -961,7 +1040,7 @@ describe('Authenticator', () => {
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went horribly wrong');
+        expect(/** @type {Error} */ (error).message).to.equal('something went horribly wrong');
       });
 
       it('should not transform info', () => {
@@ -973,7 +1052,9 @@ describe('Authenticator', () => {
       const authenticator = new Authenticator();
       authenticator.transformAuthInfo((req, info) => ({ clientId: info.clientId, client: { name: 'Foo' } }));
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('../lib/authenticator.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -989,10 +1070,10 @@ describe('Authenticator', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.client.name).to.equal('Foo');
-        expect(obj.scope).to.be.undefined;
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.client?.name).to.equal('Foo');
+        expect(obj?.scope).to.be.undefined;
       });
     });
 
@@ -1008,7 +1089,9 @@ describe('Authenticator', () => {
         done(null, { clientId: info.clientId, client: { name: 'Three' } });
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('../lib/authenticator.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -1024,21 +1107,26 @@ describe('Authenticator', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.client.name).to.equal('Two');
-        expect(obj.scope).to.be.undefined;
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.client?.name).to.equal('Two');
+        expect(obj?.scope).to.be.undefined;
       });
     });
 
     describe('with one transform that takes request as argument', () => {
       const authenticator = new Authenticator();
       authenticator.transformAuthInfo((req, info, done) => {
-        if (req.url !== '/foo') { done(new Error('incorrect req argument')); return; }
+        if (req?.url !== '/foo') {
+          done(new Error('incorrect req argument'));
+          return;
+        }
         done(null, { clientId: info.clientId, client: { name: 'Foo' } });
       });
 
+      /** @type {"pass" | Error | null} */
       let error;
+      /** @type {import('../lib/authenticator.js').AuthInfo | undefined} */
       let obj;
 
       before((done) => {
@@ -1056,10 +1144,10 @@ describe('Authenticator', () => {
       });
 
       it('should not transform info', () => {
-        expect(Object.keys(obj)).to.have.length(2);
-        expect(obj.clientId).to.equal('1');
-        expect(obj.client.name).to.equal('Foo');
-        expect(obj.scope).to.be.undefined;
+        expect(Object.keys(obj ?? {})).to.have.length(2);
+        expect(obj?.clientId).to.equal('1');
+        expect(obj?.client?.name).to.equal('Foo');
+        expect(obj?.scope).to.be.undefined;
       });
     });
   });

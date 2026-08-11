@@ -1,19 +1,19 @@
-'use strict';
-
-const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate.js');
-const { Passport } = require('../../lib/index.js');
+import { chai, expect } from '../bootstrap/node.js';
+import authenticate from '../../lib/middleware/authenticate.js';
+import { Passport } from '../../lib/index.js';
 
 
 describe('middleware/authenticate', () => {
   it('should be named authenticate', () => {
-    expect(authenticate().name).to.equal('authenticate');
+    expect(authenticate(new Passport(), 'test').name).to.equal('authenticate');
   });
 
   describe('with unknown strategy', () => {
     const passport = new Passport();
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -34,7 +34,7 @@ describe('middleware/authenticate', () => {
 
     it('should error', () => {
       expect(error).to.be.an.instanceOf(Error);
-      expect(error.message).to.equal('Unknown authentication strategy "foo"');
+      expect(error?.message).to.equal('Unknown authentication strategy "foo"');
     });
 
     it('should not set user', () => {

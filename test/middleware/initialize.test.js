@@ -1,17 +1,17 @@
-'use strict';
-
-const chai = require('chai');
-const { Passport } = require('../../lib/index.js');
-const initialize = require('../../lib/middleware/initialize.js');
+import { chai, expect } from '../bootstrap/node.js';
+import { Passport } from '../../lib/index.js';
+import initialize from '../../lib/middleware/initialize.js';
 
 describe('middleware/initialize', () => {
   it('should be named initialize', () => {
-    expect(initialize().name).to.equal('initialize');
+    expect(initialize(new Passport()).name).to.equal('initialize');
   });
 
   describe('handling a request without a session', () => {
     const passport = new Passport();
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -43,7 +43,10 @@ describe('middleware/initialize', () => {
 
   describe('handling a request with a new session', () => {
     const passport = new Passport();
+
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -81,7 +84,10 @@ describe('middleware/initialize', () => {
 
   describe('handling a request with an existing session', () => {
     const passport = new Passport();
+
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -106,8 +112,8 @@ describe('middleware/initialize', () => {
 
     it('should maintain data within session', () => {
       expect(request.session.passport).to.be.an('object');
-      expect(Object.keys(request.session.passport)).to.have.length(1);
-      expect(request.session.passport.user).to.equal('123456');
+      expect(Object.keys(request.session.passport ?? {})).to.have.length(1);
+      expect(request.session.passport?.user).to.equal('123456');
     });
 
     it('should expose authenticator on internal request property', () => {
@@ -118,15 +124,18 @@ describe('middleware/initialize', () => {
 
     it('should expose session storage on internal request property', () => {
       expect(request._passport.session).to.be.an('object');
-      expect(Object.keys(request._passport.session)).to.have.length(1);
-      expect(request._passport.session.user).to.equal('123456');
+      expect(Object.keys(request._passport.session ?? {})).to.have.length(1);
+      expect(request._passport.session?.user).to.equal('123456');
     });
   });
 
   describe('handling a request with an existing session using custom session key', () => {
     const passport = new Passport();
     passport._key = 'authentication';
+
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -135,8 +144,9 @@ describe('middleware/initialize', () => {
           request = req;
 
           req.session = {};
-          req.session.authentication = {};
-          req.session.authentication.user = '123456';
+          req.session.authentication = {
+            user: '123456'
+          };
         })
         .next((err) => {
           error = err;
@@ -151,8 +161,8 @@ describe('middleware/initialize', () => {
 
     it('should maintain data within session', () => {
       expect(request.session.authentication).to.be.an('object');
-      expect(Object.keys(request.session.authentication)).to.have.length(1);
-      expect(request.session.authentication.user).to.equal('123456');
+      expect(Object.keys(request.session.authentication ?? {})).to.have.length(1);
+      expect(request.session.authentication?.user).to.equal('123456');
     });
 
     it('should expose authenticator on internal request property', () => {
@@ -163,8 +173,8 @@ describe('middleware/initialize', () => {
 
     it('should expose session storage on internal request property', () => {
       expect(request._passport.session).to.be.an('object');
-      expect(Object.keys(request._passport.session)).to.have.length(1);
-      expect(request._passport.session.user).to.equal('123456');
+      expect(Object.keys(request._passport.session ?? {})).to.have.length(1);
+      expect(request._passport.session?.user).to.equal('123456');
     });
   });
 });

@@ -1,5 +1,4 @@
-'use strict';
-module.exports = {
+export default {
   projectName: 'Passport-Next/Passport',
   description: 'Simple, unobtrusive authentication for Node.js.',
   npmModule: '@passport-next/passport',
