@@ -1,13 +1,11 @@
-'use strict';
-
-const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate.js');
-const { Passport } = require('../../lib/index.js');
+import { chai, expect } from '../bootstrap/node.js';
+import authenticate from '../../lib/middleware/authenticate.js';
+import { Passport, EnhancedStrategy } from '../../lib/index.js';
 
 
 describe('middleware/authenticate', () => {
   describe('error', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         this.error(new Error('something is wrong'));
       }
@@ -16,7 +14,9 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('error', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -33,7 +33,7 @@ describe('middleware/authenticate', () => {
 
     it('should error', () => {
       expect(error).to.be.an.instanceOf(Error);
-      expect(error.message).to.equal('something is wrong');
+      expect(error?.message).to.equal('something is wrong');
     });
 
     it('should not set user', () => {

@@ -1,13 +1,11 @@
-'use strict';
-
-const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate.js');
-const { Passport } = require('../../lib/index.js');
+import { chai, expect } from '../bootstrap/node.js';
+import authenticate from '../../lib/middleware/authenticate.js';
+import { Passport, EnhancedStrategy } from '../../lib/index.js';
 
 
 describe('middleware/authenticate', () => {
   describe('success with info', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user, { clientId: '123', scope: 'read' });
@@ -17,7 +15,9 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -55,7 +55,7 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with info that is transformed', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user, { clientId: '123', scope: 'read' });
@@ -68,7 +68,9 @@ describe('middleware/authenticate', () => {
       return { clientId: info.clientId, client: { name: 'Foo' }, scope: info.scope };
     });
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -101,13 +103,13 @@ describe('middleware/authenticate', () => {
       expect(request.authInfo).to.be.an('object');
       expect(Object.keys(request.authInfo)).to.have.length(3);
       expect(request.authInfo.clientId).to.equal('123');
-      expect(request.authInfo.client.name).to.equal('Foo');
+      expect(request.authInfo.client?.name).to.equal('Foo');
       expect(request.authInfo.scope).to.equal('read');
     });
   });
 
   describe('success with info, but transform that encounters an error', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user, { clientId: '123', scope: 'read' });
@@ -120,7 +122,9 @@ describe('middleware/authenticate', () => {
       throw new Error('something went wrong');
     });
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -141,7 +145,7 @@ describe('middleware/authenticate', () => {
 
     it('should error', () => {
       expect(error).to.be.an.instanceOf(Error);
-      expect(error.message).to.equal('something went wrong');
+      expect(error?.message).to.equal('something went wrong');
     });
 
     it('should set user', () => {
@@ -156,7 +160,7 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with info, but option that disables info', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user, { clientId: '123', scope: 'read' });
@@ -166,7 +170,9 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {

@@ -1,19 +1,17 @@
-'use strict';
-
-const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate.js');
-const { Passport } = require('../../lib/index.js');
+import { chai, expect } from '../bootstrap/node.js';
+import authenticate from '../../lib/middleware/authenticate.js';
+import { Passport, EnhancedStrategy } from '../../lib/index.js';
 
 
 describe('middleware/authenticate', () => {
   describe('with multiple strategies, the first of which succeeds', () => {
-    class StrategyA {
+    class StrategyA extends EnhancedStrategy {
       authenticate() {
         this.success({ username: 'bob-a' });
       }
     }
 
-    class StrategyB {
+    class StrategyB extends EnhancedStrategy {
       authenticate() {
         this.success({ username: 'bob-b' });
       }
@@ -23,7 +21,9 @@ describe('middleware/authenticate', () => {
     passport.use('a', new StrategyA());
     passport.use('b', new StrategyB());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -53,13 +53,13 @@ describe('middleware/authenticate', () => {
   });
 
   describe('with multiple strategies, the second of which succeeds', () => {
-    class StrategyA {
+    class StrategyA extends EnhancedStrategy {
       authenticate() {
         this.fail('A challenge');
       }
     }
 
-    class StrategyB {
+    class StrategyB extends EnhancedStrategy {
       authenticate() {
         this.success({ username: 'bob-b' });
       }
@@ -69,7 +69,9 @@ describe('middleware/authenticate', () => {
     passport.use('a', new StrategyA());
     passport.use('b', new StrategyB());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {

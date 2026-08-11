@@ -1,7 +1,13 @@
-'use strict';
+import * as chaiModule from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import chaiConnectMiddleware from '@passport-next/chai-connect-middleware';
+import chaiPassportStrategy from '@passport-next/chai-passport-strategy';
 
-const chai = require('chai');
+const chai = chaiPassportStrategy(chaiModule.use((chaiInstance, utils) => {
+  chaiAsPromised(chaiInstance, utils);
+  chaiConnectMiddleware(chaiInstance);
+}));
 
-chai.use(require('chai-as-promised'));
-chai.use(require('@passport-next/chai-connect-middleware'));
-chai.use(require('@passport-next/chai-passport-strategy'));
+const { expect } = chai;
+
+export { chai, expect };

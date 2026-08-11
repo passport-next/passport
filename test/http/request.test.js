@@ -1,15 +1,28 @@
-'use strict';
+import http from 'node:http';
+import net from 'node:net';
+import { expect } from '../bootstrap/node.js';
+import { Passport } from '../../lib/index.js';
+import initialize from '../../lib/middleware/initialize.js';
 
-const http = require('http');
-const { Passport } = require('../../lib/index.js');
-const initialize = require('../../lib/middleware/initialize.js');
+/**
+ * @typedef {import('../../lib/middleware/initialize.js').InitializeRequest &
+ *   http.IncomingMessage & {
+ *     user?: import('../types.js').User | null,
+ *     currentUser?: import('../types.js').User | null
+ *   }} InitializedRequest
+ */
 
+/** @returns {{passport: Passport, req: InitializedRequest}} */
 function setupPassport() {
   const passport = new Passport();
-  const req = new http.IncomingMessage();
+  const req = new http.IncomingMessage(new net.Socket());
+  const res = new http.ServerResponse(req);
   const middleware = initialize(passport);
-  middleware(req, {}, () => {});
-  return { passport, req };
+  middleware(req, res, () => {});
+  return {
+    passport,
+    req: /** @type {InitializedRequest} */ (req)
+  };
 }
 
 describe('http.ServerRequest', () => {
@@ -38,7 +51,7 @@ describe('http.ServerRequest', () => {
     describe('passport not in use', () => {
       const { req } = setupPassport();
       const user = { id: '1', username: 'root' };
-      delete req._passport;
+      Reflect.deleteProperty(req, '_passport');
       it('should throw an exception', () => {
         expect(() => {
           req.logIn(user, () => {});
@@ -49,6 +62,8 @@ describe('http.ServerRequest', () => {
     describe('not establishing a session', () => {
       const { req } = setupPassport();
       req._passport.session = {};
+
+      /** @type {Error | undefined} */
       let error;
 
       before(async () => {
@@ -57,7 +72,7 @@ describe('http.ServerRequest', () => {
         try {
           await req.login(user, { session: false });
         } catch (err) {
-          error = err;
+          error = /** @type {Error} */ (err);
         }
       });
 
@@ -72,20 +87,22 @@ describe('http.ServerRequest', () => {
 
       it('should set user', () => {
         expect(req.user).to.be.an('object');
-        expect(req.user.id).to.equal('1');
-        expect(req.user.username).to.equal('root');
+        expect(req.user?.id).to.equal('1');
+        expect(req.user?.username).to.equal('root');
       });
 
       it('should not serialize user', () => {
-        expect(req._passport.session.user).to.be.undefined;
+        expect(req._passport.session?.user).to.be.undefined;
       });
     });
 
     describe('not establishing a session (with done callback)', () => {
       const { req } = setupPassport();
       req._passport.session = {};
+
+      /** @type {Error | undefined} */
       let error;
-      let callbackRan;
+      let callbackRan = false;
 
       before(async () => {
         const user = { id: '1', username: 'root' };
@@ -95,7 +112,7 @@ describe('http.ServerRequest', () => {
             callbackRan = true;
           });
         } catch (err) {
-          error = err;
+          error = /** @type {Error} */ (err);
         }
       });
 
@@ -110,12 +127,12 @@ describe('http.ServerRequest', () => {
 
       it('should set user', () => {
         expect(req.user).to.be.an('object');
-        expect(req.user.id).to.equal('1');
-        expect(req.user.username).to.equal('root');
+        expect(req.user?.id).to.equal('1');
+        expect(req.user?.username).to.equal('root');
       });
 
       it('should not serialize user', () => {
-        expect(req._passport.session.user).to.be.undefined;
+        expect(req._passport.session?.user).to.be.undefined;
       });
 
       it('should run callback', () => {
@@ -127,6 +144,8 @@ describe('http.ServerRequest', () => {
       const { req, passport } = setupPassport();
       req._passport.session = {};
       passport._userProperty = 'currentUser';
+
+      /** @type {Error | undefined} */
       let error;
 
       before(async () => {
@@ -135,7 +154,7 @@ describe('http.ServerRequest', () => {
         try {
           await req.login(user, { session: false });
         } catch (err) {
-          error = err;
+          error = /** @type {Error} */ (err);
         }
       });
 
@@ -154,20 +173,23 @@ describe('http.ServerRequest', () => {
 
       it('should set custom user', () => {
         expect(req.currentUser).to.be.an('object');
-        expect(req.currentUser.id).to.equal('1');
-        expect(req.currentUser.username).to.equal('root');
+        expect(req.currentUser?.id).to.equal('1');
+        expect(req.currentUser?.username).to.equal('root');
       });
 
       it('should not serialize user', () => {
-        expect(req._passport.session.user).to.be.undefined;
+        expect(req._passport.session?.user).to.be.undefined;
       });
     });
 
+    // eslint-disable-next-line mocha/no-async-suite -- Convenient
     describe('not establishing a session and invoked without a callback', async () => {
       const { req } = setupPassport();
       req._passport.session = {};
 
       const user = { id: '1', username: 'root' };
+
+      // eslint-disable-next-line sonarjs/synchronous-suite-callback -- Convenient
       await req.login(user, { session: false });
 
       it('should be authenticated', () => {
@@ -177,18 +199,20 @@ describe('http.ServerRequest', () => {
 
       it('should set user', () => {
         expect(req.user).to.be.an('object');
-        expect(req.user.id).to.equal('1');
-        expect(req.user.username).to.equal('root');
+        expect(req.user?.id).to.equal('1');
+        expect(req.user?.username).to.equal('root');
       });
 
       it('should not serialize user', () => {
-        expect(req._passport.session.user).to.be.undefined;
+        expect(req._passport.session?.user).to.be.undefined;
       });
     });
 
     describe('not establishing a session, without passport.initialize() middleware', () => {
       const { req } = setupPassport();
-      delete req._passport.instance._userProperty;
+      Reflect.deleteProperty(req._passport.instance, '_userProperty');
+
+      /** @type {Error | undefined} */
       let error;
 
       before(async () => {
@@ -197,7 +221,7 @@ describe('http.ServerRequest', () => {
         try {
           await req.login(user, { session: false });
         } catch (err) {
-          error = err;
+          error = /** @type {Error} */ (err);
         }
       });
 
@@ -212,8 +236,8 @@ describe('http.ServerRequest', () => {
 
       it('should set user', () => {
         expect(req.user).to.be.an('object');
-        expect(req.user.id).to.equal('1');
-        expect(req.user.username).to.equal('root');
+        expect(req.user?.id).to.equal('1');
+        expect(req.user?.username).to.equal('root');
       });
     });
 
@@ -222,6 +246,8 @@ describe('http.ServerRequest', () => {
       passport.serializeUser((rq, user, done) => {
         done(null, user.id);
       });
+
+      /** @type {Error | undefined} */
       let error;
 
       before(async () => {
@@ -230,7 +256,7 @@ describe('http.ServerRequest', () => {
         try {
           await req.login(user);
         } catch (err) {
-          error = err;
+          error = /** @type {Error} */ (err);
         }
       });
 
@@ -245,12 +271,12 @@ describe('http.ServerRequest', () => {
 
       it('should set user', () => {
         expect(req.user).to.be.an('object');
-        expect(req.user.id).to.equal('1');
-        expect(req.user.username).to.equal('root');
+        expect(req.user?.id).to.equal('1');
+        expect(req.user?.username).to.equal('root');
       });
 
       it('should serialize user', () => {
-        expect(req._passport.session.user).to.equal('1');
+        expect(req._passport.session?.user).to.equal('1');
       });
     });
 
@@ -259,6 +285,8 @@ describe('http.ServerRequest', () => {
       passport.serializeUser((rq, user, done) => {
         done(null, user.id);
       });
+
+      /** @type {Error | undefined} */
       let error;
 
       before(async () => {
@@ -273,7 +301,7 @@ describe('http.ServerRequest', () => {
             throw new Error('Did not invoke `done` callback');
           }
         } catch (err) {
-          error = err;
+          error = /** @type {Error} */ (err);
         }
       });
 
@@ -288,12 +316,12 @@ describe('http.ServerRequest', () => {
 
       it('should set user', () => {
         expect(req.user).to.be.an('object');
-        expect(req.user.id).to.equal('1');
-        expect(req.user.username).to.equal('root');
+        expect(req.user?.id).to.equal('1');
+        expect(req.user?.username).to.equal('root');
       });
 
       it('should serialize user', () => {
-        expect(req._passport.session.user).to.equal('1');
+        expect(req._passport.session?.user).to.equal('1');
       });
     });
 
@@ -304,6 +332,7 @@ describe('http.ServerRequest', () => {
       });
       passport._userProperty = 'currentUser';
 
+      /** @type {Error | undefined} */
       let error;
 
       before(async () => {
@@ -312,7 +341,7 @@ describe('http.ServerRequest', () => {
         try {
           await req.login(user);
         } catch (err) {
-          error = err;
+          error = /** @type {Error} */ (err);
         }
       });
 
@@ -331,12 +360,12 @@ describe('http.ServerRequest', () => {
 
       it('should set custom user', () => {
         expect(req.currentUser).to.be.an('object');
-        expect(req.currentUser.id).to.equal('1');
-        expect(req.currentUser.username).to.equal('root');
+        expect(req.currentUser?.id).to.equal('1');
+        expect(req.currentUser?.username).to.equal('root');
       });
 
       it('should serialize user', () => {
-        expect(req._passport.session.user).to.equal('1');
+        expect(req._passport.session?.user).to.equal('1');
       });
     });
 
@@ -347,6 +376,7 @@ describe('http.ServerRequest', () => {
         done(new Error('something went wrong'));
       });
 
+      /** @type {Error | undefined} */
       let error;
 
       before(async () => {
@@ -355,13 +385,13 @@ describe('http.ServerRequest', () => {
         try {
           await req.login(user);
         } catch (err) {
-          error = err;
+          error = /** @type {Error} */ (err);
         }
       });
 
       it('should error', () => {
         expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('something went wrong');
+        expect(error?.message).to.equal('something went wrong');
       });
 
       it('should not be authenticated', () => {
@@ -374,7 +404,7 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not serialize user', () => {
-        expect(req._passport.session.user).to.be.undefined;
+        expect(req._passport.session?.user).to.be.undefined;
       });
     });
 
@@ -385,6 +415,7 @@ describe('http.ServerRequest', () => {
         done(new Error('something went wrong'));
       });
 
+      /** @type {Error | undefined} */
       let callbackError;
 
       before((done) => {
@@ -402,7 +433,7 @@ describe('http.ServerRequest', () => {
 
       it('should error', () => {
         expect(callbackError).to.be.an.instanceOf(Error);
-        expect(callbackError.message).to.equal('something went wrong');
+        expect(callbackError?.message).to.equal('something went wrong');
       });
 
       it('should not be authenticated', () => {
@@ -415,7 +446,7 @@ describe('http.ServerRequest', () => {
       });
 
       it('should not serialize user', () => {
-        expect(req._passport.session.user).to.be.undefined;
+        expect(req._passport.session?.user).to.be.undefined;
       });
     });
 
@@ -455,7 +486,7 @@ describe('http.ServerRequest', () => {
       });
 
       it('should clear serialized user', () => {
-        expect(req._passport.session.user).to.be.undefined;
+        expect(req._passport.session?.user).to.be.undefined;
       });
     });
 
@@ -478,13 +509,13 @@ describe('http.ServerRequest', () => {
       });
 
       it('should clear serialized user', () => {
-        expect(req._passport.session.user).to.be.undefined;
+        expect(req._passport.session?.user).to.be.undefined;
       });
     });
 
     describe('existing session, without passport.initialize() middleware', () => {
       const { req } = setupPassport();
-      delete req._passport;
+      Reflect.deleteProperty(req, '_passport');
 
       req.user = { id: '1', username: 'root' };
 
@@ -502,7 +533,7 @@ describe('http.ServerRequest', () => {
 
     describe('existing session, without passport.initialize() middleware but with an `instance` without a `_userProperty`', () => {
       const { req } = setupPassport();
-      delete req._passport.instance._userProperty;
+      Reflect.deleteProperty(req._passport.instance, '_userProperty');
 
       req.user = { id: '1', username: 'root' };
 
@@ -553,7 +584,7 @@ describe('http.ServerRequest', () => {
 
     describe('with a null user', () => {
       const { req } = setupPassport();
-      req.user = null;
+      Reflect.set(req, 'user', null);
 
       it('should not be authenticated', () => {
         expect(req.isAuthenticated()).to.be.false;

@@ -1,13 +1,11 @@
-'use strict';
-
-const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate.js');
-const { Passport } = require('../../lib/index.js');
+import { chai, expect } from '../bootstrap/node.js';
+import authenticate from '../../lib/middleware/authenticate.js';
+import { Passport, EnhancedStrategy } from '../../lib/index.js';
 
 
 describe('middleware/authenticate', () => {
   describe('success', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user);
@@ -17,7 +15,9 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -53,7 +53,7 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success that assigns a specific property', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user);
@@ -63,7 +63,9 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -102,8 +104,14 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with strategy-specific options', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
+      /**
+       * @param {import('@passport-next/passport-types').Request} req
+       * @param {import('../../lib/types.js').GenericObject} options
+       * @returns {void}
+       */
       authenticate(req, options) {
+        /** @type {import('../types.js').User} */
         const user = { id: '1', username: 'jaredhanson' };
         if (options.scope === 'email') {
           user.email = 'jaredhanson@example.com';
@@ -115,7 +123,9 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -124,7 +134,7 @@ describe('middleware/authenticate', () => {
           request = req;
 
           req.logIn = function logIn(user, options) {
-            if (options.scope !== 'email') {
+            if (options?.scope !== 'email') {
               return Promise.reject(new Error('invalid options'));
             }
             this.user = user;
@@ -156,7 +166,7 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with redirect', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user);
@@ -166,11 +176,13 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
-      chai.connect.use('express', authenticate(passport, 'success', { successRedirect: 'http://www.example.com/account' }))
+      chai.connect.use('express', authenticate(passport, 'success', { successRedirect: 'https://www.example.com/account' }))
         .req((req) => {
           request = req;
 
@@ -198,12 +210,12 @@ describe('middleware/authenticate', () => {
 
     it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
-      expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
     });
   });
 
   describe('success with return to previous location', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user);
@@ -213,14 +225,16 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
-      chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'http://www.example.com/default' }))
+      chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'https://www.example.com/default' }))
         .req((req) => {
           request = req;
-          req.session = { returnTo: 'http://www.example.com/return' };
+          req.session = { returnTo: 'https://www.example.com/return' };
 
           req.logIn = function logIn(user) {
             this.user = user;
@@ -246,7 +260,7 @@ describe('middleware/authenticate', () => {
 
     it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
-      expect(response.getHeader('Location')).to.equal('http://www.example.com/return');
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/return');
     });
 
     it('should move return to from session', () => {
@@ -255,7 +269,7 @@ describe('middleware/authenticate', () => {
   });
 
   describe('success with return to default location', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user);
@@ -265,11 +279,13 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
 
     before((done) => {
-      chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'http://www.example.com/default' }))
+      chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'https://www.example.com/default' }))
         .req((req) => {
           request = req;
 
@@ -297,12 +313,12 @@ describe('middleware/authenticate', () => {
 
     it('should redirect', () => {
       expect(response.statusCode).to.equal(302);
-      expect(response.getHeader('Location')).to.equal('http://www.example.com/default');
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/default');
     });
   });
 
   describe('success, but login that encounters an error', () => {
-    class Strategy {
+    class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'jaredhanson' };
         this.success(user);
@@ -312,7 +328,9 @@ describe('middleware/authenticate', () => {
     const passport = new Passport();
     passport.use('success', new Strategy());
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -333,7 +351,7 @@ describe('middleware/authenticate', () => {
 
     it('should error', () => {
       expect(error).to.be.an.instanceOf(Error);
-      expect(error.message).to.equal('something went wrong');
+      expect(error?.message).to.equal('something went wrong');
     });
 
     it('should not set user', () => {

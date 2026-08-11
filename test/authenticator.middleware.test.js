@@ -1,7 +1,6 @@
-'use strict';
-
-const chai = require('chai');
-const Authenticator = require('../lib/authenticator.js');
+import { chai, expect } from './bootstrap/node.js';
+import Authenticator from '../lib/authenticator.js';
+import { EnhancedStrategy } from '../lib/index.js';
 
 
 describe('Authenticator', () => {
@@ -13,7 +12,10 @@ describe('Authenticator', () => {
 
     describe('handling a request', () => {
       const passport = new Authenticator();
+
+      /** @type {import('./types.js').Request} */
       let request;
+      /** @type {Error | undefined} */
       let error;
 
       before((done) => {
@@ -54,7 +56,10 @@ describe('Authenticator', () => {
 
     describe('handling a request with custom user property', () => {
       const passport = new Authenticator();
+
+      /** @type {import('./types.js').Request} */
       let request;
+      /** @type {Error | undefined} */
       let error;
 
       before((done) => {
@@ -92,6 +97,17 @@ describe('Authenticator', () => {
         expect(request._passport.session).to.be.undefined;
       });
     });
+
+    for (const userProperty of ['_passport', 'logIn', '__proto__']) {
+      it(`should reject protected user property "${userProperty}"`, () => {
+        const passport = new Authenticator();
+
+        expect(() => {
+          passport.initialize({ userProperty });
+        }).to.throw(TypeError, `Invalid user property: ${userProperty}`);
+        expect(passport._userProperty).to.equal('user');
+      });
+    }
   });
 
 
@@ -102,7 +118,7 @@ describe('Authenticator', () => {
     });
 
     describe('handling a request', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user);
@@ -112,7 +128,10 @@ describe('Authenticator', () => {
       const passport = new Authenticator();
       passport.use('success', new Strategy());
 
+      /** @type {import('./types.js').Request} */
       let request;
+
+      /** @type {Error | undefined} */
       let error;
 
       before((done) => {
@@ -147,16 +166,19 @@ describe('Authenticator', () => {
       });
     });
     describe('handling a request with instantiated strategy', () => {
-      function Strategy() {
+      class Strategy extends EnhancedStrategy {
+        authenticate() {
+          const user = { id: '1', username: 'jaredhanson' };
+          this.success(user);
+        }
       }
-      Strategy.prototype.authenticate = function authenticate() {
-        const user = { id: '1', username: 'jaredhanson' };
-        this.success(user);
-      };
 
       const passport = new Authenticator();
 
-      let request, error;
+      /** @type {import('./types.js').Request} */
+      let request;
+      /** @type {Error | undefined} */
+      let error;
 
       before((done) => {
         chai.connect.use(passport.authenticate(new Strategy())).req((req) => {
@@ -198,7 +220,7 @@ describe('Authenticator', () => {
     });
 
     describe('handling a request', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user);
@@ -208,7 +230,9 @@ describe('Authenticator', () => {
       const passport = new Authenticator();
       passport.use('success', new Strategy());
 
+      /** @type {import('./types.js').Request} */
       let request;
+      /** @type {Error | undefined} */
       let error;
 
       before((done) => {
@@ -256,10 +280,12 @@ describe('Authenticator', () => {
     describe('handling a request', () => {
       const passport = new Authenticator();
       passport.deserializeUser((req, user) => {
-        return { id: user };
+        return { id: /** @type {string | 0} */ (user) };
       });
 
+      /** @type {import('./types.js').Request} */
       let request;
+      /** @type {Error | undefined} */
       let error;
 
       before((done) => {
@@ -267,8 +293,9 @@ describe('Authenticator', () => {
           .req((req) => {
             request = req;
 
-            req._passport = {};
-            req._passport.instance = {};
+            req._passport = {
+              instance: {}
+            };
             req._passport.session = {};
             req._passport.session.user = '123456';
           })
@@ -290,7 +317,7 @@ describe('Authenticator', () => {
 
       it('should maintain session', () => {
         expect(request._passport.session).to.be.an('object');
-        expect(request._passport.session.user).to.equal('123456');
+        expect(request._passport.session?.user).to.equal('123456');
       });
     });
   });

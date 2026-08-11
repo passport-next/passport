@@ -1,14 +1,12 @@
-'use strict';
-
-const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate.js');
-const { Passport } = require('../../lib/index.js');
+import { chai, expect } from '../bootstrap/node.js';
+import authenticate from '../../lib/middleware/authenticate.js';
+import { Passport, EnhancedStrategy } from '../../lib/index.js';
 
 
 describe('middleware/authenticate', () => {
   describe('using strategy that specifies message', () => {
     describe('success with flash message', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { message: 'Welcome!' });
@@ -18,13 +16,18 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /**
+       * @type {import('../types.js').Request}
+       */
       let request;
+
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -57,12 +60,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message using type set by route', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { message: 'Welcome!' });
@@ -72,13 +75,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'info' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -111,12 +116,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message overridden by route as string', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { message: 'Welcome!' });
@@ -126,13 +131,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Login complete',
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -165,12 +172,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message overridden by route using options', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { message: 'Welcome!' });
@@ -180,13 +187,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'OK' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -219,12 +228,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message overridden by route using options with type', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { message: 'Welcome!' });
@@ -234,13 +243,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'notice', message: 'Last login was yesterday' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -273,7 +284,7 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
   });
@@ -281,7 +292,7 @@ describe('middleware/authenticate', () => {
 
   describe('using strategy that specifies message and type', () => {
     describe('success with flash message', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { type: 'info', message: 'Hello' });
@@ -291,13 +302,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -330,12 +343,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message using type set by route', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { type: 'info', message: 'Hello' });
@@ -345,13 +358,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'ok' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -384,12 +399,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message overridden by route as string', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { type: 'info', message: 'Hello' });
@@ -399,13 +414,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Success!',
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -438,12 +455,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message overridden by route using options', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { type: 'info', message: 'Hello' });
@@ -453,13 +470,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'Okay' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -492,12 +511,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message overridden by route using options with type', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, { type: 'info', message: 'Hello' });
@@ -507,13 +526,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'warn', message: 'Last login from far away place' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -546,7 +567,7 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
   });
@@ -554,7 +575,7 @@ describe('middleware/authenticate', () => {
 
   describe('using strategy that specifies message as string', () => {
     describe('success with flash message', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, 'Greetings');
@@ -564,13 +585,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -603,12 +626,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message using type set by route', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, 'Greetings');
@@ -618,13 +641,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'info' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -657,12 +682,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message overridden by route as string', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, 'Greetings');
@@ -672,13 +697,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Login complete',
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -711,12 +738,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message overridden by route using options', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, 'Greetings');
@@ -726,13 +753,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'OK' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -765,12 +794,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message overridden by route using options with type', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user, 'Greetings');
@@ -780,13 +809,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'notice', message: 'Last login was yesterday' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -819,7 +850,7 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
   });
@@ -827,7 +858,7 @@ describe('middleware/authenticate', () => {
 
   describe('using strategy that does not specify message', () => {
     describe('success with flash message left up to strategy', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user);
@@ -837,13 +868,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: true,
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -875,12 +908,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message left up to strategy using type set by route', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user);
@@ -890,13 +923,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'info' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -928,12 +963,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message specified by route as string', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user);
@@ -943,13 +978,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: 'Login complete',
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -982,12 +1019,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message specified by route using options', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user);
@@ -997,13 +1034,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { message: 'OK' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -1036,12 +1075,12 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
 
     describe('success with flash message specified by route using options with type', () => {
-      class Strategy {
+      class Strategy extends EnhancedStrategy {
         authenticate() {
           const user = { id: '1', username: 'jaredhanson' };
           this.success(user);
@@ -1051,13 +1090,15 @@ describe('middleware/authenticate', () => {
       const passport = new Passport();
       passport.use('success', new Strategy());
 
+      /** @type {import('../types.js').Request} */
       let request;
+      /** @type {import('@passport-next/chai-connect-middleware').Response} */
       let response;
 
       before((done) => {
         chai.connect.use('express', authenticate(passport, 'success', {
           successFlash: { type: 'notice', message: 'Last login was yesterday' },
-          successRedirect: 'http://www.example.com/account'
+          successRedirect: 'https://www.example.com/account'
         }))
           .req((req) => {
             request = req;
@@ -1090,7 +1131,7 @@ describe('middleware/authenticate', () => {
 
       it('should redirect', () => {
         expect(response.statusCode).to.equal(302);
-        expect(response.getHeader('Location')).to.equal('http://www.example.com/account');
+        expect(response.getHeader('Location')).to.equal('https://www.example.com/account');
       });
     });
   });

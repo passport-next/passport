@@ -1,6 +1,11 @@
 {
     "name": "@passport-next/passport",
     "version": "3.1.0",
+    "type": "module",
+    "exports": {
+        "types": "./dist/index.d.ts",
+        "default": "./lib/index.js"
+    },
     "description": "Simple, unobtrusive authentication for Node.js.",
     "author": {
         "name": "Passport Next Developers",
@@ -12,42 +17,32 @@
         "url": "https://github.com/passport-next/passport/issues"
     },
     "dependencies": {
-        "@passport-next/passport-strategy": "1.x.x"
+        "@passport-next/http-types": "^0.2.0",
+        "@passport-next/passport-strategy": "^2.4.0",
+        "@passport-next/passport-types": "^0.3.1"
     },
     "devDependencies": {
-        "@brettz9/eslint-plugin": "^1.0.3",
-        "@passport-next/chai-connect-middleware": "1.x.x",
-        "@passport-next/chai-passport-strategy": "1.x.x",
-        "chai": "^4.3.4",
-        "chai-as-promised": "^7.1.1",
+        "@arethetypeswrong/cli": "^0.18.5",
+        "@passport-next/chai-connect-middleware": "^2.3.0",
+        "@passport-next/chai-passport-strategy": "^3.2.0",
+        "@types/chai": "^5.2.3",
+        "@types/chai-as-promised": "^8.0.2",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^26.2.0",
+        "c8": "^12.0.0",
+        "chai": "^6.2.2",
+        "chai-as-promised": "^8.0.2",
         "coveralls": "^3.1.1",
-        "eslint": "^7.29.0",
-        "eslint-config-ash-nazg": "^30.0.0",
-        "eslint-config-standard": "^16.0.3",
-        "eslint-plugin-array-func": "^3.1.7",
-        "eslint-plugin-chai-friendly": "^0.7.1",
-        "eslint-plugin-compat": "^3.9.0",
-        "eslint-plugin-eslint-comments": "^3.2.0",
-        "eslint-plugin-html": "^6.1.2",
-        "eslint-plugin-import": "^2.23.4",
-        "eslint-plugin-jsdoc": "^35.4.1",
-        "eslint-plugin-markdown": "^2.2.0",
-        "eslint-plugin-no-unsanitized": "^3.1.5",
-        "eslint-plugin-no-use-extend-native": "^0.5.0",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^5.1.0",
-        "eslint-plugin-sonarjs": "^0.8.0-125",
-        "eslint-plugin-standard": "^4.1.0",
-        "eslint-plugin-unicorn": "^34.0.1",
-        "http-server": "^0.12.3",
-        "jsdoc": "^3.6.7",
-        "mocha": "^9.0.1",
-        "nunjucks": "^3.2.3",
-        "nyc": "^15.1.0",
-        "open-cli": "^7.0.0"
+        "eslint": "^10.8.1",
+        "eslint-config-ash-nazg": "^42.4.0",
+        "http-server": "^14.1.1",
+        "jsdoc": "^4.0.5",
+        "mocha": "^11.8.0",
+        "nunjucks": "^3.2.4",
+        "open-cli": "^9.0.0"
     },
     "engines": {
-        "node": ">=12.0.0"
+        "node": "^22.22.2 || >=24.15.0"
     },
     "keywords": [
         "express",
@@ -63,16 +58,20 @@
         "url": "https://github.com/passport-next/passport"
     },
     "scripts": {
+        "prepublishOnly": "pnpm build && pnpm tsc",
+        "attw": "attw --pack . --profile esm-only node16",
+        "tsc": "tsc",
+        "build": "tsc -p tsconfig-prod.json && cp lib/types.d.ts dist/types.d.ts && pnpm attw",
         "start": "http-server -p 8003",
         "build-docs": "rm -rf docs/jsdoc/*;jsdoc --pedantic -c docs/jsdoc-config.js lib",
         "open-docs": "open-cli http://localhost:8003/docs/jsdoc/ && npm start",
         "templates": "node ./templates/gen.js",
         "init-new-project": "node ./templates/gen --init",
-        "lint": "eslint --max-warnings 0 --ext js,md,html .",
-        "lintfix": "eslint --ext js,md,html . --fix",
-        "testonly": "mocha --require chai/register-expect --require test/bootstrap/node test/*.test.js test/**/*.test.js",
-        "test-one": "mocha --require chai/register-expect --require test/bootstrap/node",
-        "test": "nyc --report-dir=var/coverage --reporter=lcov --reporter=text npm run testonly",
-        "coveralls": "nyc report --report-dir=var/coverage --reporter=text-lcov | coveralls"
+        "lint": "eslint --max-warnings 0 --ext js,cjs,md,html .",
+        "lintfix": "eslint --ext js,cjs,md,html . --fix",
+        "testonly": "mocha --require test/bootstrap/node.js test/*.test.js test/**/*.test.js",
+        "test-one": "mocha --require test/bootstrap/node.js",
+        "test": "c8 --report-dir=var/coverage --reporter=lcov --reporter=text npm run testonly",
+        "coveralls": "c8 report --report-dir=var/coverage --reporter=text-lcov | coveralls"
     }
 }

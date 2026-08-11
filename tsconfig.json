@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "types": ["node", "chai", "mocha"],
+    "target": "ES2020",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true
+  },
+  "include": ["lib/**/*.js", "*.js", "test/**/*.js", "test/**/*.d.ts"],
+  "exclude": ["node_modules"]
+}

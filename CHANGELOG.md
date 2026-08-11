@@ -2,20 +2,20 @@ This changelog follows Semantic Versioning https://semver.org/
 
 # UNRELEASED
 
-# 3.1.0
+## 3.1.0
 
 ### Minor
 
 * Feature: Pass instantiated strategy to authenticate. @rwky @jaredhanson @ayZagen
 * Updated npm deps @rwky
 
-# 3.0.1
+## 3.0.1
 
 ### Patch
 
 * Updated npm deps @rwky
 
-# 3.0.0 (2019-07-13)
+## 3.0.0 (2019-07-13)
 
 ### Major
 
@@ -28,7 +28,7 @@ This changelog follows Semantic Versioning https://semver.org/
 * Fixed premature redirect in logOut and improved test coverage #20 @rwky
 * Removed make-node and replaced with nyc and coveralls @rwky
 
-# 2.1.1 (2019-04-30)
+## 2.1.1 (2019-04-30)
 
 ### Patch
 
@@ -37,7 +37,7 @@ This changelog follows Semantic Versioning https://semver.org/
 * Updated README and CONTRIBUTING to explain differences between passport and passport-next #13 @rwky
 * Fixed monkey patch and memory leak #15 #9 @MayaWolf
 
-# 2.1.0 (2018-11-03)
+## 2.1.0 (2018-11-03)
 
 ### Minor
 
@@ -50,7 +50,7 @@ This changelog follows Semantic Versioning https://semver.org/
 * Updated dev deps @rwky
 * Added linting to travis @rwky
 
-# 2.0.0 (2018-08-18)
+## 2.0.0 (2018-08-18)
 
 ### Major
 
@@ -58,13 +58,13 @@ This changelog follows Semantic Versioning https://semver.org/
   This change should have been a patch (to 1.0.2) but because of the size of the
   number of lines changed it was made a major.
 
-# 1.0.1 (2018-08-11)
+## 1.0.1 (2018-08-11)
 
 ### Patch
 
 * Fixed premature redirect when using express sessions @zypA13510 @idurotola
 
-# 1.0.0 (2018-09-06)
+## 1.0.0 (2018-09-06)
 
 ### Major
 
@@ -74,7 +74,7 @@ This changelog follows Semantic Versioning https://semver.org/
 
 * Updated dev deps @rwky
 
-# 0.5.0 (2018-06-29)
+## 0.5.0 (2018-06-29)
 
 ### Minor
 

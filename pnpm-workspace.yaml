@@ -1,0 +1,10 @@
+allowBuilds:
+  core-js: set this to true or false
+  unrs-resolver: false
+minimumReleaseAgeExclude:
+  - '@passport-next/chai-connect-middleware@2.0.0 || 2.1.0 || 2.2.0 || 2.2.1 || 2.3.0'
+  - '@passport-next/chai-passport-strategy@2.1.3 || 2.2.0 || 2.3.0 || 3.0.0 || 3.1.0 || 3.2.0'
+  - '@passport-next/passport-strategy@2.1.0 || 2.2.0 || 2.3.0 || 2.4.0'
+  - '@passport-next/http-types@0.1.0 || 0.2.0'
+  - '@passport-next/passport-types@0.2.0 || 0.3.0 || 0.3.1'
+  - eslint-config-ash-nazg@42.4.0

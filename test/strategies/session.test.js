@@ -1,8 +1,6 @@
-/* eslint-disable no-shadow */
-'use strict';
-
-const chai = require('chai');
-const SessionStrategy = require('../../lib/strategies/session.js');
+/* eslint-disable no-shadow -- Convenient */
+import { chai, expect } from '../bootstrap/node.js';
+import SessionStrategy from '../../lib/strategies/session.js';
 
 describe('SessionStrategy', () => {
   const strategy = new SessionStrategy();
@@ -12,6 +10,7 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request without a login session', () => {
+    /** @type {import('../types.js').Request} */
     let request;
     let pass = false;
 
@@ -21,7 +20,7 @@ describe('SessionStrategy', () => {
           pass = true;
           done();
         })
-        .req((req) => {
+        .request((req) => {
           request = req;
 
           req._passport = {};
@@ -40,6 +39,7 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request without a login session object', () => {
+    /** @type {import('../types.js').Request} */
     let request;
     let pass = false;
 
@@ -49,7 +49,7 @@ describe('SessionStrategy', () => {
           pass = true;
           done();
         })
-        .req((req) => {
+        .request((req) => {
           request = req;
 
           req._passport = {};
@@ -71,6 +71,7 @@ describe('SessionStrategy', () => {
       return { id: user };
     });
 
+    /** @type {import('../types.js').Request} */
     let request;
     let pass = false;
 
@@ -80,11 +81,12 @@ describe('SessionStrategy', () => {
           pass = true;
           done();
         })
-        .req((req) => {
+        .request((req) => {
           request = req;
 
-          req._passport = {};
-          req._passport.instance = {};
+          req._passport = {
+            instance: {}
+          };
           req._passport.session = {};
           req._passport.session.user = '123456';
         })
@@ -102,7 +104,7 @@ describe('SessionStrategy', () => {
 
     it('should maintain session', () => {
       expect(request._passport.session).to.be.an('object');
-      expect(request._passport.session.user).to.equal('123456');
+      expect(request._passport.session?.user).to.equal('123456');
     });
   });
 
@@ -111,6 +113,7 @@ describe('SessionStrategy', () => {
       return { id: user };
     });
 
+    /** @type {import('../types.js').Request} */
     let request;
     let pass = false;
 
@@ -120,11 +123,12 @@ describe('SessionStrategy', () => {
           pass = true;
           done();
         })
-        .req((req) => {
+        .request((req) => {
           request = req;
 
-          req._passport = {};
-          req._passport.instance = {};
+          req._passport = {
+            instance: {}
+          };
           req._passport.session = {};
           req._passport.session.user = 0;
         })
@@ -142,7 +146,7 @@ describe('SessionStrategy', () => {
 
     it('should maintain session', () => {
       expect(request._passport.session).to.be.an('object');
-      expect(request._passport.session.user).to.equal(0);
+      expect(request._passport.session?.user).to.equal(0);
     });
   });
 
@@ -151,6 +155,7 @@ describe('SessionStrategy', () => {
       return false;
     });
 
+    /** @type {import('../types.js').Request} */
     let request;
     let pass = false;
 
@@ -160,11 +165,12 @@ describe('SessionStrategy', () => {
           pass = true;
           done();
         })
-        .req((req) => {
+        .request((req) => {
           request = req;
 
-          req._passport = {};
-          req._passport.instance = {};
+          req._passport = {
+            instance: {}
+          };
           req._passport.session = {};
           req._passport.session.user = '123456';
         })
@@ -181,7 +187,7 @@ describe('SessionStrategy', () => {
 
     it('should remove user from session', () => {
       expect(request._passport.session).to.be.an('object');
-      expect(request._passport.session.user).to.be.undefined;
+      expect(request._passport.session?.user).to.be.undefined;
     });
   });
 
@@ -190,6 +196,7 @@ describe('SessionStrategy', () => {
       return { id: user };
     });
 
+    /** @type {import('../types.js').Request} */
     let request;
     let pass = false;
 
@@ -199,12 +206,11 @@ describe('SessionStrategy', () => {
           pass = true;
           done();
         })
-        .req((req) => {
+        .request((req) => {
           request = req;
-
-          req._passport = {};
-          req._passport.instance = {};
-          req._passport.instance._userProperty = 'currentUser';
+          req._passport = {
+            instance: { _userProperty: 'currentUser' }
+          };
           req._passport.session = {};
           req._passport.session.user = '123456';
         })
@@ -230,7 +236,9 @@ describe('SessionStrategy', () => {
       throw new Error('something went wrong');
     });
 
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -239,11 +247,12 @@ describe('SessionStrategy', () => {
           error = err;
           done();
         })
-        .req((req) => {
+        .request((req) => {
           request = req;
 
-          req._passport = {};
-          req._passport.instance = {};
+          req._passport = {
+            instance: {}
+          };
           req._passport.session = {};
           req._passport.session.user = '123456';
         })
@@ -252,7 +261,7 @@ describe('SessionStrategy', () => {
 
     it('should error', () => {
       expect(error).to.be.an.instanceOf(Error);
-      expect(error.message).to.equal('something went wrong');
+      expect(error?.message).to.equal('something went wrong');
     });
 
     it('should not set user on request', () => {
@@ -261,12 +270,14 @@ describe('SessionStrategy', () => {
 
     it('should maintain session', () => {
       expect(request._passport.session).to.be.an('object');
-      expect(request._passport.session.user).to.equal('123456');
+      expect(request._passport.session?.user).to.equal('123456');
     });
   });
 
   describe('handling a request that lacks an authenticator', () => {
+    /** @type {import('../types.js').Request} */
     let request;
+    /** @type {Error | undefined} */
     let error;
 
     before((done) => {
@@ -275,7 +286,7 @@ describe('SessionStrategy', () => {
           error = err;
           done();
         })
-        .req((req) => {
+        .request((req) => {
           request = req;
         })
         .authenticate();
@@ -283,7 +294,7 @@ describe('SessionStrategy', () => {
 
     it('should error', () => {
       expect(error).to.be.an.instanceOf(Error);
-      expect(error.message).to.equal('passport.initialize() middleware not in use');
+      expect(error?.message).to.equal('passport.initialize() middleware not in use');
     });
 
     it('should not set user on request', () => {
