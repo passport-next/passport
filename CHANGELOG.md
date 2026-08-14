@@ -2,14 +2,26 @@ This changelog follows Semantic Versioning https://semver.org/
 
 # UNRELEASED
 
-## 3.1.0
+## 4.0.0 (2026-08-14)
+
+### Major
+
+
+### Minor
+
+- feat: avoid Express dependency by redirecting for user when res.redirect is not available
+
+### Patch
+
+
+## 3.1.0 (2019-12-11)
 
 ### Minor
 
 * Feature: Pass instantiated strategy to authenticate. @rwky @jaredhanson @ayZagen
 * Updated npm deps @rwky
 
-## 3.0.1
+## 3.0.1 (2019-09-10)
 
 ### Patch
 
