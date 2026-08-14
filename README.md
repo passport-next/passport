@@ -10,7 +10,7 @@ Status:
 
 ## About
 
-Passport-Next/Passport is [Express](http://expressjs.com/)-compatible authentication
+Passport-Next/Passport is a [Connect](https://github.com/senchalabs/connect) and [Express](http://expressjs.com/)-compatible authentication
 middleware for [Node.js](http://nodejs.org/).
 
 Passport's sole purpose is to authenticate requests, which it does through an
@@ -26,6 +26,34 @@ hooks for controlling what occurs when authentication succeeds or fails.
 ```
 $ npm install @passport-next/passport
 ```
+
+## Migrating from 3.x
+
+Most authentication strategies that worked with Passport 3.x should continue
+to work with 4.x without modification. Passport still accepts strategy instances that
+implement `authenticate(request, options)` and augments them with the standard
+`success`, `fail`, `redirect`, `pass`, and `error` actions. Strategies do not
+need to extend the current `Strategy` class or pass an `instanceof` check.
+
+Applications must run a supported Node.js version and load Passport as native
+ESM. The default export is the Passport singleton; constructors and strategy
+base classes are named exports:
+
+```js
+import passport, { Passport } from '@passport-next/passport';
+
+const customPassport = new Passport();
+app.use(passport.initialize());
+otherApp.use(customPassport.initialize());
+```
+
+Custom strategies that import Passport's strategy base class should update
+their imports for ESM. Application-level serializers, deserializers, and
+auth-info transforms also require the 4.x request-first signature and may use a
+callback, synchronous return value, or Promise. These migration requirements
+apply to application hooks around a strategy, not to the strategy's usual
+`authenticate()` implementation. See [CHANGELOG.md](CHANGELOG.md) for the full
+list of breaking changes.
 
 ## Docs
 
