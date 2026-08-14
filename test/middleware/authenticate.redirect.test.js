@@ -44,7 +44,7 @@ describe('middleware/authenticate', () => {
     });
   });
 
-  describe('redirect with session', () => {
+  describe('redirect with session using Connect response', () => {
     class Strategy extends EnhancedStrategy {
       authenticate() {
         const user = { id: '1', username: 'idurotola' };
@@ -59,17 +59,19 @@ describe('middleware/authenticate', () => {
     let request;
     /** @type {import('@passport-next/chai-connect-middleware').Response} */
     let response;
+    let sessionSaved = false;
     const authenticator = authenticate(passport, 'success', {
       successRedirect: 'https://www.example.com/idp'
     });
 
     before((done) => {
-      chai.connect.use('express', authenticator)
+      chai.connect.use(authenticator)
         .req((req) => {
           request = req;
 
           req.session = {};
           req.session.save = function save(done) {
+            sessionSaved = true;
             done();
           };
 
@@ -89,8 +91,72 @@ describe('middleware/authenticate', () => {
     });
 
     it('should redirect', () => {
+      expect(sessionSaved).to.be.true;
       expect(response.statusCode).to.equal(302);
       expect(response.getHeader('Location')).to.equal('https://www.example.com/idp');
+      expect(response.getHeader('Content-Length')).to.equal('0');
+    });
+  });
+
+  describe('failure redirect using Connect response', () => {
+    class Strategy extends EnhancedStrategy {
+      authenticate() {
+        this.fail();
+      }
+    }
+
+    const passport = new Passport();
+    passport.use('fail', new Strategy());
+
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
+    let response;
+
+    before((done) => {
+      chai.connect.use(authenticate(passport, 'fail', {
+        failureRedirect: 'https://www.example.com/login'
+      }))
+        .end((res) => {
+          response = res;
+          done();
+        })
+        .dispatch();
+    });
+
+    it('should redirect', () => {
+      expect(response.statusCode).to.equal(302);
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/login');
+      expect(response.getHeader('Content-Length')).to.equal('0');
+    });
+  });
+
+  describe('failure redirect using Express response', () => {
+    class Strategy extends EnhancedStrategy {
+      authenticate() {
+        this.fail();
+      }
+    }
+
+    const passport = new Passport();
+    passport.use('fail', new Strategy());
+
+    /** @type {import('@passport-next/chai-connect-middleware').Response} */
+    let response;
+
+    before((done) => {
+      chai.connect.use('express', authenticate(passport, 'fail', {
+        failureRedirect: 'https://www.example.com/login'
+      }))
+        .end((res) => {
+          response = res;
+          done();
+        })
+        .dispatch();
+    });
+
+    it('should redirect using the framework response', () => {
+      expect(response.statusCode).to.equal(302);
+      expect(response.getHeader('Location')).to.equal('https://www.example.com/login');
+      expect(response.getHeader('Content-Length')).to.be.undefined;
     });
   });
 
