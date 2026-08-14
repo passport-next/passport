@@ -6,9 +6,9 @@ module.exports = {
   github: 'https://github.com/passport-next/passport',
   codeClimateId: 'deaf381bf0cff6bf26a5',
   supportedNodeVersions: [
-    8,
     10,
-    12
+    12,
+    14
   ],
   ignoreExisting: [
     '.gitignore',

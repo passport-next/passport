@@ -1,4 +1,4 @@
-# Passport-Next/Passport 
+# Passport-Next/Passport
 
 Status:
 [![NPM version](https://img.shields.io/npm/v/@passport-next/passport.svg)](https://www.npmjs.com/package/@passport-next/passport)
@@ -44,4 +44,3 @@ We support all [node versions](https://github.com/nodejs/Release) supported by t
 ## Contributing
 
 Please see [CONTRIBUTING.md](https://github.com/passport-next/passport/blob/master/CONTRIBUTING.md)
-

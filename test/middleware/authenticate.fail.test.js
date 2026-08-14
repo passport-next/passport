@@ -1,8 +1,8 @@
 'use strict';
 
 const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate');
-const { Passport } = require('../..');
+const authenticate = require('../../lib/middleware/authenticate.js');
+const { Passport } = require('../../lib/index.js');
 
 
 describe('middleware/authenticate', () => {
@@ -32,13 +32,11 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should respond', () => {
       expect(response.statusCode).to.equal(401);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.getHeader('WWW-Authenticate')).to.be.undefined;
       expect(response.body).to.equal('Unauthorized');
     });
@@ -70,7 +68,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -106,7 +103,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -150,13 +146,11 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should respond', () => {
       expect(response.statusCode).to.equal(403);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.getHeader('WWW-Authenticate')).to.be.undefined;
       expect(response.body).to.equal('Forbidden');
     });
@@ -188,13 +182,11 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should respond', () => {
       expect(response.statusCode).to.equal(400);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.getHeader('WWW-Authenticate')).to.be.undefined;
       expect(response.body).to.equal('Bad Request');
     });
@@ -237,15 +229,12 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set body of response', () => {
       expect(response.statusCode).to.equal(401);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.getHeader('WWW-Authenticate')).to.be.undefined;
-      // eslint-disable-next-line no-unused-expressions
       expect(response.body).to.be.undefined;
     });
   });
@@ -287,15 +276,12 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set body of response', () => {
       expect(response.statusCode).to.equal(401);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.getHeader('WWW-Authenticate')).to.be.undefined;
-      // eslint-disable-next-line no-unused-expressions
       expect(response.body).to.be.undefined;
     });
   });
@@ -337,15 +323,12 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set body of response', () => {
       expect(response.statusCode).to.equal(400);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.getHeader('WWW-Authenticate')).to.be.undefined;
-      // eslint-disable-next-line no-unused-expressions
       expect(response.body).to.be.undefined;
     });
   });
@@ -387,13 +370,11 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set body of response', () => {
       expect(response.statusCode).to.equal(401);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.body).to.be.undefined;
     });
 
@@ -443,15 +424,12 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set body of response', () => {
       expect(response.statusCode).to.equal(403);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.getHeader('WWW-Authenticate')).to.be.undefined;
-      // eslint-disable-next-line no-unused-expressions
       expect(response.body).to.be.undefined;
     });
   });
@@ -493,15 +471,12 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set user', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should not set body of response', () => {
       expect(response.statusCode).to.equal(402);
-      // eslint-disable-next-line no-unused-expressions
       expect(response.getHeader('WWW-Authenticate')).to.be.undefined;
-      // eslint-disable-next-line no-unused-expressions
       expect(response.body).to.be.undefined;
     });
   });

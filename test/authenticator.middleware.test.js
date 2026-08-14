@@ -1,9 +1,7 @@
-/* eslint-disable no-shadow */
-
 'use strict';
 
 const chai = require('chai');
-const Authenticator = require('../lib/authenticator');
+const Authenticator = require('../lib/authenticator.js');
 
 
 describe('Authenticator', () => {
@@ -32,7 +30,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
@@ -41,7 +38,6 @@ describe('Authenticator', () => {
       });
 
       it('should not initialize namespace within session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.session.passport).to.be.undefined;
       });
 
@@ -52,7 +48,6 @@ describe('Authenticator', () => {
       });
 
       it('should not expose session storage on internal request property', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request._passport.session).to.be.undefined;
       });
     });
@@ -76,7 +71,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
@@ -85,7 +79,6 @@ describe('Authenticator', () => {
       });
 
       it('should not initialize namespace within session', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.session.passport).to.be.undefined;
       });
 
@@ -96,7 +89,6 @@ describe('Authenticator', () => {
       });
 
       it('should not expose session storage on internal request property', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request._passport.session).to.be.undefined;
       });
     });
@@ -128,9 +120,8 @@ describe('Authenticator', () => {
           .req((req) => {
             request = req;
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
           })
           .next((err) => {
@@ -141,7 +132,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
@@ -172,9 +162,8 @@ describe('Authenticator', () => {
         chai.connect.use(passport.authenticate(new Strategy())).req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user /* , options */) {
             this.user = user;
-            done();
           };
         })
           .next((err) => {
@@ -185,7 +174,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
@@ -228,9 +216,8 @@ describe('Authenticator', () => {
           .req((req) => {
             request = req;
 
-            req.logIn = function logIn(user, options, done) {
+            req.logIn = function logIn(user) {
               this.user = user;
-              done();
             };
           })
           .next((err) => {
@@ -241,12 +228,10 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 
       it('should not set user', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.user).to.be.undefined;
       });
 
@@ -257,7 +242,6 @@ describe('Authenticator', () => {
       });
 
       it('should not set authInfo', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(request.authInfo).to.be.undefined;
       });
     });
@@ -271,8 +255,8 @@ describe('Authenticator', () => {
 
     describe('handling a request', () => {
       const passport = new Authenticator();
-      passport.deserializeUser((user, done) => {
-        done(null, { id: user });
+      passport.deserializeUser((req, user) => {
+        return { id: user };
       });
 
       let request;
@@ -296,7 +280,6 @@ describe('Authenticator', () => {
       });
 
       it('should not error', () => {
-        // eslint-disable-next-line no-unused-expressions
         expect(error).to.be.undefined;
       });
 

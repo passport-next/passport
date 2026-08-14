@@ -3,7 +3,7 @@
 const Authenticator = require('../lib/authenticator.js');
 
 
-describe('Authenticator', () => {
+describe('Authenticator (Sync return)', () => {
   describe('#sessionManager', () => {
     it('should set custom session manager', () => {
       const passport = new Authenticator();
@@ -126,20 +126,10 @@ describe('Authenticator', () => {
       });
     });
 
-    describe('without serializers (and no callback)', () => {
-      const authenticator = new Authenticator();
-
-      it('should be rejected', () => {
-        expect(
-          authenticator.serializeUser({ id: '1', username: 'jared' })
-        ).to.be.rejectedWith(Error, 'Failed to serialize user into session');
-      });
-    });
-
     describe('with one serializer', () => {
       const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        done(null, user.id);
+      authenticator.serializeUser((req, user) => {
+        return user.id;
       });
 
       let error;
@@ -162,10 +152,34 @@ describe('Authenticator', () => {
       });
     });
 
+    describe('with one serializer that returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.serializeUser((/* req, user */) => undefined);
+
+      let error;
+      let obj;
+
+      before(async () => {
+        await authenticator.serializeUser({ id: '1', username: 'jared' }, (err, o) => {
+          error = err;
+          obj = o;
+        });
+      });
+
+      it('should error', () => {
+        expect(error).to.be.an.instanceOf(Error);
+        expect(error.message).to.equal('Failed to serialize user into session');
+      });
+
+      it('should not serialize user', () => {
+        expect(obj).to.be.undefined;
+      });
+    });
+
     describe('with one serializer that serializes to 0', () => {
       const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        done(null, 0);
+      authenticator.serializeUser((/* req, user */) => {
+        return 0;
       });
 
       let error;
@@ -190,8 +204,8 @@ describe('Authenticator', () => {
 
     describe('with one serializer that serializes to false', () => {
       const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        done(null, false);
+      authenticator.serializeUser((/* req, user */) => {
+        return false;
       });
 
       let error;
@@ -217,35 +231,8 @@ describe('Authenticator', () => {
 
     describe('with one serializer that serializes to null', () => {
       const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        done(null, null);
-      });
-
-      let error;
-      let obj;
-
-      before((done) => {
-        authenticator.serializeUser({ id: '1', username: 'jared' }, (err, o) => {
-          error = err;
-          obj = o;
-          done();
-        });
-      });
-
-      it('should error', () => {
-        expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to serialize user into session');
-      });
-
-      it('should not serialize user', () => {
-        expect(obj).to.be.undefined;
-      });
-    });
-
-    describe('with one serializer that serializes to undefined', () => {
-      const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        done(null, undefined);
+      authenticator.serializeUser((/* req, user */) => {
+        return null;
       });
 
       let error;
@@ -271,8 +258,8 @@ describe('Authenticator', () => {
 
     describe('with one serializer that encounters an error', () => {
       const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        done(new Error('something went wrong'));
+      authenticator.serializeUser((/* req, user */) => {
+        throw new Error('something went wrong');
       });
 
       let error;
@@ -293,20 +280,6 @@ describe('Authenticator', () => {
 
       it('should not serialize user', () => {
         expect(obj).to.be.undefined;
-      });
-    });
-
-    describe('with one serializer that encounters an error (preceded by serialization without callback)', () => {
-      const authenticator = new Authenticator();
-
-      authenticator.serializeUser((req, user, done) => {
-        done(new Error('something went wrong'));
-      });
-
-      it('should be rejected', () => {
-        expect(
-          authenticator.serializeUser({ id: '1', username: 'jared' })
-        ).to.be.rejectedWith(Error, 'something went wrong');
       });
     });
 
@@ -337,16 +310,70 @@ describe('Authenticator', () => {
       });
     });
 
+    describe('with two serializers, the first of which serializes and the second of which returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.serializeUser((/* req, user */) => {
+        return 'one';
+      });
+      authenticator.serializeUser((/* req, user */) => undefined);
+
+      let error;
+      let obj;
+
+      before((done) => {
+        authenticator.serializeUser({ id: '1', username: 'jared' }, (err, o) => {
+          error = err;
+          obj = o;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        expect(error).to.be.null;
+      });
+
+      it('should serialize user', () => {
+        expect(obj).to.equal('one');
+      });
+    });
+
+    describe('with two serializers, the first of which returns `undefined` and the second of which serializes', () => {
+      const authenticator = new Authenticator();
+      authenticator.serializeUser((/* req, user */) => undefined);
+      authenticator.serializeUser((/* req, user */) => {
+        return 'one';
+      });
+
+      let error;
+      let obj;
+
+      before((done) => {
+        authenticator.serializeUser({ id: '1', username: 'jared' }, (err, o) => {
+          error = err;
+          obj = o;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        expect(error).to.be.null;
+      });
+
+      it('should serialize user', () => {
+        expect(obj).to.equal('one');
+      });
+    });
+
     describe('with three serializers, the first of which passes and the second of which serializes', () => {
       const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        done('pass');
+      authenticator.serializeUser((/* req, obj */) => {
+        throw new Error('pass');
       });
-      authenticator.serializeUser((req, user, done) => {
-        done(null, 'two');
+      authenticator.serializeUser((/* req, user */) => {
+        return 'two';
       });
-      authenticator.serializeUser((req, user, done) => {
-        done(null, 'three');
+      authenticator.serializeUser((/* req, user */) => {
+        return 'three';
       });
 
       let error;
@@ -371,14 +398,14 @@ describe('Authenticator', () => {
 
     describe('with three serializers, the first of which passes and the second of which does not serialize by no argument', () => {
       const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        done('pass');
+      authenticator.serializeUser((/* req, obj */) => {
+        throw new Error('pass');
       });
       authenticator.serializeUser((req, user, done) => {
         done(null);
       });
-      authenticator.serializeUser((req, user, done) => {
-        done(null, 'three');
+      authenticator.serializeUser((/* req, user */) => {
+        return 'three';
       });
 
       let error;
@@ -403,14 +430,14 @@ describe('Authenticator', () => {
 
     describe('with three serializers, the first of which passes and the second of which does not serialize by undefined', () => {
       const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        done('pass');
+      authenticator.serializeUser((/* req, obj */) => {
+        throw new Error('pass');
       });
       authenticator.serializeUser((req, user, done) => {
         done(null, undefined);
       });
-      authenticator.serializeUser((req, user, done) => {
-        done(null, 'three');
+      authenticator.serializeUser((/* req, user */) => {
+        return 'three';
       });
 
       let error;
@@ -435,9 +462,11 @@ describe('Authenticator', () => {
 
     describe('with one serializer that takes request as argument', () => {
       const authenticator = new Authenticator();
-      authenticator.serializeUser((req, user, done) => {
-        if (req.url !== '/foo') { done(new Error('incorrect req argument')); return; }
-        done(null, user.id);
+      authenticator.serializeUser((req, user) => {
+        if (req.url !== '/foo') {
+          throw new Error('incorrect req argument');
+        }
+        return user.id;
       });
 
       let error;
@@ -488,20 +517,10 @@ describe('Authenticator', () => {
       });
     });
 
-    describe('without deserializers and no callback', () => {
-      const authenticator = new Authenticator();
-
-      it('should be rejected', () => {
-        expect(
-          authenticator.deserializeUser({ id: '1', username: 'jared' })
-        ).to.be.rejectedWith(Error, 'Failed to deserialize user out of session');
-      });
-    });
-
     describe('with one deserializer', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, obj.username);
+      authenticator.deserializeUser((req, obj) => {
+        return obj.username;
       });
 
       let error;
@@ -524,10 +543,34 @@ describe('Authenticator', () => {
       });
     });
 
+    describe('with one deserializer that returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.deserializeUser((/* req, obj */) => undefined);
+
+      let error;
+      let user;
+
+      before(async () => {
+        await authenticator.deserializeUser({ id: '1', username: 'jared' }, (err, u) => {
+          error = err;
+          user = u;
+        });
+      });
+
+      it('should error', () => {
+        expect(error).to.be.an.instanceOf(Error);
+        expect(error.message).to.equal('Failed to deserialize user out of session');
+      });
+
+      it('should not deserialize user', () => {
+        expect(user).to.be.undefined;
+      });
+    });
+
     describe('with one deserializer that deserializes to false', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, false);
+      authenticator.deserializeUser((/* req, obj */) => {
+        return false;
       });
 
       let error;
@@ -552,8 +595,8 @@ describe('Authenticator', () => {
 
     describe('with one deserializer that deserializes to null', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, null);
+      authenticator.deserializeUser((/* req, obj */) => {
+        return null;
       });
 
       let error;
@@ -576,37 +619,10 @@ describe('Authenticator', () => {
       });
     });
 
-    describe('with one deserializer that deserializes to undefined', () => {
-      const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, undefined);
-      });
-
-      let error;
-      let user;
-
-      before((done) => {
-        authenticator.deserializeUser({ id: '1', username: 'jared' }, (err, u) => {
-          error = err;
-          user = u;
-          done();
-        });
-      });
-
-      it('should error', () => {
-        expect(error).to.be.an.instanceOf(Error);
-        expect(error.message).to.equal('Failed to deserialize user out of session');
-      });
-
-      it('should not deserialize user', () => {
-        expect(user).to.be.undefined;
-      });
-    });
-
     describe('with one deserializer that encounters an error', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done(new Error('something went wrong'));
+      authenticator.deserializeUser((/* req, obj */) => {
+        throw new Error('something went wrong');
       });
 
       let error;
@@ -627,19 +643,6 @@ describe('Authenticator', () => {
 
       it('should invalidate session', () => {
         expect(user).to.be.undefined;
-      });
-    });
-
-    describe('with one deserializer that encounters an error (and no callback)', () => {
-      const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done(new Error('something went wrong'));
-      });
-
-      it('should be rejected', () => {
-        expect(
-          authenticator.deserializeUser({ id: '1', username: 'jared' })
-        ).to.be.rejectedWith(Error, 'something went wrong');
       });
     });
 
@@ -670,16 +673,70 @@ describe('Authenticator', () => {
       });
     });
 
+    describe('with two deserializers, the first of which deserializes and the second of which returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'one';
+      });
+      authenticator.deserializeUser((/* req, obj */) => undefined);
+
+      let error;
+      let user;
+
+      before((done) => {
+        authenticator.deserializeUser({ id: '1', username: 'jared' }, (err, u) => {
+          error = err;
+          user = u;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        expect(error).to.be.null;
+      });
+
+      it('should deserialize user', () => {
+        expect(user).to.equal('one');
+      });
+    });
+
+    describe('with two deserializers, the first of which returns `undefined` and the second of which deserializes', () => {
+      const authenticator = new Authenticator();
+      authenticator.deserializeUser((/* req, obj */) => undefined);
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'one';
+      });
+
+      let error;
+      let user;
+
+      before((done) => {
+        authenticator.deserializeUser({ id: '1', username: 'jared' }, (err, u) => {
+          error = err;
+          user = u;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        expect(error).to.be.null;
+      });
+
+      it('should deserialize user', () => {
+        expect(user).to.equal('one');
+      });
+    });
+
     describe('with three deserializers, the first of which passes and the second of which deserializes', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done('pass');
+      authenticator.deserializeUser((/* req, obj */) => {
+        throw new Error('pass');
       });
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, 'two');
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'two';
       });
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, 'three');
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'three';
       });
 
       let error;
@@ -704,14 +761,14 @@ describe('Authenticator', () => {
 
     describe('with three deserializers, the first of which passes and the second of which does not deserialize by no argument', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done('pass');
+      authenticator.deserializeUser((/* req, obj */) => {
+        throw new Error('pass');
       });
       authenticator.deserializeUser((req, obj, done) => {
         done(null);
       });
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, 'three');
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'three';
       });
 
       let error;
@@ -736,14 +793,14 @@ describe('Authenticator', () => {
 
     describe('with three deserializers, the first of which passes and the second of which does not deserialize by undefined', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done('pass');
+      authenticator.deserializeUser((/* req, obj */) => {
+        throw new Error('pass');
       });
       authenticator.deserializeUser((req, obj, done) => {
         done(null, undefined);
       });
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, 'three');
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'three';
       });
 
       let error;
@@ -768,14 +825,14 @@ describe('Authenticator', () => {
 
     describe('with three deserializers, the first of which passes and the second of which invalidates session by false', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done('pass');
+      authenticator.deserializeUser((/* req, obj */) => {
+        throw new Error('pass');
       });
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, false);
+      authenticator.deserializeUser((/* req, obj */) => {
+        return false;
       });
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, 'three');
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'three';
       });
 
       let error;
@@ -800,14 +857,14 @@ describe('Authenticator', () => {
 
     describe('with three deserializers, the first of which passes and the second of which invalidates session by null', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        done('pass');
+      authenticator.deserializeUser((/* req, obj */) => {
+        throw new Error('pass');
       });
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, null);
+      authenticator.deserializeUser((/* req, obj */) => {
+        return null;
       });
-      authenticator.deserializeUser((req, obj, done) => {
-        done(null, 'three');
+      authenticator.deserializeUser((/* req, obj */) => {
+        return 'three';
       });
 
       let error;
@@ -832,9 +889,11 @@ describe('Authenticator', () => {
 
     describe('with one deserializer that takes request as argument', () => {
       const authenticator = new Authenticator();
-      authenticator.deserializeUser((req, obj, done) => {
-        if (req.url !== '/foo') { done(new Error('incorrect req argument')); return; }
-        done(null, obj.username);
+      authenticator.deserializeUser((req, obj) => {
+        if (req.url !== '/foo') {
+          throw new Error('incorrect req argument');
+        }
+        return obj.username;
       });
 
       let error;
@@ -888,8 +947,8 @@ describe('Authenticator', () => {
 
     describe('with one transform', () => {
       const authenticator = new Authenticator();
-      authenticator.transformAuthInfo((req, info, done) => {
-        done(null, { clientId: info.clientId, client: { name: 'Foo' } });
+      authenticator.transformAuthInfo((req, info) => {
+        return { clientId: info.clientId, client: { name: 'Foo' } };
       });
 
       let error;
@@ -917,8 +976,8 @@ describe('Authenticator', () => {
 
     describe('with one transform that encounters an error', () => {
       const authenticator = new Authenticator();
-      authenticator.transformAuthInfo((req, info, done) => {
-        done(new Error('something went wrong'));
+      authenticator.transformAuthInfo((/* req, info */) => {
+        throw new Error('something went wrong');
       });
 
       let error;
@@ -996,16 +1055,101 @@ describe('Authenticator', () => {
       });
     });
 
-    describe('with three transform, the first of which passes and the second of which transforms', () => {
+    describe('with one sync transform which returns `undefined`', () => {
       const authenticator = new Authenticator();
-      authenticator.transformAuthInfo((req, info, done) => {
-        done('pass');
+      authenticator.transformAuthInfo((/* req, info */) => undefined);
+
+      let error;
+      let obj;
+
+      before(async () => {
+        await authenticator.transformAuthInfo({ clientId: '1', scope: 'write' }, (err, o) => {
+          error = err;
+          obj = o;
+        });
       });
-      authenticator.transformAuthInfo((req, info, done) => {
-        done(null, { clientId: info.clientId, client: { name: 'Two' } });
+
+      it('should not error', () => {
+        expect(error).to.be.null;
       });
-      authenticator.transformAuthInfo((req, info, done) => {
-        done(null, { clientId: info.clientId, client: { name: 'Three' } });
+
+      it('should not transform info', () => {
+        expect(Object.keys(obj)).to.have.length(2);
+        expect(obj.clientId).to.equal('1');
+        expect(obj.scope).to.equal('write');
+      });
+    });
+
+    describe('with two transforms, the first of which transforms and the second of which returns `undefined`', () => {
+      const authenticator = new Authenticator();
+      authenticator.transformAuthInfo((req, info) => {
+        return { clientId: info.clientId, client: { name: 'One' } };
+      });
+      authenticator.transformAuthInfo((/* req, info */) => undefined);
+
+      let error;
+      let obj;
+
+      before((done) => {
+        authenticator.transformAuthInfo({ clientId: '1', scope: 'write' }, (err, o) => {
+          error = err;
+          obj = o;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        expect(error).to.be.null;
+      });
+
+      it('should not transform info', () => {
+        expect(Object.keys(obj)).to.have.length(2);
+        expect(obj.clientId).to.equal('1');
+        expect(obj.client.name).to.equal('One');
+        expect(obj.scope).to.be.undefined;
+      });
+    });
+
+    describe('with two transforms, the first of which returns `undefined` and the second of which transforms', () => {
+      const authenticator = new Authenticator();
+      authenticator.transformAuthInfo((/* req, info */) => undefined);
+      authenticator.transformAuthInfo((req, info) => {
+        return { clientId: info.clientId, client: { name: 'One' } };
+      });
+
+      let error;
+      let obj;
+
+      before((done) => {
+        authenticator.transformAuthInfo({ clientId: '1', scope: 'write' }, (err, o) => {
+          error = err;
+          obj = o;
+          done();
+        });
+      });
+
+      it('should not error', () => {
+        expect(error).to.be.null;
+      });
+
+      it('should not transform info', () => {
+        expect(Object.keys(obj)).to.have.length(2);
+        expect(obj.clientId).to.equal('1');
+        expect(obj.client.name).to.equal('One');
+        expect(obj.scope).to.be.undefined;
+      });
+    });
+
+    describe('with three transforms, the first of which passes and the second of which transforms', () => {
+      const authenticator = new Authenticator();
+      authenticator.transformAuthInfo((/* req, obj */) => {
+        throw new Error('pass');
+      });
+      authenticator.transformAuthInfo((req, info) => {
+        return { clientId: info.clientId, client: { name: 'Two' } };
+      });
+      authenticator.transformAuthInfo((req, info) => {
+        return { clientId: info.clientId, client: { name: 'Three' } };
       });
 
       let error;
@@ -1033,9 +1177,11 @@ describe('Authenticator', () => {
 
     describe('with one transform that takes request as argument', () => {
       const authenticator = new Authenticator();
-      authenticator.transformAuthInfo((req, info, done) => {
-        if (req.url !== '/foo') { done(new Error('incorrect req argument')); return; }
-        done(null, { clientId: info.clientId, client: { name: 'Foo' } });
+      authenticator.transformAuthInfo((req, info) => {
+        if (req.url !== '/foo') {
+          throw new Error('incorrect req argument');
+        }
+        return { clientId: info.clientId, client: { name: 'Foo' } };
       });
 
       let error;

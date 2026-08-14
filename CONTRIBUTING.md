@@ -22,6 +22,12 @@ Ensure that the test suite passes by executing:
 $ npm test
 ```
 
+You can also run a single test file:
+
+```bash
+$ npm run test-one -- test/sessionmanager.test.js
+```
+
 Ensure that lint passes
 ```bash
 $ npm run lint

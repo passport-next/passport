@@ -1,9 +1,8 @@
-/* eslint-disable no-shadow */
 'use strict';
 
 const chai = require('chai');
-const authenticate = require('../../lib/middleware/authenticate');
-const { Passport } = require('../..');
+const authenticate = require('../../lib/middleware/authenticate.js');
+const { Passport } = require('../../lib/index.js');
 
 
 describe('middleware/authenticate', () => {
@@ -26,9 +25,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {
@@ -39,7 +37,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
@@ -67,8 +64,8 @@ describe('middleware/authenticate', () => {
 
     const passport = new Passport();
     passport.use('success', new Strategy());
-    passport.transformAuthInfo((info, done) => {
-      done(null, { clientId: info.clientId, client: { name: 'Foo' }, scope: info.scope });
+    passport.transformAuthInfo((req, info) => {
+      return { clientId: info.clientId, client: { name: 'Foo' }, scope: info.scope };
     });
 
     let request;
@@ -79,9 +76,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {
@@ -92,7 +88,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
@@ -121,8 +116,8 @@ describe('middleware/authenticate', () => {
 
     const passport = new Passport();
     passport.use('success', new Strategy());
-    passport.transformAuthInfo((info, done) => {
-      done(new Error('something went wrong'));
+    passport.transformAuthInfo((/* req, info */) => {
+      throw new Error('something went wrong');
     });
 
     let request;
@@ -133,9 +128,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {
@@ -157,7 +151,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set authInfo', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.authInfo).to.be.undefined;
     });
   });
@@ -181,9 +174,8 @@ describe('middleware/authenticate', () => {
         .req((req) => {
           request = req;
 
-          req.logIn = function logIn(user, options, done) {
+          req.logIn = function logIn(user) {
             this.user = user;
-            done();
           };
         })
         .next((err) => {
@@ -194,7 +186,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not error', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(error).to.be.undefined;
     });
 
@@ -205,7 +196,6 @@ describe('middleware/authenticate', () => {
     });
 
     it('should not set authInfo', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.authInfo).to.be.undefined;
     });
   });

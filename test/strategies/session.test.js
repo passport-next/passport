@@ -2,7 +2,7 @@
 'use strict';
 
 const chai = require('chai');
-const SessionStrategy = require('../../lib/strategies/session');
+const SessionStrategy = require('../../lib/strategies/session.js');
 
 describe('SessionStrategy', () => {
   const strategy = new SessionStrategy();
@@ -31,19 +31,44 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
+      expect(request.user).to.be.undefined;
+    });
+  });
+
+  describe('handling a request without a login session object', () => {
+    let request;
+    let pass = false;
+
+    before((done) => {
+      chai.passport.use(strategy)
+        .pass(() => {
+          pass = true;
+          done();
+        })
+        .req((req) => {
+          request = req;
+
+          req._passport = {};
+        })
+        .authenticate();
+    });
+
+    it('should pass', () => {
+      expect(pass).to.be.true;
+    });
+
+    it('should not set user on request', () => {
       expect(request.user).to.be.undefined;
     });
   });
 
   describe('handling a request with a login session', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(null, { id: user });
+    const strategy = new SessionStrategy((user) => {
+      return { id: user };
     });
 
     let request;
@@ -67,7 +92,6 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
@@ -83,8 +107,8 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session serialized to 0', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(null, { id: user });
+    const strategy = new SessionStrategy((user) => {
+      return { id: user };
     });
 
     let request;
@@ -108,7 +132,6 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
@@ -124,8 +147,8 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session that has been invalidated', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(null, false);
+    const strategy = new SessionStrategy((/* user, req */) => {
+      return false;
     });
 
     let request;
@@ -149,25 +172,22 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
     it('should remove user from session', () => {
       expect(request._passport.session).to.be.an('object');
-      // eslint-disable-next-line no-unused-expressions
       expect(request._passport.session.user).to.be.undefined;
     });
   });
 
   describe('handling a request with a login session and setting custom user property', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(null, { id: user });
+    const strategy = new SessionStrategy((user) => {
+      return { id: user };
     });
 
     let request;
@@ -192,12 +212,10 @@ describe('SessionStrategy', () => {
     });
 
     it('should pass', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(pass).to.be.true;
     });
 
     it('should not set "user" on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -208,8 +226,8 @@ describe('SessionStrategy', () => {
   });
 
   describe('handling a request with a login session that encounters an error when deserializing', () => {
-    const strategy = new SessionStrategy((user, req, done) => {
-      done(new Error('something went wrong'));
+    const strategy = new SessionStrategy(() => {
+      throw new Error('something went wrong');
     });
 
     let request;
@@ -238,7 +256,6 @@ describe('SessionStrategy', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
 
@@ -270,7 +287,6 @@ describe('SessionStrategy', () => {
     });
 
     it('should not set user on request', () => {
-      // eslint-disable-next-line no-unused-expressions
       expect(request.user).to.be.undefined;
     });
   });
