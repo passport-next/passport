@@ -21,7 +21,7 @@ export type AuthenticateRequest = import("../index.js").ConnectRequest & import(
     logIn: (user: User, options: AuthenticateOptions) => Promise<void>;
 };
 export type AuthenticateResponse = import("@passport-next/http-types").ConnectResponse & {
-    redirect: (url: string) => void;
+    redirect?: (url: string) => void;
 };
 export type Failure = {
     challenge?: string | MessageInfo;
